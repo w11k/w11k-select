@@ -1,0 +1,12 @@
+{
+  "name": "w11k-select",
+  "version": "0.1.0-SNAPSHOT",
+
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-bindonce": "0.3.x",
+    "font-awesome": "4.0.x"
+  },
+  "devDependencies": {
+  }
+}
