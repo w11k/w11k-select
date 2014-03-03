@@ -21,14 +21,14 @@ Features:
 
 ### Usage
 
-    <div ww-select multiple="options.multiple"
-                   disabled="!options.enabled"
-                   required="options.required"
-                   ng-model="selected.data"
-                   options="option.value as option.label for option in options.data"
-                   placeholder="'All'"
-                   filter-placeholder="'Filter'"
-                   >
+    <div w11k-select multiple="options.multiple"
+                     disabled="!options.enabled"
+                     required="options.required"
+                     ng-model="selected.data"
+                     options="option.value as option.label for option in options.data"
+                     placeholder="'All'"
+                     filter-placeholder="'Filter'"
+                     >
     </div>
     
 Attention: ```placeholder``` and ```filter-placeholder``` are expressions but for a better preformance they are evaluated only once. So you can not change the placeholder and filter-placeholder text dynamically at runtime via data-binding but e.g. you can use expressions like ```'common.filter.placeholder' | translate``` to read the text form a translation file. 
