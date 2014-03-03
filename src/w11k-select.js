@@ -5,6 +5,10 @@ angular.module('w11k.select', [
   'w11k.dropdownToggle'
 ]);
 
+angular.module('w11k.select').constant('w11kSelectConfig', {
+  templateUrl: 'w11k-select.tpl.html'
+});
+
 angular.module('w11k.select').factory('optionParser', function ($parse) {
 
   //                     value      as   label     for   item                    in   collection
@@ -31,11 +35,11 @@ angular.module('w11k.select').factory('optionParser', function ($parse) {
   };
 });
 
-angular.module('w11k.select').directive('w11kSelect', function ($parse, $document, optionParser, $filter, $timeout, $window) {
+angular.module('w11k.select').directive('w11kSelect', function (w11kSelectConfig, $parse, $document, optionParser, $filter, $timeout, $window) {
   return {
     restrict: 'A',
     replace: false,
-    templateUrl: 'w11k-select.tpl.html',
+    templateUrl: w11kSelectConfig.templateUrl,
     scope: {
       isMultiple: '=?multiple',
       isRequired: '=?required',
