@@ -107,7 +107,7 @@ module.exports = function(grunt) {
       options: {
         files: bumpFiles,
         commit: true,
-        commitMessage: 'bumps version to %VERSION%',
+        commitMessage: 'chore(project): bump version to %VERSION%',
         commitFiles: ['-a'],
         createTag: false,
         push: false
