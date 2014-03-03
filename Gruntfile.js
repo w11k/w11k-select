@@ -1,10 +1,11 @@
 'use strict';
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   var pkg = require('./package.json');
 
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -33,6 +34,18 @@ module.exports = function(grunt) {
 
     clean: {
       dist: 'dist/*'
+    },
+    jshint: {
+      src: {
+        options: {
+          jshintrc: '.jshintrc'
+        },
+        files: [{
+          expand: true,
+          cwd: 'src',
+          src: '**.js'
+        }]
+      }
     },
     sass: {
       dist: {
@@ -97,7 +110,7 @@ module.exports = function(grunt) {
           'dist/w11k-select.js': 'src/w11k-select.js'
         }
       },
-      code_minified: {
+      codeMinified: {
         files: [{
           'dist/w11k-select.min.js': 'src/w11k-select.js'
         }]
@@ -118,7 +131,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('build', ['clean', 'sass', 'copy:template', 'html2js', 'uglify']);
+  grunt.registerTask('build', ['clean', 'jshint:src', 'sass', 'copy:template', 'html2js', 'uglify']);
 
   grunt.registerTask('release', ['build', 'copy:release']);
 
