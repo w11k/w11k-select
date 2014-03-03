@@ -7,7 +7,7 @@ Features:
 * Single- and multi-select
 * High performance and usability even with hundreds of options
 * Filter options to find the right one quickly
-* Uses Twitter Bootstrap styling, comes with default, easy to adjust
+* Uses Twitter Bootstrap markup / styling, comes with default css but easy to adjust / override
 * Disabled state and required-validation
  
 
