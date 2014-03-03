@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 
   var bowerrc = grunt.file.exists('./.bowerrc') ? grunt.file.readJSON('./.bowerrc') : { 'json': 'bower.json' };
 
-  var bumpFiles = [ 'package.json' ];
+  var bumpFiles = [ 'package.json', '../w11k-select-bower/package.json' ];
   if (grunt.file.exists(bowerrc.json)) {
     bumpFiles.push(bowerrc.json);
   }
