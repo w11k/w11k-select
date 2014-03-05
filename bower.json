@@ -8,5 +8,6 @@
     "font-awesome": "4.0.x"
   },
   "devDependencies": {
+    "bootstrap": "3.1.0"
   }
 }
