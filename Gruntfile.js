@@ -71,10 +71,6 @@ module.exports = function (grunt) {
             dest: '../w11k-select-bower/dist/'
           },
           {
-            src: 'LICENSE',
-            dest: '../w11k-select-bower/'
-          },
-          {
             src: 'bower.json',
             dest: '../w11k-select-bower/'
           }
