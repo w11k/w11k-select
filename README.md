@@ -9,6 +9,7 @@ Features:
 * Filter options to find the right one quickly
 * Uses Twitter Bootstrap markup / styling, comes with default css but easy to adjust / override
 * Disabled state and required-validation
+* Customisable texts (placeholders and selected representation)
  
 
 ## Getting Started
@@ -16,8 +17,13 @@ Features:
 ### Installation
 
 * Install via Bower (w11k-select) or download manually from our release repository (https://github.com/w11k/w11k-select-bower)
-* Include scripts into your application: w11k-select and dependencies (at the moment of writing 'bind-once' and 'dropdownToggle')
-* Add dependency to w11k-select module
+* Include scripts into your application (w11k-select and dependencies):
+  * jQuery
+  * AngularJS
+  * bind-once
+  * w11k-dropdownToggle
+  * w11k-select
+* Add dependency to w11k-select to your angular module
 
 ### Usage
 
