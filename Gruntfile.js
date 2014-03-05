@@ -62,6 +62,10 @@ module.exports = function (grunt) {
         src: 'src/w11k-select.tpl.html',
         dest: 'dist/w11k-select.tpl.html'
       },
+      sass: {
+        src: 'src/w11k-select.scss',
+        dest: 'dist/w11k-select.scss'
+      },
       release: {
         files: [
           {
@@ -127,7 +131,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('build', ['clean', 'jshint:src', 'sass', 'copy:template', 'html2js', 'uglify']);
+  grunt.registerTask('build', ['clean', 'jshint:src', 'sass', 'copy:template', 'copy:sass', 'html2js', 'uglify']);
 
   grunt.registerTask('release', ['build', 'copy:release']);
 
