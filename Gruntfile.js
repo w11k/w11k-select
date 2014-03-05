@@ -80,7 +80,7 @@ module.exports = function (grunt) {
     html2js: {
       template: {
         options: {
-          base: 'srd/',
+          base: 'src/',
           module: 'w11k.select.template',
           quoteChar: '\'',
           htmlmin: {
