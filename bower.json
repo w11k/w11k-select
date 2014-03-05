@@ -1,6 +1,6 @@
 {
   "name": "w11k-select",
-  "version": "0.1.0",
+  "version": "0.1.1",
 
   "dependencies": {
     "jquery": "1.11.x",
