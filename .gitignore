@@ -1,2 +1,8 @@
 .idea
+dist
 w11k-select.iml
+node_modules
+
+.DS_Store
+.sass-cache
+bower_components

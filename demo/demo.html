@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="demo">
+  <head>
+    <script type="text/javascript" src="../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="../bower_components/w11k-dropdownToggle/dist/w11k-dropdownToggle.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-bindonce/bindonce.js"></script>
+    <script type="text/javascript" src="../dist/w11k-select.js"></script>
+    <script type="text/javascript" src="../dist/w11k-select.tpl.js"></script>
+    <script type="text/javascript" src="demo.js"></script>
+
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../dist/w11k-select.css"/>
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css"/>
+
+    <style type="text/css">
+      body {
+        padding: 2em;
+      }
+    </style>
+  </head>
+  <body ng-controller="DemoCtrl">
+    <div class="row">
+      <div class="col-sm-6">
+        <div w11k-select multiple="true"
+             ng-model="selected.data"
+             options="option.value as option.label for option in options.data"
+             placeholder="'All'"
+             filter-placeholder="'Filter'"
+            >
+        </div>
+      </div>
+      <div class="col-sm-6">
+
+      </div>
+    </div>
+  </body>
+</html>

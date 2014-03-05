@@ -1,0 +1,48 @@
+<div class="dropdown ww-select">
+  <div class="input-group select-toggle" w11k-dropdown-toggle="dropdown" ng-class="{disabled: isDisabled}">
+    <div class="input-group-addon deselect-all" ng-if="!isDisabled && !isRequired && !isEmpty()" ng-click="deselectAll($event)">
+      <i class="fa fa-times"></i>
+    </div>
+    <div class="form-control" ng-disabled="isDisabled">
+      {{header.text}}
+    </div>
+    <div class="input-group-addon">
+      <i class="fa" ng-class="{ 'fa-chevron-down': !dropdown.isOpen(), 'fa-chevron-up': dropdown.isOpen() }"></i>
+    </div>
+  </div>
+  <div class="dropdown-menu">
+    <div class="header">
+      <div class="filter input-group" ng-if="filter.active">
+        <input class="form-control"
+               type="text"
+               ng-model="filter.values.label"
+               placeholder="{{filter.placeholder}}"
+               ng-keypress="onKeyPressedInFilter($event)"
+            />
+        <a class="input-group-addon clear" ng-click="clearFilter()">
+          <i class="fa fa-times"></i>
+        </a>
+      </div>
+      <div class="controls" ng-show="isMultiple">
+        <div class="row">
+          <div class="col-xs-6">
+            <button type="button" class="btn btn-default btn-sm" ng-click="selectAll()"><i class="fa fa-check-square-o"></i> all</button>
+          </div>
+          <div class="col-xs-6">
+            <button type="button" class="btn btn-default btn-sm" ng-click="deselectAll()"><i class="fa fa-square-o"></i> none</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <ul class="items list-unstyled" bindonce="optionsFiltered">
+        <li ng-repeat="option in optionsFiltered" ng-click="select(option)" ng-class="{'selected': option.selected }">
+          <div class="state">
+            <input type="checkbox" ng-model="option.selected" ng-change="onOptionStateChange()" ng-click="onOptionStateClick($event)">
+          </div>
+          <div class="name" bo-text="option.label"></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

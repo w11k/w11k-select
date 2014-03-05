@@ -1,0 +1,39 @@
+{
+  "name": "w11k-select",
+  "version": "0.1.0",
+
+  "description": "single- and multi-select directive for angularjs",
+  "keywords": [ "angular", "angularjs", "directive", "select", "multi-select", "bootstrap" ],
+  "homepage": "https://github.com/w11k/w11k-select",
+  "bugs": "https://github.com/w11k/w11k-select/issues",
+
+  "author": {
+    "name": "WeigleWilczek GmbH",
+    "url": "http://www.w11k.com"
+  },
+  "contributors": [
+    "Philipp Burgmer"
+  ],
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pburgmer/w11k-select.git"
+  },
+
+  "licenses": [{
+      "type": "MIT"
+  }],
+
+  "devDependencies": {
+    "grunt": "0.4.2",
+    "grunt-contrib-clean": "0.5.0",
+    "grunt-contrib-jshint": "0.8.0",
+    "grunt-contrib-sass": "0.7.2",
+    "grunt-contrib-copy": "0.5.0",
+    "grunt-contrib-uglify": "0.4.0",
+    "grunt-html2js": "0.2.4",
+
+    "grunt-bump": "0.0.13",
+    "grunt-conventional-changelog": "1.1.0"
+  }
+}

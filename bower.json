@@ -1,0 +1,15 @@
+{
+  "name": "w11k-select",
+  "version": "0.1.0",
+
+  "dependencies": {
+    "jquery": "1.11.x",
+    "angular": "1.2.x",
+    "w11k-dropdownToggle": "0.1.x",
+    "angular-bindonce": "0.3.x",
+    "font-awesome": "4.0.x"
+  },
+  "devDependencies": {
+    "bootstrap": "3.1.0"
+  }
+}
