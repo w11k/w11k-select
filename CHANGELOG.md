@@ -1,3 +1,12 @@
+<a name="0.1.1"></a>
+## 0.1.1 (2014-03-05)
+
+
+### Features
+
+* **build:** include sass styling in dist ([292e6047](https://github.com/pburgmer/w11k-select/commit/292e604727ab11cd568766f0e6a3f350471a6928))
+
+
 <a name="0.1.0"></a>
 ## 0.1.0 (2014-03-05)
 
