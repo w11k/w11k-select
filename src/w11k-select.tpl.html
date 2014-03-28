@@ -36,7 +36,7 @@
     </div>
     <div class="content">
       <ul class="items list-unstyled" bindonce="optionsFiltered">
-        <li ng-repeat="option in optionsFiltered" ng-click="select(option)" ng-class="{'selected': option.selected }">
+        <li ng-repeat="option in optionsFiltered track by $index" ng-click="select(option)" ng-class="{'selected': option.selected }">
           <div class="state">
             <input type="checkbox" ng-model="option.selected" ng-change="onOptionStateChange()" ng-click="onOptionStateClick($event)">
           </div>
