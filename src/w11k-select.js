@@ -39,6 +39,9 @@ angular.module('w11k.select').directive('w11kSelect', [
   'w11kSelectConfig', '$parse', '$document', 'optionParser', '$filter', '$timeout', '$window',
   function (w11kSelectConfig, $parse, $document, optionParser, $filter, $timeout, $window) {
 
+    // get a reference to jQuery or jqLite
+    var $ = angular.element;
+
     return {
       restrict: 'A',
       replace: false,
@@ -88,12 +91,15 @@ angular.module('w11k.select').directive('w11kSelect', [
               // use timeout to open dropdown first and then set the focus,
               // otherwise focus won't be set because element is not visible
               $timeout(function () {
-                element.find('.dropdown-menu input').first().focus();
-
-                adjustHeight();
-                $($window).on('resize', adjustHeight);
+                element[0].querySelector('.dropdown-menu input').focus();
               });
+
             }
+
+            $timeout(function () {
+              adjustHeight();
+            });
+            $($window).on('resize', adjustHeight);
           },
           onClose: function () {
             // important: set properties of filter.values to empty strings not to null,
@@ -108,25 +114,24 @@ angular.module('w11k.select').directive('w11kSelect', [
         };
 
         function adjustHeight() {
-          var content = element.find('.dropdown-menu .content');
+          var content = element[0].querySelector('.dropdown-menu .content');
 
-          var offset = content.offset();
-          var scrollTop = $($window).scrollTop();
+          var offset = content.getBoundingClientRect();
 
           var windowHeight = $window.innerHeight;
-          var maxHeight = (windowHeight - (offset.top - scrollTop)) - 60;
+          var maxHeight = (windowHeight - offset.top) - 60;
 
           var minHeightFor3Elements = 93;
           if (maxHeight < minHeightFor3Elements) {
             maxHeight = minHeightFor3Elements;
           }
 
-          content.css('max-height', maxHeight);
+          content.style.maxHeight = maxHeight + 'px';
         }
 
         function resetHeight() {
-          var content = element.find('.dropdown-menu .content');
-          content.css('max-height', '');
+          var content = element[0].querySelector('.dropdown-menu .content');
+          content.style.maxHeight = '';
         }
 
         // read the placeholder attribute once
