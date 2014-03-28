@@ -1,4 +1,4 @@
-<div class="dropdown ww-select">
+<div class="dropdown w11k-select">
   <div class="input-group select-toggle" w11k-dropdown-toggle="dropdown" ng-class="{disabled: isDisabled}">
     <div class="input-group-addon deselect-all" ng-if="!isDisabled && !isRequired && !isEmpty()" ng-click="deselectAll($event)">
       <i class="fa fa-times"></i>
@@ -26,17 +26,17 @@
       <div class="controls" ng-show="isMultiple">
         <div class="row">
           <div class="col-xs-6">
-            <button type="button" class="btn btn-default btn-sm" ng-click="selectAll()"><i class="fa fa-check-square-o"></i> all</button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="selectFiltered()"><i class="fa fa-check-square-o"></i> all</button>
           </div>
           <div class="col-xs-6">
-            <button type="button" class="btn btn-default btn-sm" ng-click="deselectAll()"><i class="fa fa-square-o"></i> none</button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="deselectFiltered()"><i class="fa fa-square-o"></i> none</button>
           </div>
         </div>
       </div>
     </div>
     <div class="content">
       <ul class="items list-unstyled" bindonce="optionsFiltered">
-        <li ng-repeat="option in optionsFiltered" ng-click="select(option)" ng-class="{'selected': option.selected }">
+        <li ng-repeat="option in optionsFiltered track by $index" ng-click="select(option)" ng-class="{'selected': option.selected }">
           <div class="state">
             <input type="checkbox" ng-model="option.selected" ng-change="onOptionStateChange()" ng-click="onOptionStateClick($event)">
           </div>

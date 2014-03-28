@@ -39,6 +39,9 @@ angular.module('w11k.select').directive('w11kSelect', [
   'w11kSelectConfig', '$parse', '$document', 'optionParser', '$filter', '$timeout', '$window',
   function (w11kSelectConfig, $parse, $document, optionParser, $filter, $timeout, $window) {
 
+    // get a reference to jQuery or jqLite
+    var $ = angular.element;
+
     return {
       restrict: 'A',
       replace: false,
@@ -55,6 +58,7 @@ angular.module('w11k.select').directive('w11kSelect', [
          * internal model
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+        var hasBeenOpened = false;
         var options = [];
         scope.optionsFiltered = [];
 
@@ -84,16 +88,24 @@ angular.module('w11k.select').directive('w11kSelect', [
               return;
             }
 
+            if (hasBeenOpened === false) {
+              hasBeenOpened = true;
+              filterOptions();
+            }
+
             if (scope.filter.active) {
               // use timeout to open dropdown first and then set the focus,
               // otherwise focus won't be set because element is not visible
               $timeout(function () {
-                element.find('.dropdown-menu input').first().focus();
-
-                adjustHeight();
-                $($window).on('resize', adjustHeight);
+                element[0].querySelector('.dropdown-menu input').focus();
               });
+
             }
+
+            $timeout(function () {
+              adjustHeight();
+            });
+            $($window).on('resize', adjustHeight);
           },
           onClose: function () {
             // important: set properties of filter.values to empty strings not to null,
@@ -108,25 +120,24 @@ angular.module('w11k.select').directive('w11kSelect', [
         };
 
         function adjustHeight() {
-          var content = element.find('.dropdown-menu .content');
+          var content = element[0].querySelector('.dropdown-menu .content');
 
-          var offset = content.offset();
-          var scrollTop = $($window).scrollTop();
+          var offset = content.getBoundingClientRect();
 
           var windowHeight = $window.innerHeight;
-          var maxHeight = (windowHeight - (offset.top - scrollTop)) - 60;
+          var maxHeight = (windowHeight - offset.top) - 60;
 
           var minHeightFor3Elements = 93;
           if (maxHeight < minHeightFor3Elements) {
             maxHeight = minHeightFor3Elements;
           }
 
-          content.css('max-height', maxHeight);
+          content.style.maxHeight = maxHeight + 'px';
         }
 
         function resetHeight() {
-          var content = element.find('.dropdown-menu .content');
-          content.css('max-height', '');
+          var content = element[0].querySelector('.dropdown-menu .content');
+          content.style.maxHeight = '';
         }
 
         // read the placeholder attribute once
@@ -192,7 +203,9 @@ angular.module('w11k.select').directive('w11kSelect', [
         var filter = $filter('filter');
 
         function filterOptions() {
-          scope.optionsFiltered = filter(options, scope.filter.values, false);
+          if (hasBeenOpened) {
+            scope.optionsFiltered = filter(options, scope.filter.values, false);
+          }
         }
 
         // read the selected-message attribute once
@@ -227,18 +240,32 @@ angular.module('w11k.select').directive('w11kSelect', [
          * buttons
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        scope.selectAll = function ($event) {
+        scope.selectFiltered = function ($event) {
           if (angular.isDefined($event)) {
             $event.preventDefault();
             $event.stopPropagation();
           }
 
-          if (scope.isMultiple === false) {
-            return;
+          if (scope.isMultiple) {
+            angular.forEach(scope.optionsFiltered, function (option) {
+              option.selected = true;
+            });
+          }
+          else if (scope.optionsFiltered.length === 1) {
+            scope.optionsFiltered[0].selected = true;
+          }
+
+          updateNgModel();
+        };
+
+        scope.deselectFiltered = function ($event) {
+          if (angular.isDefined($event)) {
+            $event.preventDefault();
+            $event.stopPropagation();
           }
 
           angular.forEach(scope.optionsFiltered, function (option) {
-            option.selected = true;
+            option.selected = false;
           });
 
           updateNgModel();
@@ -250,7 +277,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $event.stopPropagation();
           }
 
-          angular.forEach(scope.optionsFiltered, function (option) {
+          angular.forEach(options, function (option) {
             option.selected = false;
           });
 
@@ -408,13 +435,8 @@ angular.module('w11k.select').directive('w11kSelect', [
         }
 
         function isEmpty() {
-          var value = controller.$modelValue;
-          if (scope.isMultiple) {
-            return !(angular.isArray(value) && value.length > 0);
-          }
-          else {
-            return angular.isUndefined(value);
-          }
+          var value = controller.$viewValue;
+          return !(angular.isArray(value) && value.length > 0);
         }
 
         scope.isEmpty = function () {
