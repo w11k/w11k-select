@@ -58,6 +58,7 @@ angular.module('w11k.select').directive('w11kSelect', [
          * internal model
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+        var hasBeenOpened = false;
         var options = [];
         scope.optionsFiltered = [];
 
@@ -85,6 +86,11 @@ angular.module('w11k.select').directive('w11kSelect', [
             if (scope.isDisabled) {
               $event.prevent();
               return;
+            }
+
+            if (hasBeenOpened === false) {
+              hasBeenOpened = true;
+              filterOptions();
             }
 
             if (scope.filter.active) {
@@ -197,7 +203,9 @@ angular.module('w11k.select').directive('w11kSelect', [
         var filter = $filter('filter');
 
         function filterOptions() {
-          scope.optionsFiltered = filter(options, scope.filter.values, false);
+          if (hasBeenOpened) {
+            scope.optionsFiltered = filter(options, scope.filter.values, false);
+          }
         }
 
         // read the selected-message attribute once
