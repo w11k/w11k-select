@@ -435,13 +435,8 @@ angular.module('w11k.select').directive('w11kSelect', [
         }
 
         function isEmpty() {
-          var value = controller.$modelValue;
-          if (scope.isMultiple) {
-            return !(angular.isArray(value) && value.length > 0);
-          }
-          else {
-            return angular.isUndefined(value);
-          }
+          var value = controller.$viewValue;
+          return !(angular.isArray(value) && value.length > 0);
         }
 
         scope.isEmpty = function () {
