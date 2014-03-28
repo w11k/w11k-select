@@ -240,18 +240,32 @@ angular.module('w11k.select').directive('w11kSelect', [
          * buttons
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        scope.selectAll = function ($event) {
+        scope.selectFiltered = function ($event) {
           if (angular.isDefined($event)) {
             $event.preventDefault();
             $event.stopPropagation();
           }
 
-          if (scope.isMultiple === false) {
-            return;
+          if (scope.isMultiple) {
+            angular.forEach(scope.optionsFiltered, function (option) {
+              option.selected = true;
+            });
+          }
+          else if (scope.optionsFiltered.length === 1) {
+            scope.optionsFiltered[0].selected = true;
+          }
+
+          updateNgModel();
+        };
+
+        scope.deselectFiltered = function ($event) {
+          if (angular.isDefined($event)) {
+            $event.preventDefault();
+            $event.stopPropagation();
           }
 
           angular.forEach(scope.optionsFiltered, function (option) {
-            option.selected = true;
+            option.selected = false;
           });
 
           updateNgModel();
@@ -263,7 +277,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $event.stopPropagation();
           }
 
-          angular.forEach(scope.optionsFiltered, function (option) {
+          angular.forEach(options, function (option) {
             option.selected = false;
           });
 
