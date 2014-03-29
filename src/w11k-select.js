@@ -39,8 +39,7 @@ angular.module('w11k.select').directive('w11kSelect', [
   'w11kSelectConfig', '$parse', '$document', 'optionParser', '$filter', '$timeout', '$window',
   function (w11kSelectConfig, $parse, $document, optionParser, $filter, $timeout, $window) {
 
-    // get a reference to jQuery or jqLite
-    var $ = angular.element;
+    var jqWindow = angular.element($window);
 
     return {
       restrict: 'A',
@@ -105,7 +104,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $timeout(function () {
               adjustHeight();
             });
-            $($window).on('resize', adjustHeight);
+            jqWindow.on('resize', adjustHeight);
           },
           onClose: function () {
             // important: set properties of filter.values to empty strings not to null,
@@ -115,7 +114,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $timeout(function () {
               resetHeight();
             });
-            $($window).off('resize', adjustHeight);
+            jqWindow.off('resize', adjustHeight);
           }
         };
 
