@@ -59,7 +59,8 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         var hasBeenOpened = false;
         var options = [];
-        scope.optionsFiltered = [];
+        var optionsFiltered = [];
+        scope.optionsToShow = [];
 
         var header = {
           placeholder: '',
@@ -214,12 +215,18 @@ angular.module('w11k.select').directive('w11kSelect', [
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         var filter = $filter('filter');
+        var limitTo = $filter('limitTo');
 
         function filterOptions() {
           if (hasBeenOpened) {
-            scope.optionsFiltered = filter(options, scope.filter.values, false);
+            optionsFiltered = filter(options, scope.filter.values, false);
+            scope.optionsToShow = limitTo(optionsFiltered, 100);
           }
         }
+
+        scope.showMoreOptions = function () {
+          scope.optionsToShow = optionsFiltered.slice(0, scope.optionsToShow.length + 100);
+        };
 
         // read the selected-message attribute once
         var filterPlaceholderAttrObserver = attrs.$observe('filterPlaceholder', function (filterPlaceholder) {
@@ -260,12 +267,12 @@ angular.module('w11k.select').directive('w11kSelect', [
           }
 
           if (scope.isMultiple) {
-            angular.forEach(scope.optionsFiltered, function (option) {
+            angular.forEach(optionsFiltered, function (option) {
               option.selected = true;
             });
           }
-          else if (scope.optionsFiltered.length === 1) {
-            scope.optionsFiltered[0].selected = true;
+          else if (optionsFiltered.length === 1) {
+            optionsFiltered[0].selected = true;
           }
 
           updateNgModel();
@@ -277,7 +284,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $event.stopPropagation();
           }
 
-          angular.forEach(scope.optionsFiltered, function (option) {
+          angular.forEach(optionsFiltered, function (option) {
             option.selected = false;
           });
 
@@ -305,7 +312,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         var optionsExpParsed = optionParser.parse(optionsExp);
 
         function collection2options(collection, viewValue) {
-          return collection.map(function (option) {
+          return collection.map(function (option, index) {
             var optionValue = modelElement2value(option);
             var optionLabel = modelElement2label(option);
 
@@ -318,6 +325,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             }
 
             return {
+              index: index,
               label: optionLabel,
               model: option,
               selected: selected
@@ -502,3 +510,72 @@ angular.module('w11k.select').directive('w11kSelect', [
     };
   }
 ]);
+
+angular.module('w11k.select').directive('infiniteScroll', ['$timeout', function ($timeout) {
+  return {
+    link: function (scope, element, attrs) {
+      var scrollDistance   = 0;
+      var scrollEnabled    = true;
+      var checkImmediatelyWhenEnabled = false;
+
+      var onDomScrollHandler = function () {
+        onScrollHandler(true);
+      };
+
+      var scrollContainer = element[0];
+
+      if (scrollContainer.children.length !== 1) {
+        throw new Error('scroll container has to have exactly one child!');
+      }
+
+      var content = scrollContainer.children[0];
+
+      var onScrollHandler = function (apply) {
+
+        var distanceToBottom  = content.clientHeight - scrollContainer.scrollTop;
+        var shouldScroll  = distanceToBottom <= scrollContainer.clientHeight * (scrollDistance + 1);
+
+        if (shouldScroll && scrollEnabled) {
+          if (apply) {
+            scope.$apply(function () {
+              scope.$eval(attrs.infiniteScroll);
+            });
+          }
+          else {
+            scope.$eval(attrs.infiniteScroll);
+          }
+        }
+        else if (shouldScroll) {
+          checkImmediatelyWhenEnabled = true;
+        }
+      };
+
+      attrs.$observe('infiniteScrollDistance', function (value) {
+        scrollDistance = parseFloat(value);
+      });
+
+
+      attrs.$observe('infiniteScrollDisabled', function (value) {
+        scrollEnabled = !value;
+
+        if (scrollEnabled && checkImmediatelyWhenEnabled) {
+          checkImmediatelyWhenEnabled = false;
+          onScrollHandler();
+        }
+      });
+
+      element.on('scroll', onDomScrollHandler);
+      scope.$on('$destroy', function () {
+        element.off('scroll', onDomScrollHandler);
+      });
+
+      return $timeout(function () {
+        if (attrs.infiniteScrollImmediateCheck) {
+          if (scope.$eval(attrs.infiniteScrollImmediateCheck)) {
+            onScrollHandler();
+          }
+        }
+      });
+    }
+  };
+}]);
