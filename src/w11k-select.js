@@ -80,6 +80,12 @@ angular.module('w11k.select').directive('w11kSelect', [
          * dropdown
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+        var onEscPressed = function (event) {
+          if (event.keyCode === 27) {
+            scope.dropdown.close();
+          }
+        };
+
         scope.dropdown = {
           onOpen: function ($event) {
             if (scope.isDisabled) {
@@ -101,6 +107,8 @@ angular.module('w11k.select').directive('w11kSelect', [
 
             }
 
+            $document.on('keyup', onEscPressed);
+
             $timeout(function () {
               adjustHeight();
             });
@@ -114,9 +122,15 @@ angular.module('w11k.select').directive('w11kSelect', [
             $timeout(function () {
               resetHeight();
             });
+            $document.off('keyup', onEscPressed);
             jqWindow.off('resize', adjustHeight);
           }
         };
+
+        scope.$on('$destroy', function () {
+          $document.off('keyup', onEscPressed);
+          jqWindow.off('resize', adjustHeight);
+        });
 
         function adjustHeight() {
           var content = element[0].querySelector('.dropdown-menu .content');
