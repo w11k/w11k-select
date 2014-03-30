@@ -1,3 +1,19 @@
+<a name="0.3.0"></a>
+## 0.3.0 (2014-03-30)
+
+
+### Bug Fixes
+
+* **directive:** fix memory leak on scope destroy ([ccb0affe](https://github.com/pburgmer/w11k-select/commit/ccb0affeaefdb8b9ec6413350c65751b0e616f80))
+
+
+### Features
+
+* **performance:** use infinite scrolling for more than 100 options
+* **select:** close select box with 'esc' key ([e579af2d](https://github.com/pburgmer/w11k-select/commit/e579af2da8456022dcc9ba742727534680b27310))
+* **styling:** make font-awesome optional via own css classes and make button texts customisabl ([772f4802](https://github.com/pburgmer/w11k-select/commit/772f48026cd027a0f4d42eb19f1ba81b3fd826f2))
+
+
 <a name="0.2.0"></a>
 ## 0.2.0 (2014-03-28)
 
