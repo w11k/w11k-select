@@ -160,8 +160,10 @@ angular.module('w11k.select').directive('w11kSelect', [
             header.placeholder = scope.$eval(placeholder);
             updateHeader();
 
-            placeholderAttrObserver();
-            placeholderAttrObserver = null;
+            if (angular.isFunction(placeholderAttrObserver)) {
+              placeholderAttrObserver();
+              placeholderAttrObserver = undefined;
+            }
           }
         });
 
@@ -171,8 +173,38 @@ angular.module('w11k.select').directive('w11kSelect', [
             header.selectedMessage = scope.$eval(selectedMessage);
             updateHeader();
 
-            selectedMessageAttrObserver();
-            selectedMessageAttrObserver = null;
+            if (angular.isFunction(selectedMessageAttrObserver)) {
+              selectedMessageAttrObserver();
+              selectedMessageAttrObserver = undefined;
+            }
+          }
+        });
+
+        // read the select-filtered-text attribute once
+        var selectFilteredTextAttrObserver = attrs.$observe('selectFilteredText', function (selectFilteredText) {
+          if (angular.isDefined(selectFilteredText)) {
+            var text = scope.$eval(selectFilteredText);
+            var span = angular.element(element[0].querySelector('.select-filtered-text'));
+            span.text(text);
+
+            if (angular.isFunction(selectFilteredTextAttrObserver)) {
+              selectFilteredTextAttrObserver();
+              selectFilteredTextAttrObserver = undefined;
+            }
+          }
+        });
+
+        // read the deselect-filtered-text attribute once
+        var deselectFilteredTextAttrObserver = attrs.$observe('deselectFilteredText', function (deselectFilteredText) {
+          if (angular.isDefined(deselectFilteredText)) {
+            var text = scope.$eval(deselectFilteredText);
+            var span = angular.element(element[0].querySelector('.deselect-filtered-text'));
+            span.text(text);
+
+            if (angular.isFunction(deselectFilteredTextAttrObserver)) {
+              deselectFilteredTextAttrObserver();
+              deselectFilteredTextAttrObserver = undefined;
+            }
           }
         });
 
@@ -233,8 +265,10 @@ angular.module('w11k.select').directive('w11kSelect', [
           if (angular.isDefined(filterPlaceholder)) {
             scope.filter.placeholder = scope.$eval(filterPlaceholder);
 
-            filterPlaceholderAttrObserver();
-            filterPlaceholderAttrObserver = null;
+            if (angular.isFunction(filterPlaceholderAttrObserver)) {
+              filterPlaceholderAttrObserver();
+              filterPlaceholderAttrObserver = undefined;
+            }
           }
         });
 
