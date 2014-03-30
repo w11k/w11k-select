@@ -39,8 +39,7 @@ angular.module('w11k.select').directive('w11kSelect', [
   'w11kSelectConfig', '$parse', '$document', 'optionParser', '$filter', '$timeout', '$window',
   function (w11kSelectConfig, $parse, $document, optionParser, $filter, $timeout, $window) {
 
-    // get a reference to jQuery or jqLite
-    var $ = angular.element;
+    var jqWindow = angular.element($window);
 
     return {
       restrict: 'A',
@@ -60,7 +59,8 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         var hasBeenOpened = false;
         var options = [];
-        scope.optionsFiltered = [];
+        var optionsFiltered = [];
+        scope.optionsToShow = [];
 
         var header = {
           placeholder: '',
@@ -80,6 +80,12 @@ angular.module('w11k.select').directive('w11kSelect', [
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
          * dropdown
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        var onEscPressed = function (event) {
+          if (event.keyCode === 27) {
+            scope.dropdown.close();
+          }
+        };
 
         scope.dropdown = {
           onOpen: function ($event) {
@@ -102,10 +108,12 @@ angular.module('w11k.select').directive('w11kSelect', [
 
             }
 
+            $document.on('keyup', onEscPressed);
+
             $timeout(function () {
               adjustHeight();
             });
-            $($window).on('resize', adjustHeight);
+            jqWindow.on('resize', adjustHeight);
           },
           onClose: function () {
             // important: set properties of filter.values to empty strings not to null,
@@ -115,9 +123,15 @@ angular.module('w11k.select').directive('w11kSelect', [
             $timeout(function () {
               resetHeight();
             });
-            $($window).off('resize', adjustHeight);
+            $document.off('keyup', onEscPressed);
+            jqWindow.off('resize', adjustHeight);
           }
         };
+
+        scope.$on('$destroy', function () {
+          $document.off('keyup', onEscPressed);
+          jqWindow.off('resize', adjustHeight);
+        });
 
         function adjustHeight() {
           var content = element[0].querySelector('.dropdown-menu .content');
@@ -146,8 +160,10 @@ angular.module('w11k.select').directive('w11kSelect', [
             header.placeholder = scope.$eval(placeholder);
             updateHeader();
 
-            placeholderAttrObserver();
-            placeholderAttrObserver = null;
+            if (angular.isFunction(placeholderAttrObserver)) {
+              placeholderAttrObserver();
+              placeholderAttrObserver = undefined;
+            }
           }
         });
 
@@ -157,8 +173,38 @@ angular.module('w11k.select').directive('w11kSelect', [
             header.selectedMessage = scope.$eval(selectedMessage);
             updateHeader();
 
-            selectedMessageAttrObserver();
-            selectedMessageAttrObserver = null;
+            if (angular.isFunction(selectedMessageAttrObserver)) {
+              selectedMessageAttrObserver();
+              selectedMessageAttrObserver = undefined;
+            }
+          }
+        });
+
+        // read the select-filtered-text attribute once
+        var selectFilteredTextAttrObserver = attrs.$observe('selectFilteredText', function (selectFilteredText) {
+          if (angular.isDefined(selectFilteredText)) {
+            var text = scope.$eval(selectFilteredText);
+            var span = angular.element(element[0].querySelector('.select-filtered-text'));
+            span.text(text);
+
+            if (angular.isFunction(selectFilteredTextAttrObserver)) {
+              selectFilteredTextAttrObserver();
+              selectFilteredTextAttrObserver = undefined;
+            }
+          }
+        });
+
+        // read the deselect-filtered-text attribute once
+        var deselectFilteredTextAttrObserver = attrs.$observe('deselectFilteredText', function (deselectFilteredText) {
+          if (angular.isDefined(deselectFilteredText)) {
+            var text = scope.$eval(deselectFilteredText);
+            var span = angular.element(element[0].querySelector('.deselect-filtered-text'));
+            span.text(text);
+
+            if (angular.isFunction(deselectFilteredTextAttrObserver)) {
+              deselectFilteredTextAttrObserver();
+              deselectFilteredTextAttrObserver = undefined;
+            }
           }
         });
 
@@ -201,20 +247,28 @@ angular.module('w11k.select').directive('w11kSelect', [
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         var filter = $filter('filter');
+        var limitTo = $filter('limitTo');
 
         function filterOptions() {
           if (hasBeenOpened) {
-            scope.optionsFiltered = filter(options, scope.filter.values, false);
+            optionsFiltered = filter(options, scope.filter.values, false);
+            scope.optionsToShow = limitTo(optionsFiltered, 100);
           }
         }
+
+        scope.showMoreOptions = function () {
+          scope.optionsToShow = optionsFiltered.slice(0, scope.optionsToShow.length + 100);
+        };
 
         // read the selected-message attribute once
         var filterPlaceholderAttrObserver = attrs.$observe('filterPlaceholder', function (filterPlaceholder) {
           if (angular.isDefined(filterPlaceholder)) {
             scope.filter.placeholder = scope.$eval(filterPlaceholder);
 
-            filterPlaceholderAttrObserver();
-            filterPlaceholderAttrObserver = null;
+            if (angular.isFunction(filterPlaceholderAttrObserver)) {
+              filterPlaceholderAttrObserver();
+              filterPlaceholderAttrObserver = undefined;
+            }
           }
         });
 
@@ -247,12 +301,12 @@ angular.module('w11k.select').directive('w11kSelect', [
           }
 
           if (scope.isMultiple) {
-            angular.forEach(scope.optionsFiltered, function (option) {
+            angular.forEach(optionsFiltered, function (option) {
               option.selected = true;
             });
           }
-          else if (scope.optionsFiltered.length === 1) {
-            scope.optionsFiltered[0].selected = true;
+          else if (optionsFiltered.length === 1) {
+            optionsFiltered[0].selected = true;
           }
 
           updateNgModel();
@@ -264,7 +318,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $event.stopPropagation();
           }
 
-          angular.forEach(scope.optionsFiltered, function (option) {
+          angular.forEach(optionsFiltered, function (option) {
             option.selected = false;
           });
 
@@ -292,7 +346,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         var optionsExpParsed = optionParser.parse(optionsExp);
 
         function collection2options(collection, viewValue) {
-          return collection.map(function (option) {
+          return collection.map(function (option, index) {
             var optionValue = modelElement2value(option);
             var optionLabel = modelElement2label(option);
 
@@ -305,6 +359,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             }
 
             return {
+              index: index,
               label: optionLabel,
               model: option,
               selected: selected
@@ -489,3 +544,72 @@ angular.module('w11k.select').directive('w11kSelect', [
     };
   }
 ]);
+
+angular.module('w11k.select').directive('infiniteScroll', ['$timeout', function ($timeout) {
+  return {
+    link: function (scope, element, attrs) {
+      var scrollDistance   = 0;
+      var scrollEnabled    = true;
+      var checkImmediatelyWhenEnabled = false;
+
+      var onDomScrollHandler = function () {
+        onScrollHandler(true);
+      };
+
+      var scrollContainer = element[0];
+
+      if (scrollContainer.children.length !== 1) {
+        throw new Error('scroll container has to have exactly one child!');
+      }
+
+      var content = scrollContainer.children[0];
+
+      var onScrollHandler = function (apply) {
+
+        var distanceToBottom  = content.clientHeight - scrollContainer.scrollTop;
+        var shouldScroll  = distanceToBottom <= scrollContainer.clientHeight * (scrollDistance + 1);
+
+        if (shouldScroll && scrollEnabled) {
+          if (apply) {
+            scope.$apply(function () {
+              scope.$eval(attrs.infiniteScroll);
+            });
+          }
+          else {
+            scope.$eval(attrs.infiniteScroll);
+          }
+        }
+        else if (shouldScroll) {
+          checkImmediatelyWhenEnabled = true;
+        }
+      };
+
+      attrs.$observe('infiniteScrollDistance', function (value) {
+        scrollDistance = parseFloat(value);
+      });
+
+
+      attrs.$observe('infiniteScrollDisabled', function (value) {
+        scrollEnabled = !value;
+
+        if (scrollEnabled && checkImmediatelyWhenEnabled) {
+          checkImmediatelyWhenEnabled = false;
+          onScrollHandler();
+        }
+      });
+
+      element.on('scroll', onDomScrollHandler);
+      scope.$on('$destroy', function () {
+        element.off('scroll', onDomScrollHandler);
+      });
+
+      return $timeout(function () {
+        if (attrs.infiniteScrollImmediateCheck) {
+          if (scope.$eval(attrs.infiniteScrollImmediateCheck)) {
+            onScrollHandler();
+          }
+        }
+      });
+    }
+  };
+}]);
