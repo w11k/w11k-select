@@ -248,19 +248,21 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         var filter = $filter('filter');
         var limitTo = $filter('limitTo');
+        var initialLimitTo = 80;
+        var increaseLimitTo = initialLimitTo * 0.5;
 
         function filterOptions() {
           if (hasBeenOpened) {
             optionsFiltered = filter(options, scope.filter.values, false);
-            scope.optionsToShow = limitTo(optionsFiltered, 100);
+            scope.optionsToShow = limitTo(optionsFiltered, initialLimitTo);
           }
         }
 
         scope.showMoreOptions = function () {
-          scope.optionsToShow = optionsFiltered.slice(0, scope.optionsToShow.length + 100);
+          scope.optionsToShow = optionsFiltered.slice(0, scope.optionsToShow.length + increaseLimitTo);
         };
 
-        // read the selected-message attribute once
+        // read the filter-placeholder attribute once
         var filterPlaceholderAttrObserver = attrs.$observe('filterPlaceholder', function (filterPlaceholder) {
           if (angular.isDefined(filterPlaceholder)) {
             scope.filter.placeholder = scope.$eval(filterPlaceholder);
