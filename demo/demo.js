@@ -1,10 +1,21 @@
 'use strict';
 
-angular.module("demo", ["w11k.select", "w11k.select.template"]);
+angular.module('demo', ['w11k.select', 'w11k.select.template']);
 
-angular.module("demo").controller("DemoCtrl", function ($scope) {
+angular.module('demo').controller('DemoCtrl', function ($scope) {
 
   var amount = 10000;
+
+  function randomText(length) {
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0 1 2 3 4 5 6 7 8 9';
+
+    for (var i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return text;
+  }
 
   $scope.options = {
     data: []
@@ -16,6 +27,9 @@ angular.module("demo").controller("DemoCtrl", function ($scope) {
 
   function createOptions() {
     $scope.options.data = [];
+//    for (var i = 1; i <= amount; i++) {
+//      $scope.options.data.push({ label: randomText(i % 200), value: i });
+//    }
     for (var i = 1; i <= amount; i++) {
       $scope.options.data.push({ label: i, value: i });
     }
@@ -32,8 +46,7 @@ angular.module("demo").controller("DemoCtrl", function ($scope) {
   };
 
   $scope.createNewOptions = function () {
-    amount = amount / 2;
-    createOptions();
+    $scope.options.data = $scope.options.data.slice(amount / 2 - 1);
   };
 
   createOptions();
