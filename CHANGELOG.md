@@ -1,3 +1,12 @@
+<a name="0.3.1"></a>
+## 0.3.1 (2014-03-30)
+
+
+### Bug Fixes
+
+* **filter:** call selectFiltered instead of selectAll on enter in filter input ([e48fc290](https://github.com/pburgmer/w11k-select/commit/e48fc2901fae4f984bbfa53b18e41f0470a6cb34))
+
+
 <a name="0.3.0"></a>
 ## 0.3.0 (2014-03-30)
 
