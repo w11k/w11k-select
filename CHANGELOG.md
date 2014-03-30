@@ -1,3 +1,11 @@
+<a name="0.3.2"></a>
+## 0.3.2 (2014-03-30)
+
+### Features
+
+* **performance:** optimise amount of options added due to infinite scrolling, for smoother scrolling
+
+
 <a name="0.3.1"></a>
 ## 0.3.1 (2014-03-30)
 
