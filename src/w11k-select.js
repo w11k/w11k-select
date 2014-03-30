@@ -286,7 +286,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $event.preventDefault();
             $event.stopPropagation();
 
-            scope.selectAll();
+            scope.selectFiltered();
           }
         };
 
