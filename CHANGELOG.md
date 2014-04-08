@@ -1,3 +1,13 @@
+<a name="0.3.3"></a>
+## 0.3.3 (2014-04-08)
+
+
+### Bug Fixes
+
+* **IE8:** fix adjust height in IE8 ([60f9aedc](https://github.com/pburgmer/w11k-select/commit/60f9aedc4389ba40b6b4c09918e2a6782e0e78d7))
+* **options:** set model value on change of options without making the form field dirty ([b2471961](https://github.com/pburgmer/w11k-select/commit/b247196189ce702fcc3b5c520325d87489b16efb))
+
+
 <a name="0.3.2"></a>
 ## 0.3.2 (2014-03-30)
 
