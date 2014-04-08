@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "font-awesome": "4.0.x",
-    "bootstrap": "3.1.0"
+    "bootstrap": "3.1.0",
+    "es5-shim": "2.3.0"
   }
 }
