@@ -138,7 +138,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
           var offset = content.getBoundingClientRect();
 
-          var windowHeight = $window.innerHeight;
+          var windowHeight = $window.innerHeight || $window.document.documentElement.clientHeight;
           var maxHeight = (windowHeight - offset.top) - 60;
 
           var minHeightFor3Elements = 93;
