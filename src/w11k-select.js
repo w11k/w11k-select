@@ -138,7 +138,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
           var offset = content.getBoundingClientRect();
 
-          var windowHeight = $window.innerHeight;
+          var windowHeight = $window.innerHeight || $window.document.documentElement.clientHeight;
           var maxHeight = (windowHeight - offset.top) - 60;
 
           var minHeightFor3Elements = 93;
@@ -311,7 +311,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             optionsFiltered[0].selected = true;
           }
 
-          updateNgModel();
+          setViewValue();
         };
 
         scope.deselectFiltered = function ($event) {
@@ -324,7 +324,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             option.selected = false;
           });
 
-          updateNgModel();
+          setViewValue();
         };
 
         scope.deselectAll = function ($event) {
@@ -337,7 +337,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             option.selected = false;
           });
 
-          updateNgModel();
+          setViewValue();
         };
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -389,7 +389,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             scope.dropdown.close();
           }
 
-          updateNgModel();
+          setViewValue();
         };
 
         // watch for changes of options collection made outside
@@ -414,18 +414,28 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         // called on click to a checkbox of an option
         scope.onOptionStateChange = function () {
-          updateNgModel();
+          setViewValue();
         };
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
          * ngModel
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        function updateNgModel() {
+        function setViewValue() {
           var selectedValues = options2model(options);
 
           controller.$setViewValue(selectedValues);
           updateHeader();
+        }
+
+        function updateNgModel() {
+          var value = options2model(options);
+
+          angular.forEach(controller.$parsers, function (fn) {
+            value = fn(value);
+          });
+
+          $parse(attrs.ngModel).assign(scope.$parent, value);
         }
 
         function readNgModel() {

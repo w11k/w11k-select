@@ -1,6 +1,6 @@
 {
   "name": "w11k-select",
-  "version": "0.3.2",
+  "version": "0.3.3",
 
   "dependencies": {
     "angular": "1.2.x",
@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "font-awesome": "4.0.x",
-    "bootstrap": "3.1.0"
+    "bootstrap": "3.1.0",
+    "es5-shim": "2.3.0"
   }
 }
