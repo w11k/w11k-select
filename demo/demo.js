@@ -36,7 +36,7 @@ angular.module('demo').controller('DemoCtrl', function ($scope) {
   }
 
   $scope.selectRandom = function () {
-    var randomValue = Math.floor((Math.random() * amount) + 1);
+    var randomValue = Math.floor((Math.random() * $scope.options.data.length) + 1);
 
     if ($scope.selected.data.indexOf(randomValue) < 0) {
       $scope.selected.data.push(randomValue);
@@ -46,7 +46,7 @@ angular.module('demo').controller('DemoCtrl', function ($scope) {
   };
 
   $scope.createNewOptions = function () {
-    $scope.options.data = $scope.options.data.slice(amount / 2 - 1);
+    $scope.options.data = $scope.options.data.slice(($scope.options.data.length / 2) - 1);
   };
 
   createOptions();
