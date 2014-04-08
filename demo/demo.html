@@ -4,7 +4,7 @@
     <!--[if lt IE 9]>
     <script type="text/javascript" src="../bower_components/es5-shim/es5-shim.js"></script>
     <![endif]-->
-    
+
     <script type="text/javascript" src="../bower_components/angular/angular.js"></script>
     <script type="text/javascript" src="../bower_components/w11k-dropdownToggle/dist/w11k-dropdownToggle.js"></script>
     <script type="text/javascript" src="../bower_components/angular-bindonce/bindonce.js"></script>
@@ -23,20 +23,31 @@
     </style>
   </head>
   <body ng-controller="DemoCtrl">
-    <div class="row">
-      <div class="col-sm-6">
-        <div w11k-select multiple="true"
-             ng-model="selected.data"
-             options="option.value as option.label for option in options.data"
-             placeholder="'All'"
-             filter-placeholder="'Filter'"
-            >
+    <form name="demoForm">
+      <div class="row">
+        <div class="col-sm-6">
+          <div w11k-select multiple="true"
+               ng-model="selected.data"
+               name="demoField"
+               options="option.value as option.label for option in options.data"
+               placeholder="'All'"
+               filter-placeholder="'Filter'"
+              >
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <button class="btn btn-default" ng-click="selectRandom()">select random</button>
+          <button class="btn btn-default" ng-click="createNewOptions()">create new options</button>
         </div>
       </div>
-      <div class="col-sm-6">
-        <button class="btn btn-default" ng-click="selectRandom()">select random</button>
-        <button class="btn btn-default" ng-click="createNewOptions()">create new options</button>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div ng-show="demoForm.$dirty">Form is dirty</div>
+          <div ng-show="demoForm.demoField.$dirty">Field is dirty</div>
+        </div>
+        <div class="col-sm-6"></div>
       </div>
-    </div>
+    </form>
   </body>
 </html>
