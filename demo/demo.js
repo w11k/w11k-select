@@ -6,12 +6,14 @@ angular.module('demo').controller('DemoCtrl', function ($scope) {
 
   var amount = 10000;
 
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0 1 2 3 4 5 6 7 8 9';
+  var chars = possible.split('');
+
   function randomText(length) {
     var text = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0 1 2 3 4 5 6 7 8 9';
 
     for (var i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
+      text += chars[Math.floor(Math.random() * chars.length)];
     }
 
     return text;
