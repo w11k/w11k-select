@@ -253,6 +253,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         function filterOptions() {
           if (hasBeenOpened) {
+            // false as third parameter: use contains to compare
             optionsFiltered = filter(options, scope.filter.values, false);
             scope.optionsToShow = limitTo(optionsFiltered, initialLimitTo);
           }
@@ -274,9 +275,9 @@ angular.module('w11k.select').directive('w11kSelect', [
           }
         });
 
-        scope.$watch('filter.values', function () {
+        scope.$watch('filter.values.label', function () {
           filterOptions();
-        }, true);
+        });
 
         scope.clearFilter = function () {
           scope.filter.values = {};
@@ -401,8 +402,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             if (angular.isDefined(newVal)) {
               updateOptions();
             }
-          },
-          true
+          }
         );
 
         // called on click to a checkbox of an option
