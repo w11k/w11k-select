@@ -1,3 +1,17 @@
+<a name="0.3.4"></a>
+## 0.3.4 (2014-04-09)
+
+
+### Bug Fixes
+
+* **options:** do not identify options by index, otherwise changing options won't work ([0cb34def](https://github.com/pburgmer/w11k-select/commit/0cb34def4f357fe9b967b2f69a96dd2dd883ba64))
+
+
+### Features
+
+* **performance:** improve performance by not watching options deeply ([45428c6c](https://github.com/pburgmer/w11k-select/commit/45428c6c770c0ddee6b8e50a0b08f8ff613c471e))
+
+
 <a name="0.3.3"></a>
 ## 0.3.3 (2014-04-08)
 
