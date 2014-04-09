@@ -42,7 +42,7 @@
     </div>
     <div class="content" infinite-scroll="showMoreOptions()" infinite-scroll-distance="0.5">
       <ul class="items list-unstyled">
-        <li bindonce="option" ng-repeat="option in optionsToShow track by option.index" ng-click="select(option)" ng-class="{'selected': option.selected }">
+        <li bindonce="option" ng-repeat="option in optionsToShow track by option.hash" ng-click="select(option)" ng-class="{'selected': option.selected }">
           <div class="state">
             <input type="checkbox" ng-model="option.selected" ng-change="onOptionStateChange()" ng-click="onOptionStateClick($event)">
           </div>
