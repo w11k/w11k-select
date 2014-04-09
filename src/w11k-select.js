@@ -348,7 +348,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         var optionsExpParsed = optionParser.parse(optionsExp);
 
         function collection2options(collection, viewValue) {
-          return collection.map(function (option, index) {
+          return collection.map(function (option) {
             var optionValue = modelElement2value(option);
             var optionLabel = modelElement2label(option);
 
@@ -361,7 +361,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             }
 
             return {
-              index: index,
+              hash: hashCode(option).toString(36),
               label: optionLabel,
               model: option,
               selected: selected
@@ -552,6 +552,57 @@ angular.module('w11k.select').directive('w11kSelect', [
 
           return optionsExpParsed.label(context);
         }
+
+        // inspired by https://github.com/stuartbannerman/hashcode
+        var hashCode = (function () {
+          var stringHash = function (string) {
+            var result = 0;
+            for (var i = 0; i < string.length; i++) {
+              result = (((result << 5) - result) + string.charCodeAt(i)) | 0;
+            }
+            return result;
+          };
+
+          var primitiveHash = function (primitive) {
+            var string = primitive.toString();
+            return stringHash(string);
+          };
+
+          var objectHash = function (obj) {
+            var result = 0;
+            for (var property in obj) {
+              if (obj.hasOwnProperty(property)) {
+                result += primitiveHash(property + hash(obj[property]));
+              }
+            }
+            return result;
+          };
+
+          var hash = function (value) {
+            var typeHashes = {
+              'string' : stringHash,
+              'number' : primitiveHash,
+              'boolean' : primitiveHash,
+              'object' : objectHash
+              // functions are excluded because they are not representative of the state of an object
+              // types 'undefined' or 'null' will have a hash of 0
+            };
+
+            var type = typeof value;
+
+            if (value === null || value === undefined) {
+              return 0;
+            }
+            else if (typeHashes[type] !== undefined) {
+              return typeHashes[type](value) + primitiveHash(type);
+            }
+            else {
+              return 0;
+            }
+          };
+
+          return hash;
+        })();
       }
     };
   }
