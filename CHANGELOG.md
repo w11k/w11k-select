@@ -1,4 +1,50 @@
 <a name="0.3.4"></a>
+## 0.3.5 (2014-05-27)
+
+
+### Bug Fixes
+
+* **select:** prefix attributes with 'w11k-select' to make IE happy again ([cdb21df9](https://github.com/pburgmer/w11k-select/commit/cdb21df9559fbf003a312d90c341d6da6cd512b5))
+
+
+### Breaking Changes
+
+* All attributes used by 'w11k-select' directive has to be prefixed with 'w11k-select-' now.
+
+Use
+
+```
+<div w11k-select
+     w11k-select-multiple="true"
+     w11k-select-disabled="disabled"
+     w11k-select-options="option.value as option.label for option in options.data"
+     w11k-select-placeholder="'All'"
+     w11k-select-filter-placeholder="'Filter'"
+     w11k-select-required="false"
+     ng-model="selected.data"
+     name="demoField"
+     >
+</div>
+```
+
+instead of
+
+```
+<div w11k-select
+     multiple="true"
+     disabled="disabled"
+     options="option.value as option.label for option in options.data"
+     placeholder="'All'"
+     filter-placeholder="'Filter'"
+     required="false"
+     ng-model="selected.data"
+     name="demoField"
+     >
+</div>
+```
+
+
+<a name="0.3.4"></a>
 ## 0.3.4 (2014-04-09)
 
 
