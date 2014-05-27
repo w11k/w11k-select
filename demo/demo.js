@@ -27,6 +27,8 @@ angular.module('demo').controller('DemoCtrl', function ($scope) {
     data: []
   };
 
+  $scope.disabled = false;
+
   function createOptions() {
     $scope.options.data = [];
 //    for (var i = 1; i <= amount; i++) {

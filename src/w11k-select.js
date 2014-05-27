@@ -46,9 +46,9 @@ angular.module('w11k.select').directive('w11kSelect', [
       replace: false,
       templateUrl: w11kSelectConfig.templateUrl,
       scope: {
-        isMultiple: '=?multiple',
-        isRequired: '=?required',
-        isDisabled: '=?disabled'
+        isMultiple: '=?w11kSelectMultiple',
+        isRequired: '=?w11kSelectRequired',
+        isDisabled: '=?w11kSelectDisabled'
       },
       require: 'ngModel',
       link: function (scope, element, attrs, controller) {
@@ -155,7 +155,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         }
 
         // read the placeholder attribute once
-        var placeholderAttrObserver = attrs.$observe('placeholder', function (placeholder) {
+        var placeholderAttrObserver = attrs.$observe('w11kSelectPlaceholder', function (placeholder) {
           if (angular.isDefined(placeholder)) {
             header.placeholder = scope.$eval(placeholder);
             updateHeader();
@@ -168,7 +168,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         });
 
         // read the selected-message attribute once
-        var selectedMessageAttrObserver = attrs.$observe('selectedMessage', function (selectedMessage) {
+        var selectedMessageAttrObserver = attrs.$observe('w11kSelectSelectedMessage', function (selectedMessage) {
           if (angular.isDefined(selectedMessage)) {
             header.selectedMessage = scope.$eval(selectedMessage);
             updateHeader();
@@ -181,7 +181,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         });
 
         // read the select-filtered-text attribute once
-        var selectFilteredTextAttrObserver = attrs.$observe('selectFilteredText', function (selectFilteredText) {
+        var selectFilteredTextAttrObserver = attrs.$observe('w11kSelectSelectFilteredText', function (selectFilteredText) {
           if (angular.isDefined(selectFilteredText)) {
             var text = scope.$eval(selectFilteredText);
             var span = angular.element(element[0].querySelector('.select-filtered-text'));
@@ -195,7 +195,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         });
 
         // read the deselect-filtered-text attribute once
-        var deselectFilteredTextAttrObserver = attrs.$observe('deselectFilteredText', function (deselectFilteredText) {
+        var deselectFilteredTextAttrObserver = attrs.$observe('w11kSelectDeselectFilteredText', function (deselectFilteredText) {
           if (angular.isDefined(deselectFilteredText)) {
             var text = scope.$eval(deselectFilteredText);
             var span = angular.element(element[0].querySelector('.deselect-filtered-text'));
@@ -264,7 +264,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         };
 
         // read the filter-placeholder attribute once
-        var filterPlaceholderAttrObserver = attrs.$observe('filterPlaceholder', function (filterPlaceholder) {
+        var filterPlaceholderAttrObserver = attrs.$observe('w11kSelectFilterPlaceholder', function (filterPlaceholder) {
           if (angular.isDefined(filterPlaceholder)) {
             scope.filter.placeholder = scope.$eval(filterPlaceholder);
 
@@ -345,7 +345,7 @@ angular.module('w11k.select').directive('w11kSelect', [
          * options
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        var optionsExp = attrs.options;
+        var optionsExp = attrs.w11kSelectOptions;
         var optionsExpParsed = optionParser.parse(optionsExp);
 
         function collection2options(collection, viewValue) {
