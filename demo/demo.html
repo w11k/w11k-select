@@ -24,27 +24,36 @@
   </head>
   <body ng-controller="DemoCtrl">
     <form name="demoForm">
-      <div class="row">
-        <div class="col-sm-6">
-          <div w11k-select multiple="true"
-               ng-model="selected.data"
-               name="demoField"
-               options="option.value as option.label for option in options.data"
-               placeholder="'All'"
-               filter-placeholder="'Filter'"
-              >
+      <fieldset>
+        <div class="row">
+          <div class="col-sm-6">
+            <div w11k-select
+                 w11k-select-multiple="true"
+                 w11k-select-disabled="disabled"
+                 w11k-select-options="option.value as option.label for option in options.data"
+                 w11k-select-placeholder="'All'"
+                 w11k-select-filter-placeholder="'Filter'"
+                 w11k-select-required="false"
+                 ng-model="selected.data"
+                 name="demoField"
+                >
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <button class="btn btn-default" ng-click="selectRandom()">select random</button>
+            <button class="btn btn-default" ng-click="createNewOptions()">create new options</button>
+            <button class="btn btn-default" ng-click="disabled = !disabled">Toggle Disabled</button>
           </div>
         </div>
-        <div class="col-sm-6">
-          <button class="btn btn-default" ng-click="selectRandom()">select random</button>
-          <button class="btn btn-default" ng-click="createNewOptions()">create new options</button>
-        </div>
-      </div>
+
+      </fieldset>
 
       <div class="row">
         <div class="col-sm-6">
           <div ng-show="demoForm.$dirty">Form is dirty</div>
+          <div ng-show="demoForm.$valid">Form is valid</div>
           <div ng-show="demoForm.demoField.$dirty">Field is dirty</div>
+          <div ng-show="demoForm.demoField.$valid">Field is valid</div>
         </div>
         <div class="col-sm-6"></div>
       </div>
