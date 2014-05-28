@@ -23,7 +23,7 @@
     </style>
   </head>
   <body ng-controller="DemoCtrl">
-    <form name="demoForm">
+    <form name="demoForm" class="w11k-select-adjust-height-to" style="height: 700px">
       <fieldset>
         <div class="row">
           <div class="col-sm-6">
@@ -34,6 +34,7 @@
                  w11k-select-placeholder="'All'"
                  w11k-select-filter-placeholder="'Filter'"
                  w11k-select-required="false"
+                 w11k-select-style="{ marginBottom: '20px'}"
                  ng-model="selected.data"
                  name="demoField"
                 >
