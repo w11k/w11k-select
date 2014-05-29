@@ -194,6 +194,7 @@ angular.module('w11k.select').directive('w11kSelect', [
           content.style.maxHeight = '';
         }
 
+        var jqDropDownMenu = angular.element(element[0].querySelector('.dropdown-menu'));
         var domDropDownContent = element[0].querySelector('.dropdown-menu .content');
         var domHeightAdjustContainer = getParent(element, '.w11k-select-adjust-height-to');
 
@@ -220,8 +221,10 @@ angular.module('w11k.select').directive('w11kSelect', [
 
             $document.on('keyup', onEscPressed);
 
+            jqDropDownMenu.css('visibility', 'hidden');
             $timeout(function () {
               adjustHeight();
+              jqDropDownMenu.css('visibility', 'visible');
             });
             jqWindow.on('resize', adjustHeight);
           },
