@@ -6,9 +6,67 @@ angular.module('w11k.select', [
 ]);
 
 angular.module('w11k.select').constant('w11kSelectConfig', {
-  templateUrl: 'w11k-select.tpl.html',
-  style: {
-    marginBottom: 10 // px
+  common: {
+    /**
+     * path to template
+     * do not change if you're using w11k-select.tpl.js
+     * adjust if you want to use your own template or
+     */
+    templateUrl: 'w11k-select.tpl.html'
+  },
+  instance: {
+    /** for form validation */
+    required: false,
+    /** single or multiple select */
+    multiple: true,
+    /** disable user interaction */
+    disabled: false,
+    /** all the configuration for the header (visible if dropdown closed) */
+    header: {
+      /** text to show if no item selected (plain text, no evaluation, no data-binding) */
+      placeholder: '',
+      /**
+       * text to show if item(s) selected (expression, evaluated against user scope)
+       * make sure to enclose your expression withing quotes, otherwise it will be evaluated too early
+       * default: undefined evaluates to a comma separated representation of selected items
+       * example: ng-model="options.selected" w11k-select-config="{header: {placeholder: 'options.selected.length'}}"
+       */
+      text: undefined
+    },
+    /** all the configuration for the filter section within the dropdown */
+    filter: {
+      /** activate filter input to search for options */
+      active: true,
+      /** text to show if no filter is applied */
+      placeholder: 'Filter',
+      /** 'select all filtered options' button */
+      select: {
+        /** show select all button */
+        active: true,
+        /**
+         * label for select all button
+         * default: undefined evaluates to 'all'
+         */
+        text: undefined
+      },
+      /** 'deselect all filtered options' button */
+      deselect: {
+        /** show deselect all button */
+        active: true,
+        /**
+         * label for deselect all button
+         * default: undefined evaluates to 'none'
+         */
+        text: undefined
+      }
+    },
+    /** values for dynamically calculated styling for dropdown */
+    style: {
+      /** margin-bottom for automatic height adjust */
+      marginBottom: '10px',
+      /** static or manually calculated max height (disables internal height calculation) */
+      maxHeight: undefined
+    }
   }
 });
 
@@ -47,13 +105,8 @@ angular.module('w11k.select').directive('w11kSelect', [
     return {
       restrict: 'A',
       replace: false,
-      templateUrl: w11kSelectConfig.templateUrl,
-      scope: {
-        isMultiple: '=?w11kSelectMultiple',
-        isRequired: '=?w11kSelectRequired',
-        isDisabled: '=?w11kSelectDisabled',
-        style: '=?w11kSelectStyle'
-      },
+      templateUrl: w11kSelectConfig.common.templateUrl,
+      scope: {},
       require: 'ngModel',
       link: function (scope, element, attrs, controller) {
 
@@ -64,22 +117,70 @@ angular.module('w11k.select').directive('w11kSelect', [
         var hasBeenOpened = false;
         var options = [];
         var optionsFiltered = [];
-        scope.optionsToShow = [];
 
-        var header = {
-          placeholder: '',
-          selectedMessage: null
-        };
-
-        scope.header = {
-          text: ''
+        scope.options = {
+          visible: []
         };
 
         scope.filter = {
-          active: true,
-          values: {},
-          placeholder: ''
+          values: {}
         };
+
+        scope.config = angular.copy(w11kSelectConfig.instance);
+
+        // marker to read some parts of the config only once
+        var configRead = false;
+
+        scope.$watch(
+          function () {
+            return scope.$parent.$eval(attrs.w11kSelectConfig);
+          },
+          function (newConfig) {
+            if (angular.isArray(newConfig)) {
+              extendDeep.apply(null, [scope.config].concat(newConfig));
+              applyConfig();
+            }
+            else if (angular.isObject(newConfig)) {
+              extendDeep(scope.config, newConfig);
+              applyConfig();
+            }
+          },
+          true
+        );
+
+        function applyConfig() {
+          checkSelection();
+          setViewValue();
+
+          if (!configRead) {
+            if (scope.config.filter.select.active && scope.config.filter.select.text) {
+              var jqSelectFilteredButton = angular.element(element[0].querySelector('.select-filtered-text'));
+              jqSelectFilteredButton.text(scope.config.filter.select.text);
+            }
+
+            if (scope.config.filter.deselect.active && scope.config.filter.deselect.text) {
+              var jqDeselectFilteredButton = angular.element(element[0].querySelector('.deselect-filtered-text'));
+              jqDeselectFilteredButton.text(scope.config.filter.deselect.text);
+            }
+
+            if (scope.config.header.placeholder) {
+              var jqHeaderPlaceholder = angular.element(element[0].querySelector('.header-placeholder'));
+              jqHeaderPlaceholder.text(scope.config.header.placeholder);
+            }
+
+            configRead = true;
+          }
+        }
+
+        function checkSelection() {
+          var selectedOptions = options.filter(function (option) {
+            return  option.selected;
+          });
+          if (scope.config.multiple === false && selectedOptions.length > 0) {
+            scope.deselectAll();
+            selectedOptions[0].selected = true;
+          }
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
          * dropdown
@@ -132,7 +233,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         }
 
         function adjustHeight() {
-          if (angular.isObject(scope.style) && scope.style.hasOwnProperty('maxHeight')) {
+          if (angular.isDefined(scope.config.style.maxHeight)) {
             domDropDownContent.style.maxHeight = scope.style.maxHeight;
           }
           else {
@@ -165,16 +266,10 @@ angular.module('w11k.select').directive('w11kSelect', [
             containerOffset = 0;
           }
 
-          var marginBottom;
-          if (angular.isObject(scope.style) && scope.style.hasOwnProperty('marginBottom')) {
-            if (scope.style.marginBottom.indexOf('px') < 0) {
-              throw new Error('Illegal Value for w11kSelectStyle.marginBottom');
-            }
-            marginBottom = parseFloat(scope.style.marginBottom.slice(0, -2));
+          if (scope.config.style.marginBottom.indexOf('px') < 0) {
+            throw new Error('Illegal Value for w11kSelectStyle.marginBottom');
           }
-          else {
-            marginBottom = w11kSelectConfig.style.marginBottom;
-          }
+          var marginBottom = parseFloat(scope.config.style.marginBottom.slice(0, -2));
 
           var referenceHeight;
           var referenceOffset;
@@ -202,10 +297,11 @@ angular.module('w11k.select').directive('w11kSelect', [
         var jqDropDownMenu = angular.element(element[0].querySelector('.dropdown-menu'));
         var domDropDownContent = element[0].querySelector('.dropdown-menu .content');
         var domHeightAdjustContainer = getParent(element, '.w11k-select-adjust-height-to');
+        var jqHeaderText = angular.element(element[0].querySelector('.header-text'));
 
         scope.dropdown = {
           onOpen: function ($event) {
-            if (scope.isDisabled) {
+            if (scope.config.disabled) {
               $event.prevent();
               return;
             }
@@ -222,7 +318,7 @@ angular.module('w11k.select').directive('w11kSelect', [
               adjustHeight();
               jqDropDownMenu.css(visibility, 'visible');
               
-              if (scope.filter.active) {
+              if (scope.config.filter.active) {
                 // use timeout to open dropdown first and then set the focus,
                 // otherwise focus won't be set because element is not visible
                 $timeout(function () {
@@ -250,92 +346,21 @@ angular.module('w11k.select').directive('w11kSelect', [
           jqWindow.off('resize', adjustHeight);
         });
 
-        // read the placeholder attribute once
-        var placeholderAttrObserver = attrs.$observe('w11kSelectPlaceholder', function (placeholder) {
-          if (angular.isDefined(placeholder)) {
-            header.placeholder = scope.$eval(placeholder);
-            updateHeader();
-
-            if (angular.isFunction(placeholderAttrObserver)) {
-              placeholderAttrObserver();
-              placeholderAttrObserver = undefined;
-            }
-          }
-        });
-
-        // read the selected-message attribute once
-        var selectedMessageAttrObserver = attrs.$observe('w11kSelectSelectedMessage', function (selectedMessage) {
-          if (angular.isDefined(selectedMessage)) {
-            header.selectedMessage = scope.$eval(selectedMessage);
-            updateHeader();
-
-            if (angular.isFunction(selectedMessageAttrObserver)) {
-              selectedMessageAttrObserver();
-              selectedMessageAttrObserver = undefined;
-            }
-          }
-        });
-
-        // read the select-filtered-text attribute once
-        var selectFilteredTextAttrObserver = attrs.$observe('w11kSelectSelectFilteredText', function (selectFilteredText) {
-          if (angular.isDefined(selectFilteredText)) {
-            var text = scope.$eval(selectFilteredText);
-            var span = angular.element(element[0].querySelector('.select-filtered-text'));
-            span.text(text);
-
-            if (angular.isFunction(selectFilteredTextAttrObserver)) {
-              selectFilteredTextAttrObserver();
-              selectFilteredTextAttrObserver = undefined;
-            }
-          }
-        });
-
-        // read the deselect-filtered-text attribute once
-        var deselectFilteredTextAttrObserver = attrs.$observe('w11kSelectDeselectFilteredText', function (deselectFilteredText) {
-          if (angular.isDefined(deselectFilteredText)) {
-            var text = scope.$eval(deselectFilteredText);
-            var span = angular.element(element[0].querySelector('.deselect-filtered-text'));
-            span.text(text);
-
-            if (angular.isFunction(deselectFilteredTextAttrObserver)) {
-              deselectFilteredTextAttrObserver();
-              deselectFilteredTextAttrObserver = undefined;
-            }
-          }
-        });
-
-        function getHeaderText() {
-          if (isEmpty()) {
-            return header.placeholder;
-          }
-
-          var optionsSelected = options.filter(function (option) {
-            return option.selected;
-          });
-
-          var selectedOptionsLabels = optionsSelected.map(function (option) {
-            return option.label;
-          });
-
-          var selectedOptionsString = selectedOptionsLabels.join(', ');
-
-          var result;
-          if (header.selectedMessage !== null) {
-            var replacements = {length: optionsSelected.length, selectedItems: selectedOptionsString};
-
-            result = header.selectedMessage.replace(/\{(.*)\}/g, function (match, p1) {
-              return replacements[p1];
-            });
+        function updateHeader() {
+          if (angular.isDefined(scope.config.header.text)) {
+            scope.header.text = scope.$parent.$eval(scope.config.header.text);
           }
           else {
-            result = selectedOptionsString;
+            var optionsSelected = options.filter(function (option) {
+              return option.selected;
+            });
+
+            var selectedOptionsLabels = optionsSelected.map(function (option) {
+              return option.label;
+            });
+
+            jqHeaderText.text(selectedOptionsLabels.join(', '));
           }
-
-          return result;
-        }
-
-        function updateHeader() {
-          scope.header.text = getHeaderText();
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -343,7 +368,6 @@ angular.module('w11k.select').directive('w11kSelect', [
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         var filter = $filter('filter');
-        var limitTo = $filter('limitTo');
         var initialLimitTo = 80;
         var increaseLimitTo = initialLimitTo * 0.5;
 
@@ -351,25 +375,13 @@ angular.module('w11k.select').directive('w11kSelect', [
           if (hasBeenOpened) {
             // false as third parameter: use contains to compare
             optionsFiltered = filter(options, scope.filter.values, false);
-            scope.optionsToShow = limitTo(optionsFiltered, initialLimitTo);
+            scope.options.visible = optionsFiltered.slice(0, initialLimitTo);
           }
         }
 
         scope.showMoreOptions = function () {
-          scope.optionsToShow = optionsFiltered.slice(0, scope.optionsToShow.length + increaseLimitTo);
+          scope.options.visible = optionsFiltered.slice(0, scope.options.visible.length + increaseLimitTo);
         };
-
-        // read the filter-placeholder attribute once
-        var filterPlaceholderAttrObserver = attrs.$observe('w11kSelectFilterPlaceholder', function (filterPlaceholder) {
-          if (angular.isDefined(filterPlaceholder)) {
-            scope.filter.placeholder = scope.$eval(filterPlaceholder);
-
-            if (angular.isFunction(filterPlaceholderAttrObserver)) {
-              filterPlaceholderAttrObserver();
-              filterPlaceholderAttrObserver = undefined;
-            }
-          }
-        });
 
         scope.$watch('filter.values.label', function () {
           filterOptions();
@@ -399,7 +411,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $event.stopPropagation();
           }
 
-          if (scope.isMultiple) {
+          if (scope.config.multiple) {
             angular.forEach(optionsFiltered, function (option) {
               option.selected = true;
             });
@@ -468,16 +480,16 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         function updateOptions() {
           var collection = optionsExpParsed.collection(scope.$parent);
-          var modelValue = controller.$viewValue;
+          var viewValue = controller.$viewValue;
 
-          options = collection2options(collection, modelValue);
+          options = collection2options(collection, viewValue);
 
           filterOptions();
           updateNgModel();
         }
 
         scope.select = function (option) {
-          if (scope.isMultiple) {
+          if (scope.config.multiple) {
             option.selected = !option.selected;
           }
           else {
@@ -534,13 +546,13 @@ angular.module('w11k.select').directive('w11kSelect', [
           $parse(attrs.ngModel).assign(scope.$parent, value);
         }
 
-        function readNgModel() {
-          var modelValue = controller.$viewValue;
+        function render() {
+          var viewValue = controller.$viewValue;
 
           angular.forEach(options, function (option) {
             var optionValue = option2value(option);
 
-            if (modelValue.indexOf(optionValue) !== -1) {
+            if (viewValue.indexOf(optionValue) !== -1) {
               option.selected = true;
             }
             else {
@@ -548,26 +560,36 @@ angular.module('w11k.select').directive('w11kSelect', [
             }
           });
 
+          validateRequired(viewValue);
           updateHeader();
         }
 
-        function modelValue2viewValue(modelValue) {
+        function external2internal(modelValue) {
           var viewValue;
 
           if (angular.isArray(modelValue)) {
             viewValue = modelValue;
           }
-          else {
+          else if (angular.isDefined(modelValue)) {
             viewValue = [modelValue];
           }
+          else {
+            viewValue = [];
+          }
+
+          validateRequired(viewValue);
 
           return viewValue;
         }
 
-        function viewValue2modelValue(viewValue) {
+        function internal2external(viewValue) {
+          if (angular.isUndefined(viewValue)) {
+            return;
+          }
+
           var modelValue;
 
-          if (scope.isMultiple) {
+          if (scope.config.multiple) {
             modelValue = viewValue;
           }
           else {
@@ -578,22 +600,18 @@ angular.module('w11k.select').directive('w11kSelect', [
         }
 
         function validateRequired(viewValue) {
-          if (angular.isUndefined(scope.isRequired) || scope.isRequired === false) {
-            return viewValue;
-          }
-
           var valid = false;
 
-          if (scope.isMultiple === true && angular.isArray(viewValue) && viewValue.length > 0) {
+          if (scope.config.required === true && viewValue.length > 0) {
             valid =  true;
+          }
+          else if (scope.config.required === false) {
+            valid = true;
           }
 
           controller.$setValidity('required', valid);
           if (valid) {
             return viewValue;
-          }
-          else {
-            return undefined;
           }
         }
 
@@ -602,17 +620,16 @@ angular.module('w11k.select').directive('w11kSelect', [
           return !(angular.isArray(value) && value.length > 0);
         }
 
-        scope.isEmpty = function () {
-          return isEmpty();
-        };
+        scope.isEmpty = isEmpty;
 
-        controller.$render = readNgModel;
         controller.$isEmpty = isEmpty;
 
-        controller.$parsers.push(validateRequired);
-        controller.$parsers.push(viewValue2modelValue);
+        controller.$render = render;
+        controller.$formatters.push(external2internal);
 
-        controller.$formatters.push(modelValue2viewValue);
+        controller.$parsers.push(validateRequired);
+        controller.$parsers.push(internal2external);
+
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
          * helper functions
@@ -620,10 +637,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         function options2model(options) {
           var selectedOptions = options.filter(function (option) {
-            var isSelected = option.selected;
-            var isPartlySelected = angular.isArray(option.children) && option.partlySelected;
-
-            return  isSelected || isPartlySelected;
+            return  option.selected;
           });
 
           var selectedValues = selectedOptions.map(option2value);
@@ -647,6 +661,21 @@ angular.module('w11k.select').directive('w11kSelect', [
           context[optionsExpParsed.item] = modelElement;
 
           return optionsExpParsed.label(context);
+        }
+
+        function extendDeep(dst) {
+          angular.forEach(arguments, function (obj) {
+            if (obj !== dst) {
+              angular.forEach(obj, function (value, key) {
+                if (dst[key] && dst[key].constructor && dst[key].constructor === Object) {
+                  extendDeep(dst[key], value);
+                } else {
+                  dst[key] = value;
+                }
+              });
+            }
+          });
+          return dst;
         }
 
         // inspired by https://github.com/stuartbannerman/hashcode
