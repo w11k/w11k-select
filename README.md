@@ -10,6 +10,11 @@ Features:
 * Uses Twitter Bootstrap markup / styling, comes with default css but easy to adjust / override
 * Disabled state and required-validation
 * Customisable texts (placeholders and selected representation)
+
+
+## Documentation and Demo
+
+See Project Website at http://w11k.github.com/w11k-select
  
 
 ## Installation
@@ -23,23 +28,30 @@ Features:
   * font-awesome (optional)
 * Add dependency to w11k-select to your angular module
 
+
 ## Usage
 
-    <div w11k-select multiple="options.multiple"
-                     disabled="!options.enabled"
-                     required="options.required"
-                     ng-model="selected.data"
-                     options="option.value as option.label for option in options.data"
-                     placeholder="'All'"
-                     filter-placeholder="'Filter'"
-                     select-filtered-text="'all'"
-                     deselect-filtered-text="'none'"
-                     >
-    </div>
-    
+```
+<div w11k-select
+     w11k-select-config="config"
+     w11k-select-options="option.value as option.label for option in options.data"
+     ng-model="selected.data"
+     >
+</div>
+```    
+w11k-select-config is optional and takes a config object or an array with config objects. The value is evaluated against the surrounding scope. If an array is given, all contained config object will be merged into one config object internally. Later config objects override values of previous config objects (like jQuery.extend or _.merge).
 
-```placeholder```, ```filter-placeholder```, ```select-filtered-text``` and ```deselect-filtered-text``` are optional attributes with default values in English.
-**Attention**: These attributes are expressions but for a better preformance they are evaluated only once. So you can not change the texts dynamically at runtime via data-binding but e.g. you can use expressions like ```'common.filter.placeholder' | translate``` to read the text form a translation file.
+You can use different formats to specify the configuration. Some examples:
+
+    // reference an object or array from scope:
+    w11k-select-config="config"
+  
+    // define an object with an object literal:
+    w11k-select-config="{ required: true }"
+  
+    // define an array via literal referencing an object from scope and define an object
+    w11k-select-config="[commonConfig, { multiple: false }]" 
+
 
 ### Usage without font-awesome
 
