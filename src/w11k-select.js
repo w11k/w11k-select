@@ -348,7 +348,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         function updateHeader() {
           if (angular.isDefined(scope.config.header.text)) {
-            scope.header.text = scope.$parent.$eval(scope.config.header.text);
+            jqHeaderText.text(scope.$parent.$eval(scope.config.header.text));
           }
           else {
             var optionsSelected = options.filter(function (option) {
