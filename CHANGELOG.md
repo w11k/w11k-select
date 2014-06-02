@@ -1,3 +1,12 @@
+<a name="0.4.2"></a>
+## 0.4.2 (2014-06-02)
+
+
+### Bug Fixes
+
+* **select:** fix updating header text with custom text ([c85102d3](https://github.com/pburgmer/w11k-select/commit/c85102d3d434e471f89e9a85884870f2354c68da))
+
+
 <a name="0.4.1"></a>
 ## 0.4.1 (2014-06-02)
 
