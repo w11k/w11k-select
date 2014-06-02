@@ -1,3 +1,12 @@
+<a name="0.4.1"></a>
+## 0.4.1 (2014-06-02)
+
+
+### Bug Fixes
+
+* **adjust-height:** fix getting parent without 'w11k-select-adjust-height-to' container ([994c81e6](https://github.com/pburgmer/w11k-select/commit/994c81e6ee5c0edb50b584782557470bffcb2766))
+
+
 <a name="0.4.0"></a>
 ## 0.4.0 (2014-06-02)
 
