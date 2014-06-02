@@ -93,17 +93,18 @@ angular.module('w11k.select').directive('w11kSelect', [
               return container[0];
             }
 
-            return undefined;
+            return;
           }
 
           // without jQuery
+          var matchesSelector = 'MatchesSelector';
           var matchFunctions = [
             'matches',
             'matchesSelector',
-            'mozMatchesSelector',
-            'webkitMatchesSelector',
-            'msMatchesSelector',
-            'oMatchesSelector'
+            'moz' + matchesSelector,
+            'webkit' + matchesSelector,
+            'ms' + matchesSelector,
+            'o + matchesSelector'
           ];
 
           for (var index in matchFunctions) {
@@ -117,11 +118,11 @@ angular.module('w11k.select').directive('w11kSelect', [
                 parent1 = parent1.parentNode;
               }
 
-              return undefined;
+              return;
             }
           }
 
-          return undefined;
+          return;
         }
 
         function onEscPressed(event) {
@@ -131,69 +132,73 @@ angular.module('w11k.select').directive('w11kSelect', [
         }
 
         function adjustHeight() {
-
-          var maxHeight;
-
           if (angular.isObject(scope.style) && scope.style.hasOwnProperty('maxHeight')) {
             domDropDownContent.style.maxHeight = scope.style.maxHeight;
           }
           else {
-            var contentOffset = domDropDownContent.getBoundingClientRect().top;
-
-            var windowHeight = $window.innerHeight || $window.document.documentElement.clientHeight;
-
-            var containerHeight;
-            var containerOffset;
-
-            if (angular.isDefined(domHeightAdjustContainer)) {
-              containerHeight = domHeightAdjustContainer.innerHeight || domHeightAdjustContainer.clientHeight;
-              containerOffset = domHeightAdjustContainer.getBoundingClientRect().top;
-            }
-            else {
-              containerHeight = $window.innerHeight || $window.document.documentElement.clientHeight;
-              containerOffset = 0;
-            }
-
-            var marginBottom;
-            if (angular.isObject(scope.style) && scope.style.hasOwnProperty('marginBottom')) {
-              if (scope.style.marginBottom.indexOf('px') < 0) {
-                throw new Error('Illegal Unit for w11kSelectStyle.marginBottom! Allowed Units: px');
-              }
-              marginBottom = parseFloat(scope.style.marginBottom.slice(0, -2));
-            }
-            else {
-              marginBottom = w11kSelectConfig.style.marginBottom;
-            }
-
-            var referenceHeight;
-            var referenceOffset;
-
-            if (containerHeight + containerOffset > windowHeight) {
-              referenceHeight = windowHeight;
-              referenceOffset = 0;
-            }
-            else {
-              referenceHeight = containerHeight;
-              referenceOffset = containerOffset;
-            }
-
-            maxHeight = referenceHeight - (contentOffset - referenceOffset) - marginBottom;
-
-            var minHeightFor3Elements = 93;
-            if (maxHeight < minHeightFor3Elements) {
-              maxHeight = minHeightFor3Elements;
-            }
-
+            var maxHeight = calculateDynamicMaxHeight();
             domDropDownContent.style.maxHeight = maxHeight + 'px';
 
           }
         }
 
         function resetHeight() {
-          var content = element[0].querySelector('.dropdown-menu .content');
-          content.style.maxHeight = '';
+          domDropDownContent.style.maxHeight = '';
         }
 
+        function calculateDynamicMaxHeight() {
+          var maxHeight;
+
+          var contentOffset = domDropDownContent.getBoundingClientRect().top;
+
+          var windowHeight = $window.innerHeight || $window.document.documentElement.clientHeight;
+
+          var containerHeight;
+          var containerOffset;
+
+          if (angular.isDefined(domHeightAdjustContainer)) {
+            containerHeight = domHeightAdjustContainer.innerHeight || domHeightAdjustContainer.clientHeight;
+            containerOffset = domHeightAdjustContainer.getBoundingClientRect().top;
+          }
+          else {
+            containerHeight = $window.innerHeight || $window.document.documentElement.clientHeight;
+            containerOffset = 0;
+          }
+
+          var marginBottom;
+          if (angular.isObject(scope.style) && scope.style.hasOwnProperty('marginBottom')) {
+            if (scope.style.marginBottom.indexOf('px') < 0) {
+              throw new Error('Illegal Value for w11kSelectStyle.marginBottom');
+            }
+            marginBottom = parseFloat(scope.style.marginBottom.slice(0, -2));
+          }
+          else {
+            marginBottom = w11kSelectConfig.style.marginBottom;
+          }
+
+          var referenceHeight;
+          var referenceOffset;
+
+          if (containerHeight + containerOffset > windowHeight) {
+            referenceHeight = windowHeight;
+            referenceOffset = 0;
+          }
+          else {
+            referenceHeight = containerHeight;
+            referenceOffset = containerOffset;
+          }
+
+          maxHeight = referenceHeight - (contentOffset - referenceOffset) - marginBottom;
+
+          var minHeightFor3Elements = 93;
+          if (maxHeight < minHeightFor3Elements) {
+            maxHeight = minHeightFor3Elements;
+          }
+
+          return maxHeight;
+        }
+
+        var visibility = 'visibility';
         var jqDropDownMenu = angular.element(element[0].querySelector('.dropdown-menu'));
         var domDropDownContent = element[0].querySelector('.dropdown-menu .content');
         var domHeightAdjustContainer = getParent(element, '.w11k-select-adjust-height-to');
@@ -210,13 +215,12 @@ angular.module('w11k.select').directive('w11kSelect', [
               filterOptions();
             }
 
-
             $document.on('keyup', onEscPressed);
 
-            jqDropDownMenu.css('visibility', 'hidden');
+            jqDropDownMenu.css(visibility, 'hidden');
             $timeout(function () {
               adjustHeight();
-              jqDropDownMenu.css('visibility', 'visible');
+              jqDropDownMenu.css(visibility, 'visible');
               
               if (scope.filter.active) {
                 // use timeout to open dropdown first and then set the focus,
