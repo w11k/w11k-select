@@ -168,7 +168,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             var referenceHeight;
             var referenceOffset;
 
-            if (containerHeight > windowHeight) {
+            if (containerHeight + containerOffset > windowHeight) {
               referenceHeight = windowHeight;
               referenceOffset = 0;
             }
