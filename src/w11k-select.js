@@ -210,14 +210,6 @@ angular.module('w11k.select').directive('w11kSelect', [
               filterOptions();
             }
 
-            if (scope.filter.active) {
-              // use timeout to open dropdown first and then set the focus,
-              // otherwise focus won't be set because element is not visible
-              $timeout(function () {
-                element[0].querySelector('.dropdown-menu input').focus();
-              });
-
-            }
 
             $document.on('keyup', onEscPressed);
 
@@ -225,6 +217,14 @@ angular.module('w11k.select').directive('w11kSelect', [
             $timeout(function () {
               adjustHeight();
               jqDropDownMenu.css('visibility', 'visible');
+              
+              if (scope.filter.active) {
+                // use timeout to open dropdown first and then set the focus,
+                // otherwise focus won't be set because element is not visible
+                $timeout(function () {
+                  element[0].querySelector('.dropdown-menu input').focus();
+                });
+              }
             });
             jqWindow.on('resize', adjustHeight);
           },
