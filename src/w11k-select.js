@@ -60,7 +60,7 @@ angular.module('w11k.select').constant('w11kSelectConfig', {
         text: undefined
       }
     },
-    /** values for dynamically calculated styling for dropdown */
+    /** values for dynamically calculated styling of dropdown */
     style: {
       /** margin-bottom for automatic height adjust */
       marginBottom: '10px',
