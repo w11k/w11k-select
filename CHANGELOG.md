@@ -1,3 +1,26 @@
+<a name="0.4.0"></a>
+## 0.4.0 (2014-06-02)
+
+
+### Features
+
+* **adjust-height:** improve adjust-height to support custom margin bottom and specifying container ([ef1bedc0](https://github.com/pburgmer/w11k-select/commit/ef1bedc07f5972ddd8b75a70e7c7961940ae05dc))
+* **config:** make everything configurable via constant w11kSelectConfig and w11k-select-confi ([9f1dd673](https://github.com/pburgmer/w11k-select/commit/9f1dd673cc5b3af6d76446e846d600ded2cf894c))
+
+
+### Breaking Changes
+
+* Following attributes are no longer available:
+  * w11k-select-multiple
+  * w11k-select-selectedMassege
+  * w11k-select-filter-placeholder
+  * w11k-select-placeholder
+  * w11k-select-disabled
+  * w11k-select-required
+  * w11k-select-style
+
+  Use constant w11kSelectConfig and the new w11k-select-config attribute to configure the directive (see readme).
+
 <a name="0.3.4"></a>
 ## 0.3.5 (2014-05-27)
 

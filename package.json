@@ -1,6 +1,6 @@
 {
   "name": "w11k-select",
-  "version": "0.3.5",
+  "version": "0.4.0",
 
   "description": "single- and multi-select directive for angularjs",
   "keywords": [ "angular", "angularjs", "directive", "select", "multi-select", "bootstrap" ],
@@ -31,6 +31,7 @@
     "grunt-contrib-sass": "0.7.2",
     "grunt-contrib-copy": "0.5.0",
     "grunt-contrib-uglify": "0.4.0",
+    "grunt-contrib-concat": "0.4.0",
     "grunt-html2js": "0.2.4",
 
     "grunt-bump": "0.0.13",

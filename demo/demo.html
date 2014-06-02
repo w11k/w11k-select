@@ -8,7 +8,7 @@
     <script type="text/javascript" src="../bower_components/angular/angular.js"></script>
     <script type="text/javascript" src="../bower_components/w11k-dropdownToggle/dist/w11k-dropdownToggle.js"></script>
     <script type="text/javascript" src="../bower_components/angular-bindonce/bindonce.js"></script>
-    <script type="text/javascript" src="../dist/w11k-select.js"></script>
+    <script type="text/javascript" src="../src/w11k-select.js"></script>
     <script type="text/javascript" src="../dist/w11k-select.tpl.js"></script>
     <script type="text/javascript" src="demo.js"></script>
 
@@ -23,17 +23,13 @@
     </style>
   </head>
   <body ng-controller="DemoCtrl">
-    <form name="demoForm">
+    <form name="demoForm" class="w11k-select-adjust-height-to" style="height: 700px">
       <fieldset>
         <div class="row">
           <div class="col-sm-6">
             <div w11k-select
-                 w11k-select-multiple="true"
-                 w11k-select-disabled="disabled"
+                 w11k-select-config="[staticConfig, dynamicConfig]"
                  w11k-select-options="option.value as option.label for option in options.data"
-                 w11k-select-placeholder="'All'"
-                 w11k-select-filter-placeholder="'Filter'"
-                 w11k-select-required="false"
                  ng-model="selected.data"
                  name="demoField"
                 >
@@ -42,7 +38,9 @@
           <div class="col-sm-6">
             <button class="btn btn-default" ng-click="selectRandom()">select random</button>
             <button class="btn btn-default" ng-click="createNewOptions()">create new options</button>
-            <button class="btn btn-default" ng-click="disabled = !disabled">Toggle Disabled</button>
+            <button class="btn btn-default" ng-click="staticConfig.disabled = !staticConfig.disabled">Toggle Disabled</button>
+            <button class="btn btn-default" ng-click="dynamicConfig.required = !dynamicConfig.required">Toggle Required</button>
+            <button class="btn btn-default" ng-click="dynamicConfig.multiple = !dynamicConfig.multiple">Toggle Multiple</button>
           </div>
         </div>
 
@@ -51,9 +49,13 @@
       <div class="row">
         <div class="col-sm-6">
           <div ng-show="demoForm.$dirty">Form is dirty</div>
+          <div ng-show="demoForm.$pristine">Form is pristine</div>
           <div ng-show="demoForm.$valid">Form is valid</div>
+          <div ng-show="demoForm.$invalid">Form is invalid</div>
           <div ng-show="demoForm.demoField.$dirty">Field is dirty</div>
+          <div ng-show="demoForm.demoField.$pristine">Field is pristine</div>
           <div ng-show="demoForm.demoField.$valid">Field is valid</div>
+          <div ng-show="demoForm.demoField.$invalid">Field is invalid</div>
         </div>
         <div class="col-sm-6"></div>
       </div>

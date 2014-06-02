@@ -27,7 +27,17 @@ angular.module('demo').controller('DemoCtrl', function ($scope) {
     data: []
   };
 
-  $scope.disabled = false;
+  $scope.staticConfig = {
+    disabled: false,
+    header: {
+      placeholder: 'test'
+    }
+  };
+
+  $scope.dynamicConfig = {
+    required: true,
+    multiple: true
+  };
 
   function createOptions() {
     $scope.options.data = [];
@@ -40,7 +50,8 @@ angular.module('demo').controller('DemoCtrl', function ($scope) {
   }
 
   $scope.selectRandom = function () {
-    var randomValue = Math.floor((Math.random() * $scope.options.data.length) + 1);
+    var randomIndex = Math.floor((Math.random() * $scope.options.data.length));
+    var randomValue = $scope.options.data[randomIndex].value;
 
     if ($scope.selected.data.indexOf(randomValue) < 0) {
       $scope.selected.data.push(randomValue);

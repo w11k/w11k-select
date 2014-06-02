@@ -9,6 +9,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-conventional-changelog');
@@ -81,6 +82,15 @@ module.exports = function (grunt) {
         ]
       }
     },
+    concat: {
+      code: {
+        options: {
+          banner: '<%= meta.banner %>'
+        },
+        src: 'src/w11k-select.js',
+        dest: 'dist/w11k-select.js'
+      }
+    },
     html2js: {
       template: {
         options: {
@@ -101,16 +111,6 @@ module.exports = function (grunt) {
         banner: '<%= meta.banner %>'
       },
       code: {
-        options: {
-          mangle: false,
-          compress: false,
-          beautify: true
-        },
-        files: {
-          'dist/w11k-select.js': 'src/w11k-select.js'
-        }
-      },
-      codeMinified: {
         files: [{
           'dist/w11k-select.min.js': 'src/w11k-select.js'
         }]
@@ -131,7 +131,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('build', ['clean', 'jshint:src', 'sass', 'copy:template', 'copy:sass', 'html2js', 'uglify']);
+  grunt.registerTask('build', ['clean', 'jshint:src', 'sass', 'copy:template', 'copy:sass', 'html2js', 'concat', 'uglify']);
 
   grunt.registerTask('release', ['build', 'copy:release']);
 
