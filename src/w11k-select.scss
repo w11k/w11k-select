@@ -42,8 +42,21 @@
         }
       }
 
-      .controls button {
-        width: 100%;
+      // reduce spacing of buttons
+      .controls {
+        .row {
+          margin-left: -3px;
+          margin-right: -3px;
+        }
+
+        .col-xs-6 {
+          padding-left: 3px;
+          padding-right: 3px;
+        }
+
+        button {
+          width: 100%;
+        }
       }
     }
 

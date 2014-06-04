@@ -1,3 +1,13 @@
+<a name="0.4.3"></a>
+## 0.4.3 (2014-06-04)
+
+
+### Features
+
+* **select:** improve styling of 'select all' and 'select none' buttons ([6c2a714e](https://github.com/pburgmer/w11k-select/commit/6c2a714e36f78d9189752b1a0d155e9df61bb1c2))
+* **template:** include dependency to template module ([356cd817](https://github.com/pburgmer/w11k-select/commit/356cd817bcbe2334d8d52db5dd9e69d9b3cda786))
+
+
 <a name="0.4.2"></a>
 ## 0.4.2 (2014-06-02)
 

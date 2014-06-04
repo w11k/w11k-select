@@ -2,7 +2,8 @@
 
 angular.module('w11k.select', [
   'pasvaz.bindonce',
-  'w11k.dropdownToggle'
+  'w11k.dropdownToggle',
+  'w11k.select.template'
 ]);
 
 angular.module('w11k.select').constant('w11kSelectConfig', {
