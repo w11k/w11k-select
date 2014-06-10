@@ -1,6 +1,6 @@
 {
   "name": "w11k-select",
-  "version": "0.4.3",
+  "version": "0.4.4",
 
   "description": "single- and multi-select directive for angularjs",
   "keywords": [ "angular", "angularjs", "directive", "select", "multi-select", "bootstrap" ],
@@ -17,7 +17,7 @@
 
   "repository": {
     "type": "git",
-    "url": "https://github.com/pburgmer/w11k-select.git"
+    "url": "https://github.com/w11k/w11k-select.git"
   },
 
   "licenses": [{

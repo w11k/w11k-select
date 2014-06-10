@@ -4,7 +4,7 @@ angular.module('demo', ['w11k.select', 'w11k.select.template']);
 
 angular.module('demo').controller('DemoCtrl', function ($scope) {
 
-  var amount = 10000;
+  var amount = 10;
 
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0 1 2 3 4 5 6 7 8 9';
   var chars = possible.split('');
@@ -63,6 +63,15 @@ angular.module('demo').controller('DemoCtrl', function ($scope) {
   $scope.createNewOptions = function () {
     $scope.options.data = $scope.options.data.slice(($scope.options.data.length / 2) - 1);
   };
+
+  $scope.createAndSelect = function () {
+    var i = $scope.options.data[$scope.options.data.length - 1].value + 1;
+    var option = { label: i, value: i};
+    $scope.options.data.push(option);
+
+    $scope.selected.data = [];
+    $scope.selected.data.push(i);
+  }
 
   createOptions();
 });
