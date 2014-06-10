@@ -503,7 +503,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         };
 
         // watch for changes of options collection made outside
-        scope.$watch(
+        scope.$watchCollection(
           function () {
             return optionsExpParsed.collection(scope.$parent);
           },
