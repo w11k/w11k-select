@@ -1,3 +1,14 @@
+<a name="0.4.4"></a>
+## 0.4.4 (2014-06-10)
+
+
+### Bug Fixes
+
+* **options:**
+  * mark options as selected on change of options even if options are objects ([609c0b4d](https://github.com/w11k/w11k-select/commit/609c0b4d4ca3f359e232032d690d3f4202e4ff2d), closes [#7](https://github.com/w11k/w11k-select/issues/7))
+  * use watchCollection instead of simple watch to watch options ([02c2b97c](https://github.com/w11k/w11k-select/commit/02c2b97c031d51e45be5964a5a56f85657293239), closes [#6](https://github.com/w11k/w11k-select/issues/6))
+
+
 <a name="0.4.3"></a>
 ## 0.4.3 (2014-06-04)
 
