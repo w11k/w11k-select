@@ -458,12 +458,17 @@ angular.module('w11k.select').directive('w11kSelect', [
         var optionsExpParsed = optionParser.parse(optionsExp);
 
         function collection2options(collection, viewValue) {
+          var viewValueHashes = viewValue.map(function (selectedValue) {
+            return hashCode(selectedValue);
+          });
+
           return collection.map(function (option) {
             var optionValue = modelElement2value(option);
+            var optionValueHash = hashCode(optionValue);
             var optionLabel = modelElement2label(option);
 
             var selected;
-            if (angular.isArray(viewValue) && viewValue.indexOf(optionValue) !== -1) {
+            if (viewValueHashes.indexOf(optionValueHash) !== -1) {
               selected = true;
             }
             else {
@@ -471,7 +476,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             }
 
             return {
-              hash: hashCode(option).toString(36),
+              hash: optionValueHash.toString(36),
               label: optionLabel,
               model: option,
               selected: selected
