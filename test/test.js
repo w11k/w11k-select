@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('demo', ['w11k.select', 'w11k.select.template']);
+angular.module('demo', ['w11k.select']);
 
-angular.module('demo').controller('DemoCtrl', function ($scope) {
+angular.module('demo').controller('TestCtrl', function ($scope) {
 
   var amount = 10;
 

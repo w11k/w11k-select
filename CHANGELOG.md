@@ -1,3 +1,14 @@
+# w11k-select Changelog
+
+<a name="0.4.5"></a>
+## 0.4.5 (2014-07-07)
+
+
+### Bug Fixes
+
+* **options:** make checkbox click same like label click ([566f2b15](https://github.com/w11k/w11k-select/commit/566f2b1525ca6f6b52bf42bcaa0ef041c065e6cb))
+
+
 <a name="0.4.4"></a>
 ## 0.4.4 (2014-06-10)
 
