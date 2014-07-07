@@ -1,6 +1,6 @@
 {
   "name": "w11k-select",
-  "version": "0.4.4",
+  "version": "0.4.5",
 
   "dependencies": {
     "angular": "1.2.x",
