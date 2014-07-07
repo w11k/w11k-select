@@ -45,7 +45,7 @@
       <ul class="items list-unstyled">
         <li bindonce="option" ng-repeat="option in options.visible track by option.hash" ng-click="select(option)" ng-class="{'selected': option.selected }">
           <div class="state">
-            <input type="checkbox" ng-model="option.selected" ng-change="onOptionStateChange()" ng-click="onOptionStateClick($event)">
+            <input type="checkbox" ng-checked="option.selected" ng-click="onOptionStateClick($event, option)">
           </div>
           <div class="name" bo-text="option.label"></div>
         </li>
