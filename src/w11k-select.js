@@ -82,7 +82,7 @@ angular.module('w11k.select').constant('w11kSelectConfig', {
 angular.module('w11k.select').factory('w11kSelectHelper', ['$parse', '$document', function ($parse, $document) {
 
   //                     value      as   label     for   item                    in   collection
-  var OPTIONS_EXP = /^\s*(.*?)(?:\s+as\s+(.*?))?\s+for\s+(?:([\$\w][\$\w\d]*))\s+in\s+(.*)$/;
+  var OPTIONS_EXP = /^([\w\d.]+)(?:\s+as\s+([\w\d.]+))?\s+for\s+(?:([\w][\w\d]*))\s+in\s+([\w\d.]+)$/;
 
   function extendDeep(dst) {
     angular.forEach(arguments, function (obj) {
