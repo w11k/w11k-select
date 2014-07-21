@@ -182,7 +182,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             });
 
             if (selectedOptions.length > 0) {
-              scope.deselectAll();
+              setSelected(selectedOptions, false);
               selectedOptions[0].selected = true;
             }
           }
@@ -418,9 +418,7 @@ angular.module('w11k.select').directive('w11kSelect', [
           }
 
           if (scope.config.multiple) {
-            angular.forEach(optionsFiltered, function (option) {
-              option.selected = true;
-            });
+            setSelected(optionsFiltered, true);
           }
           else if (optionsFiltered.length === 1) {
             optionsFiltered[0].selected = true;
@@ -435,10 +433,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $event.stopPropagation();
           }
 
-          angular.forEach(optionsFiltered, function (option) {
-            option.selected = false;
-          });
-
+          setSelected(optionsFiltered, false);
           setViewValue();
         };
 
@@ -448,10 +443,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $event.stopPropagation();
           }
 
-          angular.forEach(options, function (option) {
-            option.selected = false;
-          });
-
+          setSelected(options, false);
           setViewValue();
         };
 
@@ -501,8 +493,9 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         scope.select = function (option) {
           if (option.selected === false && scope.config.multiple === false) {
-            scope.deselectAll();
+            setSelected(options, false);
             option.selected = true;
+
             scope.dropdown.close();
             setViewValue();
           }
@@ -661,6 +654,13 @@ angular.module('w11k.select').directive('w11kSelect', [
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
          * helper functions
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        function setSelected(options, selected) {
+          var i = options.length;
+          while (i--) {
+            options[i].selected = selected;
+          }
+        }
 
         function options2model(options) {
           var selectedOptions = options.filter(function (option) {
