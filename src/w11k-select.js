@@ -117,6 +117,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         var hasBeenOpened = false;
         var options = [];
+        var optionsMap = {};
         var optionsFiltered = [];
 
         scope.options = {
@@ -493,6 +494,14 @@ angular.module('w11k.select').directive('w11kSelect', [
 
           options = collection2options(collection, viewValue);
 
+          optionsMap = {};
+
+          var i = options.length;
+          while (i--) {
+            var option = options[i];
+            optionsMap[option.hash] = option;
+          }
+
           filterOptions();
           updateNgModel();
         }
@@ -573,16 +582,17 @@ angular.module('w11k.select').directive('w11kSelect', [
           return function render() {
             var viewValue = controller.$viewValue;
 
-            angular.forEach(options, function (option) {
-              var optionValue = option2value(option);
+            setSelected(options, false);
 
-              if (viewValue.indexOf(optionValue) !== -1) {
+            var i = viewValue.length;
+            while (i--) {
+              var hash = hashCode(viewValue[i]).toString(36);
+              var option = optionsMap[hash];
+
+              if (option) {
                 option.selected = true;
               }
-              else {
-                option.selected = false;
-              }
-            });
+            }
 
             validateRequired(viewValue);
             updateHeader();
