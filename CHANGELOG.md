@@ -1,5 +1,20 @@
 # w11k-select Changelog
 
+<a name="0.4.6"></a>
+## 0.4.6 (2014-07-21)
+
+
+### Bug Fixes
+
+* **select:** do not override ng-model with empty selection on config change ([43d1b5a6](https://github.com/w11k/w11k-select/commit/43d1b5a6ea3b20e3d2ecd4cd7579e2ebde2b4f85), closes [#9](https://github.com/w11k/w11k-select/issues/9))
+
+
+### Performance
+
+* **options:** improve performance for updating options and change ng-model from outside 
+  * use hash maps instead of lists and indexOf
+  * use while loop instead of angular.forEach
+
 <a name="0.4.5"></a>
 ## 0.4.5 (2014-07-07)
 
