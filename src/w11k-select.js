@@ -455,17 +455,21 @@ angular.module('w11k.select').directive('w11kSelect', [
         var optionsExpParsed = optionParser.parse(optionsExp);
 
         function collection2options(collection, viewValue) {
-          var viewValueHashes = viewValue.map(function (selectedValue) {
-            return hashCode(selectedValue);
-          });
+          var viewValueHashes = {};
 
-          return collection.map(function (option) {
-            var optionValue = modelElement2value(option);
+          var i = viewValue.length;
+          while (i--) {
+            var hash = hashCode(viewValue[i]);
+            viewValueHashes[hash] = true;
+          }
+
+          var options = collection.map(function (element) {
+            var optionValue = modelElement2value(element);
             var optionValueHash = hashCode(optionValue);
-            var optionLabel = modelElement2label(option);
+            var optionLabel = modelElement2label(element);
 
             var selected;
-            if (viewValueHashes.indexOf(optionValueHash) !== -1) {
+            if (viewValueHashes[optionValueHash]) {
               selected = true;
             }
             else {
@@ -475,10 +479,12 @@ angular.module('w11k.select').directive('w11kSelect', [
             return {
               hash: optionValueHash.toString(36),
               label: optionLabel,
-              model: option,
+              model: element,
               selected: selected
             };
           });
+
+          return options;
         }
 
         function updateOptions() {
