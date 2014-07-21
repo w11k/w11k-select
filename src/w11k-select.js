@@ -152,7 +152,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         function applyConfig() {
           checkSelection();
-          ngModelRead.then(function () {
+          optionsAlreadyRead.then(function () {
             setViewValue();
           });
 
@@ -488,23 +488,47 @@ angular.module('w11k.select').directive('w11kSelect', [
           return options;
         }
 
-        function updateOptions() {
-          var collection = optionsExpParsed.collection(scope.$parent);
-          var viewValue = controller.$viewValue;
+        var optionsAlreadyRead;
 
-          options = collection2options(collection, viewValue);
+        var updateOptions = (function () {
+          var deferred = $q.defer();
+          optionsAlreadyRead = deferred.promise;
 
-          optionsMap = {};
+          return function updateOptions() {
+            var collection = optionsExpParsed.collection(scope.$parent);
+            var viewValue = controller.$viewValue;
 
-          var i = options.length;
-          while (i--) {
-            var option = options[i];
-            optionsMap[option.hash] = option;
+            if (angular.isArray(collection)) {
+              options = collection2options(collection, viewValue);
+
+              optionsMap = {};
+              var i = options.length;
+              while (i--) {
+                var option = options[i];
+                optionsMap[option.hash] = option;
+              }
+
+              filterOptions();
+
+              if (ngModelAlreadyRead) {
+                updateNgModel();
+              }
+              deferred.resolve();
+            }
+          };
+        })();
+
+        // watch for changes of options collection made outside
+        scope.$watchCollection(
+          function () {
+            return optionsExpParsed.collection(scope.$parent);
+          },
+          function (newVal) {
+            if (angular.isDefined(newVal)) {
+              updateOptions();
+            }
           }
-
-          filterOptions();
-          updateNgModel();
-        }
+        );
 
         scope.select = function (option) {
           if (option.selected === false && scope.config.multiple === false) {
@@ -524,18 +548,6 @@ angular.module('w11k.select').directive('w11kSelect', [
             setViewValue();
           }
         };
-
-        // watch for changes of options collection made outside
-        scope.$watchCollection(
-          function () {
-            return optionsExpParsed.collection(scope.$parent);
-          },
-          function (newVal) {
-            if (angular.isDefined(newVal)) {
-              updateOptions();
-            }
-          }
-        );
 
         // called on click to a checkbox of an option
         scope.onOptionStateClick = function ($event, option) {
@@ -573,13 +585,13 @@ angular.module('w11k.select').directive('w11kSelect', [
           ngModelSetter(scope.$parent, value);
         }
 
-        var ngModelRead;
 
-        var render = (function () {
-          var renderedDeferred = $q.defer();
-          ngModelRead = renderedDeferred.promise;
+        var ngModelAlreadyRead;
 
-          return function render() {
+        function render() {
+          optionsAlreadyRead.then(function () {
+            ngModelAlreadyRead = true;
+
             var viewValue = controller.$viewValue;
 
             setSelected(options, false);
@@ -596,9 +608,8 @@ angular.module('w11k.select').directive('w11kSelect', [
 
             validateRequired(viewValue);
             updateHeader();
-            renderedDeferred.resolve();
-          };
-        })();
+          });
+        }
 
 
 
