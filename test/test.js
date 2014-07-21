@@ -4,7 +4,7 @@ angular.module('demo', ['w11k.select']);
 
 angular.module('demo').controller('TestCtrl', function ($scope) {
 
-  var amount = 10;
+  var amount = 1000;
 
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0 1 2 3 4 5 6 7 8 9';
   var chars = possible.split('');
@@ -24,7 +24,7 @@ angular.module('demo').controller('TestCtrl', function ($scope) {
   };
 
   $scope.selected = {
-    data: []
+    data: [1, 2, 3, 10, 11]
   };
 
   $scope.staticConfig = {
