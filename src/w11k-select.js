@@ -98,8 +98,8 @@ angular.module('w11k.select').factory('optionParser', ['$parse', function ($pars
 }]);
 
 angular.module('w11k.select').directive('w11kSelect', [
-  'w11kSelectConfig', '$parse', '$document', 'optionParser', '$filter', '$timeout', '$window',
-  function (w11kSelectConfig, $parse, $document, optionParser, $filter, $timeout, $window) {
+  'w11kSelectConfig', '$parse', '$document', 'optionParser', '$filter', '$timeout', '$window', '$q',
+  function (w11kSelectConfig, $parse, $document, optionParser, $filter, $timeout, $window, $q) {
 
     var jqWindow = angular.element($window);
 
@@ -151,7 +151,9 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         function applyConfig() {
           checkSelection();
-          setViewValue();
+          ngModelRead.then(function () {
+            setViewValue();
+          });
 
           if (!configRead) {
             if (scope.config.filter.select.active && scope.config.filter.select.text) {
@@ -174,12 +176,15 @@ angular.module('w11k.select').directive('w11kSelect', [
         }
 
         function checkSelection() {
-          var selectedOptions = options.filter(function (option) {
-            return  option.selected;
-          });
-          if (scope.config.multiple === false && selectedOptions.length > 0) {
-            scope.deselectAll();
-            selectedOptions[0].selected = true;
+          if (scope.config.multiple === false) {
+            var selectedOptions = options.filter(function (option) {
+              return  option.selected;
+            });
+
+            if (selectedOptions.length > 0) {
+              scope.deselectAll();
+              selectedOptions[0].selected = true;
+            }
           }
         }
 
@@ -558,23 +563,33 @@ angular.module('w11k.select').directive('w11kSelect', [
           $parse(attrs.ngModel).assign(scope.$parent, value);
         }
 
-        function render() {
-          var viewValue = controller.$viewValue;
+        var ngModelRead;
 
-          angular.forEach(options, function (option) {
-            var optionValue = option2value(option);
+        var render = (function () {
+          var renderedDeferred = $q.defer();
+          ngModelRead = renderedDeferred.promise;
 
-            if (viewValue.indexOf(optionValue) !== -1) {
-              option.selected = true;
-            }
-            else {
-              option.selected = false;
-            }
-          });
+          return function render() {
+            var viewValue = controller.$viewValue;
 
-          validateRequired(viewValue);
-          updateHeader();
-        }
+            angular.forEach(options, function (option) {
+              var optionValue = option2value(option);
+
+              if (viewValue.indexOf(optionValue) !== -1) {
+                option.selected = true;
+              }
+              else {
+                option.selected = false;
+              }
+            });
+
+            validateRequired(viewValue);
+            updateHeader();
+            renderedDeferred.resolve();
+          };
+        })();
+
+
 
         function external2internal(modelValue) {
           var viewValue;

@@ -24,7 +24,7 @@ angular.module('demo').controller('TestCtrl', function ($scope) {
   };
 
   $scope.selected = {
-    data: []
+    data: [1, 2, 3, 10, 11]
   };
 
   $scope.staticConfig = {
