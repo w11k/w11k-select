@@ -552,14 +552,16 @@ angular.module('w11k.select').directive('w11kSelect', [
           updateHeader();
         }
 
+        var ngModelSetter = $parse(attrs.ngModel).assign;
+
         function updateNgModel() {
           var value = options2model(options);
 
-          angular.forEach(controller.$parsers, function (fn) {
-            value = fn(value);
+          angular.forEach(controller.$parsers, function (parser) {
+            value = parser(value);
           });
 
-          $parse(attrs.ngModel).assign(scope.$parent, value);
+          ngModelSetter(scope.$parent, value);
         }
 
         var ngModelRead;
