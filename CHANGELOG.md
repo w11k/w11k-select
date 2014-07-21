@@ -1,5 +1,14 @@
 # w11k-select Changelog
 
+<a name="0.4.7"></a>
+## 0.4.7 (2014-07-21)
+
+
+### Bug Fixes
+
+* **select:** do not override ng-model with empty selection during initialisation ([585f8a40](https://github.com/w11k/w11k-select/commit/585f8a401f445d799e949f616da17d7635e41fcd), closes [#9](https://github.com/w11k/w11k-select/issues/9))
+
+
 <a name="0.4.6"></a>
 ## 0.4.6 (2014-07-21)
 
