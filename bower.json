@@ -1,5 +1,5 @@
 {
-  "name": "w11k-select-upgrade",
+  "name": "w11k-selectbox",
   "version": "0.0.0",
   "main": [
     "dist/w11k-select.js",
