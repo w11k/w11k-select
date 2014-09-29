@@ -1,7 +1,11 @@
 {
   "name": "w11k-select",
   "version": "0.4.7",
-
+  "main": [
+    "dist/w11k-select.js",
+    "dist/w11k-select.tpl.js",
+    "dist/w11k-select.css"
+  ],
   "dependencies": {
     "angular": "1.2.x",
     "w11k-dropdownToggle": "0.1.x",
