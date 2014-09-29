@@ -30,7 +30,7 @@
           <div class="col-sm-6">
             <div w11k-select
                  w11k-select-config="[staticConfig, dynamicConfig]"
-                 w11k-select-options="option.value as option.label for option in options.data"
+                 w11k-select-options="option.value as option.label for option in options.data | limitTo:5 track by option.value"
                  ng-model="selected.data"
                  name="demoField"
                 >

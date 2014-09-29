@@ -81,8 +81,8 @@ angular.module('w11k.select').constant('w11kSelectConfig', {
 
 angular.module('w11k.select').factory('w11kSelectHelper', ['$parse', '$document', function ($parse, $document) {
 
-  //                     value      as   label     for   item                    in   collection
-  var OPTIONS_EXP = /^([\w\d.]+)(?:\s+as\s+([\w\d.]+))?\s+for\s+(?:([\w][\w\d]*))\s+in\s+([\w\d.]+)$/;
+  //                   value                 as    label                for       item              in    collection            |  filter                  track by     tracking
+  var OPTIONS_EXP = /^([a-zA-Z][\w\.]*)(?:\s+as\s+([a-zA-Z][\w\.]*))?\s+for\s+(?:([a-zA-Z][\w]*))\s+in\s+([a-zA-Z][\w\.]*(?:\s+\|\s[a-zA-Z][\w\:]*)*)(?:\s+track\sby\s+([a-zA-Z][\w\.]*))?$/;
 
   function extendDeep(dst) {
     angular.forEach(arguments, function (obj) {
@@ -121,7 +121,7 @@ angular.module('w11k.select').factory('w11kSelectHelper', ['$parse', '$document'
 
     var match = input.match(OPTIONS_EXP);
     if (!match) {
-      var expected = '"value" [as "label"] for "item" in "collection"';
+      var expected = '"item.value" [as "item.label"] for "item" in "collection [ | filter ] [track by item.value.unique]"';
       throw new Error('Expected options in form of \'' + expected + '\' but got "' + input + '".');
     }
 
@@ -131,6 +131,10 @@ angular.module('w11k.select').factory('w11kSelectHelper', ['$parse', '$document'
       item: match[3],
       collection: $parse(match[4])
     };
+
+    if (match[5] !== undefined) {
+      result.tracking = $parse(match[5]);
+    }
 
     return result;
   }
@@ -199,7 +203,13 @@ angular.module('w11k.select').directive('w11kSelect', [
       compile: function (tElement, tAttrs) {
         var configExpParsed = $parse(tAttrs.w11kSelectConfig);
         var optionsExpParsed = w11kSelectHelper.parseOptions(tAttrs.w11kSelectOptions);
+
         var ngModelSetter = $parse(tAttrs.ngModel).assign;
+        var assignValueFn = optionsExpParsed.value.assign;
+
+        if(optionsExpParsed.tracking !== undefined && assignValueFn === undefined) {
+          throw new Error('value part of w11kSelectOptions expression must be assignable if \'track by\' is used');
+        }
 
         return function (scope, iElement, iAttrs, controller) {
           var domElement = iElement[0];
@@ -209,8 +219,8 @@ angular.module('w11k.select').directive('w11kSelect', [
            * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
           var hasBeenOpened = false;
-          var options = [];
-          var optionsMap = {};
+          var internalOptions = [];
+          var internalOptionsMap = {};
           var optionsFiltered = [];
 
           scope.options = {
@@ -274,7 +284,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
           function checkSelection() {
             if (scope.config.multiple === false) {
-              var selectedOptions = options.filter(function (option) {
+              var selectedOptions = internalOptions.filter(function (option) {
                 return  option.selected;
               });
 
@@ -432,7 +442,7 @@ angular.module('w11k.select').directive('w11kSelect', [
               domHeaderText.textContent = scope.$parent.$eval(scope.config.header.text);
             }
             else {
-              var optionsSelected = options.filter(function (option) {
+              var optionsSelected = internalOptions.filter(function (option) {
                 return option.selected;
               });
 
@@ -455,7 +465,7 @@ angular.module('w11k.select').directive('w11kSelect', [
           function filterOptions() {
             if (hasBeenOpened) {
               // false as third parameter: use contains to compare
-              optionsFiltered = filter(options, scope.filter.values, false);
+              optionsFiltered = filter(internalOptions, scope.filter.values, false);
               scope.options.visible = optionsFiltered.slice(0, initialLimitTo);
             }
           }
@@ -518,7 +528,7 @@ angular.module('w11k.select').directive('w11kSelect', [
               $event.stopPropagation();
             }
 
-            setSelected(options, false);
+            setSelected(internalOptions, false);
             setViewValue();
           };
 
@@ -526,37 +536,39 @@ angular.module('w11k.select').directive('w11kSelect', [
            * options
            * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-          function collection2options(collection, viewValue) {
-            var viewValueHashes = {};
+          function externalOptions2internalOptions(externalOptions, viewValue) {
+            var viewValueIDs = {};
 
             var i = viewValue.length;
             while (i--) {
-              var hash = w11kSelectHelper.hashCode(viewValue[i]);
-              viewValueHashes[hash] = true;
+              var trackingId = value2trackingId(viewValue[i]);
+              viewValueIDs[trackingId] = true;
             }
 
-            var options = collection.map(function (element) {
-              var optionValue = modelElement2value(element);
-              var optionValueHash = w11kSelectHelper.hashCode(optionValue);
-              var optionLabel = modelElement2label(element);
+            var internalOptions = externalOptions.map(function (externalOption) {
+              var value = externalOption2value(externalOption);
+              var trackingId = value2trackingId(value);
+              var label = externalOption2label(externalOption);
 
               var selected;
-              if (viewValueHashes[optionValueHash]) {
+              if (viewValueIDs[trackingId]) {
                 selected = true;
               }
               else {
                 selected = false;
               }
 
-              return {
-                hash: optionValueHash,
-                label: optionLabel,
-                model: element,
+              var internalOption = {
+                trackingId: trackingId,
+                label: label,
+                model: externalOption,
                 selected: selected
               };
+
+              return internalOption;
             });
 
-            return options;
+            return internalOptions;
           }
 
           var optionsAlreadyRead;
@@ -566,20 +578,20 @@ angular.module('w11k.select').directive('w11kSelect', [
             optionsAlreadyRead = deferred.promise;
 
             return function updateOptions() {
-              var collection = optionsExpParsed.collection(scope.$parent);
+              var externalOptions = optionsExpParsed.collection(scope.$parent);
               var viewValue = controller.$viewValue;
 
-              if (angular.isArray(collection)) {
-                options = collection2options(collection, viewValue);
+              if (angular.isArray(externalOptions)) {
+                internalOptions = externalOptions2internalOptions(externalOptions, viewValue);
 
-                optionsMap = {};
-                var i = options.length;
+                internalOptionsMap = {};
+                var i = internalOptions.length;
                 while (i--) {
-                  var option = options[i];
-                  if (optionsMap[option.hash]) {
-                    throw new Error('Duplicate hash value for options ' + option.label + ' and ' + optionsMap[option.hash].label);
+                  var option = internalOptions[i];
+                  if (internalOptionsMap[option.trackingId]) {
+                    throw new Error('Duplicate hash value for options ' + option.label + ' and ' + internalOptionsMap[option.trackingId].label);
                   }
-                  optionsMap[option.hash] = option;
+                  internalOptionsMap[option.trackingId] = option;
                 }
 
                 filterOptions();
@@ -594,19 +606,19 @@ angular.module('w11k.select').directive('w11kSelect', [
 
           // watch for changes of options collection made outside
           scope.$watchCollection(
-            function () {
+            function externalOptionsWatch() {
               return optionsExpParsed.collection(scope.$parent);
             },
-            function (newVal) {
+            function externalOptionsWatchAction(newVal) {
               if (angular.isDefined(newVal)) {
                 updateOptions();
               }
             }
           );
 
-          scope.select = function (option) {
+          scope.select = function select(option) {
             if (option.selected === false && scope.config.multiple === false) {
-              setSelected(options, false);
+              setSelected(internalOptions, false);
               option.selected = true;
 
               scope.dropdown.close();
@@ -624,7 +636,7 @@ angular.module('w11k.select').directive('w11kSelect', [
           };
 
           // called on click to a checkbox of an option
-          scope.onOptionStateClick = function ($event, option) {
+          scope.onOptionStateClick = function onOptionStateClick($event, option) {
             // we have to stop propagation, otherwise selected state will be toggled twice
           // because of click handler of list element
             $event.stopPropagation();
@@ -641,14 +653,14 @@ angular.module('w11k.select').directive('w11kSelect', [
            * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
           function setViewValue() {
-            var selectedValues = options2model(options);
+            var selectedValues = internalOptions2externalModel(internalOptions);
 
             controller.$setViewValue(selectedValues);
             updateHeader();
           }
 
           function updateNgModel() {
-            var value = options2model(options);
+            var value = internalOptions2externalModel(internalOptions);
 
             angular.forEach(controller.$parsers, function (parser) {
               value = parser(value);
@@ -666,12 +678,12 @@ angular.module('w11k.select').directive('w11kSelect', [
 
               var viewValue = controller.$viewValue;
 
-              setSelected(options, false);
+              setSelected(internalOptions, false);
 
               var i = viewValue.length;
               while (i--) {
-                var hash = w11kSelectHelper.hashCode(viewValue[i]);
-                var option = optionsMap[hash];
+                var trackingId = value2trackingId(viewValue[i]);
+                var option = internalOptionsMap[trackingId];
 
                 if (option) {
                   option.selected = true;
@@ -682,6 +694,24 @@ angular.module('w11k.select').directive('w11kSelect', [
             });
           }
 
+          function value2trackingId(value) {
+            if (optionsExpParsed.tracking !== undefined) {
+              var context = {};
+              assignValueFn(context, value);
+
+              var trackingValue = optionsExpParsed.tracking(context);
+
+              if (trackingValue === undefined) {
+                throw new Error('Couldn\'t get \'track by\' value. Please make sure to only use something in \'track by’ part of w11kSelectOptions expression, accessible from result of value part. (\'option.data\' and \'option.data.unique\' but not \'option.unique\')');
+              }
+
+              return trackingValue.toString();
+            }
+            else {
+              return w11kSelectHelper.hashCode(value);
+            }
+
+          }
 
           function external2internal(modelValue) {
             var viewValue;
@@ -756,30 +786,30 @@ angular.module('w11k.select').directive('w11kSelect', [
             }
           }
 
-          function options2model(options) {
+          function internalOptions2externalModel(options) {
             var selectedOptions = options.filter(function (option) {
-              return  option.selected;
+              return option.selected;
             });
 
-            var selectedValues = selectedOptions.map(option2value);
+            var selectedValues = selectedOptions.map(internalOption2value);
 
             return selectedValues;
           }
 
-          function option2value(option) {
-            return modelElement2value(option.model);
+          function internalOption2value(option) {
+            return externalOption2value(option.model);
           }
 
-          function modelElement2value(modelElement) {
+          function externalOption2value(option) {
             var context = {};
-            context[optionsExpParsed.item] = modelElement;
+            context[optionsExpParsed.item] = option;
 
             return optionsExpParsed.value(context);
           }
 
-          function modelElement2label(modelElement) {
+          function externalOption2label(option) {
             var context = {};
-            context[optionsExpParsed.item] = modelElement;
+            context[optionsExpParsed.item] = option;
 
             return optionsExpParsed.label(context);
           }
