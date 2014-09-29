@@ -1,5 +1,16 @@
 # w11k-select Changelog
 
+<a name="0.5.0"></a>
+## 0.5.0 (2014-09-29)
+
+
+### Features
+
+* **bower:**
+  * add support for ignoring files via 'ignore' ([200933b8](https://github.com/w11k/w11k-select/commit/200933b80920c42f40bab1c6ab1714bc272ad654))
+  * add support for 'main' files ([e70f4f17](https://github.com/w11k/w11k-select/commit/e70f4f17d14cc24edd21468a56fb49475289a4ad))
+
+
 <a name="0.4.7"></a>
 ## 0.4.7 (2014-07-21)
 
