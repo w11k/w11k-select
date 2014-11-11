@@ -7,6 +7,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -34,7 +35,7 @@ module.exports = function (grunt) {
     },
 
     clean: {
-      dist: 'dist/*'
+      dist: ['dist/*', 'temp/*']
     },
     jshint: {
       src: {
@@ -58,6 +59,16 @@ module.exports = function (grunt) {
         }
       }
     },
+    less: {
+      dist: {
+        options: {
+          paths: ['src']
+        },
+        files: {
+          'temp/w11k-select.less.css': 'src/w11k-select.less'
+        }
+      }
+    },
     copy: {
       template: {
         src: 'src/w11k-select.tpl.html',
@@ -66,6 +77,10 @@ module.exports = function (grunt) {
       sass: {
         src: 'src/w11k-select.scss',
         dest: 'dist/w11k-select.scss'
+      },
+      less: {
+        src: 'src/w11k-select.less',
+        dest: 'dist/w11k-select.less'
       },
       release: {
         files: [
@@ -131,7 +146,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('build', ['clean', 'jshint:src', 'sass', 'copy:template', 'copy:sass', 'html2js', 'concat', 'uglify']);
+  grunt.registerTask('build', ['clean', 'jshint', 'sass', 'less', 'copy:template', 'copy:sass', 'copy:less', 'html2js', 'concat', 'uglify']);
 
   grunt.registerTask('release', ['build', 'copy:release']);
 
