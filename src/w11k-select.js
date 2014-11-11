@@ -422,7 +422,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             setSelected(optionsFiltered, true);
           }
           else if (optionsFiltered.length === 1) {
-            optionsFiltered[0].selected = true;
+            scope.select(optionsFiltered[0]); //behaves like if the option was clicked using the mouse
           }
 
           setViewValue();

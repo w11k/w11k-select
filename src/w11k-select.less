@@ -1,0 +1,112 @@
+.w11k-select {
+  a:hover {
+    text-decoration: none;
+  }
+
+  .select-toggle {
+    .form-control {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      // limit witdh
+      max-width: 0;
+      min-width: 100%;
+      cursor: pointer;
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      .form-control {
+        cursor: not-allowed;
+      }
+    }
+
+    .input-group-addon {
+      font-size: 0.9em;
+    }
+  }
+
+  .dropdown-menu {
+    min-width: 100%;
+    padding: 0;
+
+    .header {
+      padding: 6px;
+      border-bottom: 1px solid gray;
+
+      .filter {
+        padding-bottom: 8px;
+
+        .clear {
+          font-size: 0.9em;
+        }
+      }
+
+      // reduce spacing of buttons
+      .controls {
+        .row {
+          margin-left: -3px;
+          margin-right: -3px;
+        }
+
+        .col-xs-6 {
+          padding-left: 3px;
+          padding-right: 3px;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+
+    .content {
+      overflow-y: auto;
+      overflow-x: hidden;
+      max-height: 500px;
+
+      ul.items {
+        padding: 6px 0;
+        margin: 0;
+        display: table;
+        width: 100%;
+
+        > li {
+          margin: 0;
+          padding: 0;
+          display: table-row;
+
+          > div {
+            display: table-cell;
+            padding: 4px;
+          }
+
+          > div.state {
+            padding-left: 12px;
+
+            input {
+              position: relative;
+              top: -1px;
+              cursor: pointer;
+            }
+          }
+
+          > div.name {
+            padding-right: 24px;
+            width: 100%;
+          }
+        }
+
+        > li.selected {
+          background-color: gray;
+        }
+
+        > li:hover {
+          background-color: gray;
+          cursor: pointer;
+        }
+
+      }
+    }
+  }
+}

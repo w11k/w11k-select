@@ -1,5 +1,20 @@
 # w11k-select Changelog
 
+<a name="0.6.0"></a>
+## 0.6.0 (2014-11-11)
+
+
+### Bug Fixes
+
+* **bower:** update dependency to w11k-dropdownToggle ([ef1aeb4c](https://github.com/w11k/w11k-select/commit/ef1aeb4c9b7677106ab8622970fba8311be26632), closes [#14](https://github.com/w11k/w11k-select/issues/14))
+* **filter:** select only one item in single selection mode ([8c928b97](https://github.com/w11k/w11k-select/commit/8c928b976f8a77b51d0b964ea069798cfa51075a), closes [#15](https://github.com/w11k/w11k-select/issues/15))
+
+
+### Features
+
+* **styling:** add LESS support ([4523b512](https://github.com/w11k/w11k-select/commit/4523b512cbff0a79e001ad02cd4b4e4f924d628a))
+
+
 <a name="0.5.0"></a>
 ## 0.5.0 (2014-09-29)
 
