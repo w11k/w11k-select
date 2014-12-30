@@ -18,6 +18,8 @@ angular.module('w11k.select').constant('w11kSelectConfig', {
   instance: {
     /** for form validation */
     required: false,
+    /** Hide checkboxes during single selection */
+    hideCheckboxes: false,
     /** single or multiple select */
     multiple: true,
     /** disable user interaction */
@@ -324,7 +326,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $timeout(function () {
               adjustHeight();
               jqDropDownMenu.css(visibility, 'visible');
-              
+
               if (scope.config.filter.active) {
                 // use timeout to open dropdown first and then set the focus,
                 // otherwise focus won't be set because element is not visible
