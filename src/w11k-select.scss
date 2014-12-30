@@ -60,10 +60,6 @@
       }
     }
 
-    .hiddenCheckboxes ul li input {
-      display: none;
-    }
-
     .content {
       overflow-y: auto;
       overflow-x: hidden;
@@ -110,6 +106,10 @@
           cursor: pointer;
         }
 
+      }
+
+      .hidden-checkboxes ul li input[type="checkbox"] {
+        display: none;
       }
     }
   }
