@@ -68,7 +68,8 @@ angular.module('w11k.select').constant('w11kSelectConfig', {
       /** static or manually calculated max height (disables internal height calculation) */
       maxHeight: undefined
     },
-    showAlwaysClear: false
+    /** when set to true, the clear-button is always visible. */
+    showClearAlways: false
   }
 });
 

@@ -1,6 +1,6 @@
 <div class="dropdown w11k-select">
   <div class="input-group select-toggle" w11k-dropdown-toggle="dropdown" ng-class="{disabled: config.disabled}">
-    <div class="input-group-addon deselect-all" ng-if="!config.disabled && (!config.required || config.showAlwaysClear) && !isEmpty()" ng-click="deselectAll($event)">
+    <div class="input-group-addon deselect-all" ng-if="!config.disabled && (!config.required || config.showClearAlways) && !isEmpty()" ng-click="deselectAll($event)">
       <i class="fa fa-times icon-deselect-all"></i>
     </div>
     <div class="form-control" ng-disabled="config.disabled">
