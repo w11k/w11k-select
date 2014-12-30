@@ -44,6 +44,7 @@
             <button class="btn btn-default" ng-click="dynamicConfig.required = !dynamicConfig.required">Toggle Required</button>
             <button class="btn btn-default" ng-click="dynamicConfig.multiple = !dynamicConfig.multiple">Toggle Multiple</button>
             <button class="btn btn-default" ng-click="dynamicConfig.showClearAlways = !dynamicConfig.showClearAlways">Toggle showClearAlways</button>
+            <button class="btn btn-default" ng-click="dynamicConfig.hideCheckboxes = !dynamicConfig.hideCheckboxes">Toggle Hide Checkboxes</button>
           </div>
         </div>
 
@@ -51,6 +52,10 @@
 
       <div class="row">
         <div class="col-sm-6">
+          <div ng-show="dynamicConfig.multiple">Multi selection</div>
+          <div ng-show="!dynamicConfig.multiple">Single selection</div>
+          <div ng-show="dynamicConfig.hideCheckboxes">Hide checkboxes: true</div>
+          <div ng-show="!dynamicConfig.hideCheckboxes">Hide checkboxes: false</div>
           <div ng-show="demoForm.$dirty">Form is dirty</div>
           <div ng-show="demoForm.$pristine">Form is pristine</div>
           <div ng-show="demoForm.$valid">Form is valid</div>

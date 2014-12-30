@@ -18,6 +18,8 @@ angular.module('w11k.select').constant('w11kSelectConfig', {
   instance: {
     /** for form validation */
     required: false,
+    /** Hide checkboxes during single selection */
+    hideCheckboxes: false,
     /** single or multiple select */
     multiple: true,
     /** disable user interaction */
