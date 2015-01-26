@@ -1,5 +1,14 @@
 # w11k-select Changelog
 
+<a name="0.6.1"></a>
+## 0.6.1 (2015-01-26)
+
+
+### Bug Fixes
+
+* **track-by:** improve hash function used to calculate ng-repeat track-by value ([03cd453e](https://github.com/w11k/w11k-select/commit/03cd453ee873ab7ee3c4c99109d53c2f6d1bf4a7), closes [#17](https://github.com/w11k/w11k-select/issues/17))
+
+
 <a name="0.6.0"></a>
 ## 0.6.0 (2014-11-11)
 
