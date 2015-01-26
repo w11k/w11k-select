@@ -324,7 +324,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             $timeout(function () {
               adjustHeight();
               jqDropDownMenu.css(visibility, 'visible');
-              
+
               if (scope.config.filter.active) {
                 // use timeout to open dropdown first and then set the focus,
                 // otherwise focus won't be set because element is not visible
@@ -478,7 +478,7 @@ angular.module('w11k.select').directive('w11kSelect', [
             }
 
             return {
-              hash: optionValueHash.toString(36),
+              hash: optionValueHash,
               label: optionLabel,
               model: element,
               selected: selected
@@ -505,6 +505,9 @@ angular.module('w11k.select').directive('w11kSelect', [
               var i = options.length;
               while (i--) {
                 var option = options[i];
+                if (optionsMap[option.hash]) {
+                  throw new Error('Duplicate hash value for options ' + option.label + ' and ' + optionsMap[option.hash].label);
+                }
                 optionsMap[option.hash] = option;
               }
 
@@ -598,7 +601,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
             var i = viewValue.length;
             while (i--) {
-              var hash = hashCode(viewValue[i]).toString(36);
+              var hash = hashCode(viewValue[i]);
               var option = optionsMap[hash];
 
               if (option) {
@@ -734,56 +737,23 @@ angular.module('w11k.select').directive('w11kSelect', [
           return dst;
         }
 
-        // inspired by https://github.com/stuartbannerman/hashcode
-        var hashCode = (function () {
-          var stringHash = function (string) {
-            var result = 0;
-            for (var i = 0; i < string.length; i++) {
-              result = (((result << 5) - result) + string.charCodeAt(i)) | 0;
-            }
-            return result;
-          };
+        var hashCode = function (value) {
+          var string;
+          if (typeof value === 'object') {
+            string = angular.toJson(value);
+          }
+          else {
+            string = value.toString();
+          }
 
-          var primitiveHash = function (primitive) {
-            var string = primitive.toString();
-            return stringHash(string);
-          };
+          var hash = 0;
+          var length = string.length;
+          for (var i = 0; i < length; i++) {
+            hash = string.charCodeAt(i) + (hash << 6) + (hash << 16) - hash;
+          }
 
-          var objectHash = function (obj) {
-            var result = 0;
-            for (var property in obj) {
-              if (obj.hasOwnProperty(property)) {
-                result += primitiveHash(property + hash(obj[property]));
-              }
-            }
-            return result;
-          };
-
-          var hash = function (value) {
-            var typeHashes = {
-              'string' : stringHash,
-              'number' : primitiveHash,
-              'boolean' : primitiveHash,
-              'object' : objectHash
-              // functions are excluded because they are not representative of the state of an object
-              // types 'undefined' or 'null' will have a hash of 0
-            };
-
-            var type = typeof value;
-
-            if (value === null || value === undefined) {
-              return 0;
-            }
-            else if (typeHashes[type] !== undefined) {
-              return typeHashes[type](value) + primitiveHash(type);
-            }
-            else {
-              return 0;
-            }
-          };
-
-          return hash;
-        })();
+          return hash.toString(36);
+        };
       }
     };
   }
