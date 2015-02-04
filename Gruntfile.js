@@ -14,6 +14,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-conventional-changelog');
+  grunt.loadNpmTasks('grunt-dgeni');
 
   var bowerrc = grunt.file.exists('./.bowerrc') ? grunt.file.readJSON('./.bowerrc') : { 'json': 'bower.json' };
 
@@ -140,13 +141,24 @@ module.exports = function (grunt) {
         createTag: false,
         push: false
       }
+    },
+    dgeni: {
+      options: {
+        // Specify the base path used when resolving relative paths to source files
+        basePath: ''/*,
+        packages: ['dgeni-packages/ngdoc']*/
+      },
+      // Process all js files in `src` and its subfolders ...
+      src: ['src/**/*.js'],
+      // Specify where write our generated doc files directory
+      dest: './doc'
     }
   });
 
 
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('build', ['clean', 'jshint', 'sass', 'less', 'copy:template', 'copy:sass', 'copy:less', 'html2js', 'concat', 'uglify']);
+  grunt.registerTask('build', ['clean', 'jshint', 'sass', 'less', 'copy:template', 'copy:sass', 'copy:less', 'dgeni', 'html2js', 'concat', 'uglify']);
 
   grunt.registerTask('release', ['build', 'copy:release']);
 
