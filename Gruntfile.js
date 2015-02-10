@@ -14,6 +14,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-conventional-changelog');
+  grunt.loadNpmTasks('grunt-ngdocs');
 
   var bowerrc = grunt.file.exists('./.bowerrc') ? grunt.file.readJSON('./.bowerrc') : { 'json': 'bower.json' };
 
@@ -140,11 +141,14 @@ module.exports = function (grunt) {
         createTag: false,
         push: false
       }
+    },
+    ngdocs: {
+      all: ['src/**/*.js']
     }
   });
 
 
-  grunt.registerTask('default', ['build']);
+  grunt.registerTask('default', ['ngdocs' ,'build']);
 
   grunt.registerTask('build', ['clean', 'jshint', 'sass', 'less', 'copy:template', 'copy:sass', 'copy:less', 'html2js', 'concat', 'uglify']);
 
