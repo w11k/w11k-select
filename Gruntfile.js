@@ -145,13 +145,13 @@ module.exports = function (grunt) {
     dgeni: {
       options: {
         // Specify the base path used when resolving relative paths to source files
-        basePath: ''/*,
-        packages: ['dgeni-packages/ngdoc']*/
+        basePath: 'src/',
+        packages: [/*'dgeni-packages/angularjs', 'dgeni-packages/jsdoc', 'dgeni-packages/nunjucks'*/]
       },
       // Process all js files in `src` and its subfolders ...
-      src: ['src/**/*.js'],
+      src: ['**/*.js'],
       // Specify where write our generated doc files directory
-      dest: './doc'
+      dest: 'docs/'
     }
   });
 

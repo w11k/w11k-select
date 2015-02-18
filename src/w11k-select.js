@@ -6,6 +6,79 @@ angular.module('w11k.select', [
   'w11k.select.template'
 ]);
 
+/**
+ * @ngdoc service
+ * @name w11k.select.constant:w11kSelectConfig
+ *
+ * @description
+ * The configuration object. When no other configuration is given, w11k select uses this defaults.
+ *
+ * <pre>
+ * {
+ *    common: {
+          // path to template
+          // do not change if you're using w11k-select.tpl.js
+          // adjust if you want to use your own template or
+          templateUrl: 'w11k-select.tpl.html'
+      },
+      instance: {
+        // for form validation
+        required: false,
+        // Hide checkboxes during single selection
+        hideCheckboxes: false,
+        // single or multiple select
+        multiple: true,
+        // disable user interaction
+        disabled: false,
+        // all the configuration for the header (visible if dropdown closed)
+        header: {
+          // text to show if no item selected (plain text, no evaluation, no data-binding)
+          placeholder: '',
+          // text to show if item(s) selected (expression, evaluated against user scope)
+          // make sure to enclose your expression withing quotes, otherwise it will be evaluated too early
+          // default: undefined evaluates to a comma separated representation of selected items
+          // example: ng-model="options.selected" w11k-select-config="{header: {placeholder: 'options.selected.length'}}"
+
+          text: undefined
+      },
+      // all the configuration for the filter section within the dropdown
+      filter: {
+        // activate filter input to search for options
+        active: true,
+        // text to show if no filter is applied
+        placeholder: 'Filter',
+        // 'select all filtered options' button
+        select: {
+        // show select all button
+          active: true,
+          // label for select all button
+          // default: undefined evaluates to 'all'
+
+          text: undefined
+        },
+        // 'deselect all filtered options' button
+        deselect: {
+          // show deselect all button
+          active: true,
+          // label for deselect all button
+          // default: undefined evaluates to 'none'
+
+          text: undefined
+        }
+      },
+      // values for dynamically calculated styling of dropdown
+      style: {
+        // margin-bottom for automatic height adjust
+        marginBottom: '10px',
+        // static or manually calculated max height (disables internal height calculation)
+        maxHeight: undefined
+      },
+      // when set to true, the clear-button is always visible.
+      showClearAlways: false
+      }
+  }
+ * </pre>
+ */
 angular.module('w11k.select').constant('w11kSelectConfig', {
   common: {
     /**
@@ -75,6 +148,13 @@ angular.module('w11k.select').constant('w11kSelectConfig', {
   }
 });
 
+/**
+ * @ngdoc service
+ * @name w11k.select.factory:optionParser
+ *
+ * @description
+ * The optionParser do the parsing of the options string.
+ */
 angular.module('w11k.select').factory('optionParser', ['$parse', function ($parse) {
 
   //                     value      as   label     for   item                    in   collection
@@ -101,6 +181,52 @@ angular.module('w11k.select').factory('optionParser', ['$parse', function ($pars
   };
 }]);
 
+/**
+ * @ngdoc directive
+ * @name w11k.select.directive:w11kSelect
+ * @restrict A
+ * @description
+ *
+ * The directive to display the w11k select.
+ *
+ * @param {Object|string|Array} w11k-select-config The config object.
+ * <pre>
+ // reference an object or array from scope:
+ w11k-select-config="config"
+ // define an object with an object literal:
+ w11k-select-config="{ required: true }"
+ // define an array via literal referencing an object from scope and define an object
+ w11k-select-config="[commonConfig, { multiple: false }]"
+ * </pre>
+ * @param {string} w11k-select-options String to describe what to select.
+ * @param {Object} ng-model The selected value(s) are bound to ng-model.
+ *
+ * @usage
+ <div w11k-select
+ w11k-select-config="config"
+ w11k-select-options="option.value as option.label for option in options.data"
+ ng-model="selected.data"
+ >
+ </div>
+ *
+ * @example
+ * <example name="select" module="demo" animation="true">
+ *     <!-- doesn't work so far -->
+ *     <file name="index.html">
+ *         <div w11k-select
+ *            w11k-select-config="config"
+ *            w11k-select-options="option for option in options.data"
+ *            ng-model="selected.data"
+ *         >
+ *         </div>
+ *         <div>
+ *             Your selection is {{selected}}
+ *         </div>
+ *
+ *     </file>
+ * </example>
+ *
+ */
 angular.module('w11k.select').directive('w11kSelect', [
   'w11kSelectConfig', '$parse', '$document', 'optionParser', '$filter', '$timeout', '$window', '$q',
   function (w11kSelectConfig, $parse, $document, optionParser, $filter, $timeout, $window, $q) {
@@ -183,7 +309,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         function checkSelection() {
           if (scope.config.multiple === false) {
             var selectedOptions = options.filter(function (option) {
-              return  option.selected;
+              return option.selected;
             });
 
             if (selectedOptions.length > 0) {
@@ -619,7 +745,6 @@ angular.module('w11k.select').directive('w11kSelect', [
         }
 
 
-
         function external2internal(modelValue) {
           var viewValue;
 
@@ -659,7 +784,7 @@ angular.module('w11k.select').directive('w11kSelect', [
           var valid = false;
 
           if (scope.config.required === true && viewValue.length > 0) {
-            valid =  true;
+            valid = true;
           }
           else if (scope.config.required === false) {
             valid = true;
@@ -700,7 +825,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         function options2model(options) {
           var selectedOptions = options.filter(function (option) {
-            return  option.selected;
+            return option.selected;
           });
 
           var selectedValues = selectedOptions.map(option2value);
@@ -763,11 +888,25 @@ angular.module('w11k.select').directive('w11kSelect', [
   }
 ]);
 
+/**
+ * @ngdoc directive
+ * @name w11k.select.directive:infiniteScroll
+ *
+ * @param {function()} Handler A function.
+ *
+ * @description
+ * Directive to the infinite scroll feature. It is used internely form w11.select.
+ *
+ * @usage
+ *  <div infiniteScroll="handler()">
+ *    ...
+ *  </div>
+ */
 angular.module('w11k.select').directive('infiniteScroll', ['$timeout', function ($timeout) {
   return {
     link: function (scope, element, attrs) {
-      var scrollDistance   = 0;
-      var scrollEnabled    = true;
+      var scrollDistance = 0;
+      var scrollEnabled = true;
       var checkImmediatelyWhenEnabled = false;
 
       var onDomScrollHandler = function () {
@@ -784,8 +923,8 @@ angular.module('w11k.select').directive('infiniteScroll', ['$timeout', function 
 
       var onScrollHandler = function (apply) {
 
-        var distanceToBottom  = content.clientHeight - scrollContainer.scrollTop;
-        var shouldScroll  = distanceToBottom <= scrollContainer.clientHeight * (scrollDistance + 1);
+        var distanceToBottom = content.clientHeight - scrollContainer.scrollTop;
+        var shouldScroll = distanceToBottom <= scrollContainer.clientHeight * (scrollDistance + 1);
 
         if (shouldScroll && scrollEnabled) {
           if (apply) {
