@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-    <div class="content" infinite-scroll="showMoreOptions()" infinite-scroll-distance="0.5">
+    <div class="content" w11k-select-infinite-scroll="showMoreOptions()" w11k-select-infinite-scroll-distance="0.5">
       <ul class="items list-unstyled">
         <li bindonce="option" ng-repeat="option in options.visible track by option.hash" ng-click="select(option)" ng-class="{'selected': option.selected }">
           <div class="state">

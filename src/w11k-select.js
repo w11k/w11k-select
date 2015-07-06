@@ -759,7 +759,7 @@ angular.module('w11k.select').directive('w11kSelect', [
   }
 ]);
 
-angular.module('w11k.select').directive('infiniteScroll', ['$timeout', function ($timeout) {
+angular.module('w11k.select').directive('w11kSelectInfiniteScroll', ['$timeout', function ($timeout) {
   return {
     link: function (scope, element, attrs) {
       var scrollDistance   = 0;
@@ -786,11 +786,11 @@ angular.module('w11k.select').directive('infiniteScroll', ['$timeout', function 
         if (shouldScroll && scrollEnabled) {
           if (apply) {
             scope.$apply(function () {
-              scope.$eval(attrs.infiniteScroll);
+              scope.$eval(attrs.w11kSelectInfiniteScroll);
             });
           }
           else {
-            scope.$eval(attrs.infiniteScroll);
+            scope.$eval(attrs.w11kSelectInfiniteScroll);
           }
         }
         else if (shouldScroll) {
@@ -798,12 +798,12 @@ angular.module('w11k.select').directive('infiniteScroll', ['$timeout', function 
         }
       };
 
-      attrs.$observe('infiniteScrollDistance', function (value) {
+      attrs.$observe('w11kSelectInfiniteScrollDistance', function (value) {
         scrollDistance = parseFloat(value);
       });
 
 
-      attrs.$observe('infiniteScrollDisabled', function (value) {
+      attrs.$observe('w11kSelectInfiniteScrollDisabled', function (value) {
         scrollEnabled = !value;
 
         if (scrollEnabled && checkImmediatelyWhenEnabled) {
@@ -818,8 +818,8 @@ angular.module('w11k.select').directive('infiniteScroll', ['$timeout', function 
       });
 
       return $timeout(function () {
-        if (attrs.infiniteScrollImmediateCheck) {
-          if (scope.$eval(attrs.infiniteScrollImmediateCheck)) {
+        if (attrs.w11kSelectInfiniteScrollImmediateCheck) {
+          if (scope.$eval(attrs.w11kSelectInfiniteScrollImmediateCheck)) {
             onScrollHandler();
           }
         }
