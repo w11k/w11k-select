@@ -1,5 +1,14 @@
 # w11k-select Changelog
 
+<a name="0.6.2"></a>
+## 0.6.2 (2015-07-06)
+
+
+### Bug Fixes
+
+* **infinite-scroll:** rename directive to w11k-select-infinite-scroll to avoid name-conflicts ([4044bef0](https://github.com/w11k/w11k-select/commit/4044bef053bcd43ad58515b5bd334ac17c3c4916), closes [#20](https://github.com/w11k/w11k-select/issues/20))
+
+
 <a name="0.6.1"></a>
 ## 0.6.1 (2015-01-26)
 
