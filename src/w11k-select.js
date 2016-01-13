@@ -107,7 +107,9 @@ angular.module('w11k.select').directive('w11kSelect', [
       restrict: 'A',
       replace: false,
       templateUrl: w11kSelectConfig.common.templateUrl,
-      scope: {},
+      scope: {
+        onClose: '&'
+      },
       require: 'ngModel',
       link: function (scope, element, attrs, controller) {
 
@@ -342,6 +344,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
             $timeout(function () {
               resetHeight();
+              scope.onClose();
             });
             $document.off('keyup', onEscPressed);
             jqWindow.off('resize', adjustHeight);
