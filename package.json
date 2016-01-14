@@ -1,6 +1,6 @@
 {
   "name": "w11k-select",
-  "version": "0.6.2",
+  "version": "0.6.3",
 
   "description": "single- and multi-select directive for angularjs",
   "keywords": [ "angular", "angularjs", "directive", "select", "multi-select", "bootstrap" ],
