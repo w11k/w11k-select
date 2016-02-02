@@ -240,9 +240,9 @@ angular.module('w11k.select').directive('w11kSelect', [
         );
 
         function applyConfig() {
-          checkSelection();
           optionsAlreadyRead.then(function () {
-            setViewValue();
+              checkSelection();
+              updateNgModel();
           });
 
           if (!configRead) {
