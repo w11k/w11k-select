@@ -192,7 +192,12 @@ angular.module('w11k.select').directive('w11kSelect', [
       templateUrl: w11kSelectConfig.common.templateUrl,
       scope: {},
       require: 'ngModel',
-      link: function (scope, element, attrs, controller) {
+      compile: function (tElement, tAttrs) {
+        var configExpParsed = $parse(tAttrs.w11kSelectConfig);
+        var optionsExpParsed = w11kSelectHelper.parseOptions(tAttrs.w11kSelectOptions);
+        var ngModelSetter = $parse(tAttrs.ngModel).assign;
+
+        return function (scope, element, attrs, controller) {
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
          * internal model
@@ -218,7 +223,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         scope.$watch(
           function () {
-            return scope.$parent.$eval(attrs.w11kSelectConfig);
+              return configExpParsed(scope.$parent);
           },
           function (newConfig) {
             if (angular.isArray(newConfig)) {
@@ -506,9 +511,6 @@ angular.module('w11k.select').directive('w11kSelect', [
          * options
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        var optionsExp = attrs.w11kSelectOptions;
-        var optionsExpParsed = w11kSelectHelper.parseOptions(optionsExp);
-
         function collection2options(collection, viewValue) {
           var viewValueHashes = {};
 
@@ -629,8 +631,6 @@ angular.module('w11k.select').directive('w11kSelect', [
           controller.$setViewValue(selectedValues);
           updateHeader();
         }
-
-        var ngModelSetter = $parse(attrs.ngModel).assign;
 
         function updateNgModel() {
           var value = options2model(options);
@@ -768,6 +768,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
           return optionsExpParsed.label(context);
         }
+        };
       }
     };
   }
