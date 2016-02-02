@@ -75,35 +75,114 @@ angular.module('w11k.select').constant('w11kSelectConfig', {
   }
 });
 
-angular.module('w11k.select').factory('optionParser', ['$parse', function ($parse) {
+angular.module('w11k.select').factory('w11kSelectHelper', ['$parse', function ($parse) {
 
   //                     value      as   label     for   item                    in   collection
   var OPTIONS_EXP = /^\s*(.*?)(?:\s+as\s+(.*?))?\s+for\s+(?:([\$\w][\$\w\d]*))\s+in\s+(.*)$/;
 
-  return {
-    parse: function (input) {
+  function extendDeep(dst) {
+    angular.forEach(arguments, function (obj) {
+      if (obj !== dst) {
+        angular.forEach(obj, function (value, key) {
+          if (dst[key] && dst[key].constructor && dst[key].constructor === Object) {
+            extendDeep(dst[key], value);
+          } else {
+            dst[key] = value;
+          }
+        });
+      }
+    });
+    return dst;
+  }
 
-      var match = input.match(OPTIONS_EXP);
-      if (!match) {
-        var expected = '"value" [as "label"] for "item" in "collection"';
-        throw new Error('Expected options in form of \'' + expected + '\' but got "' + input + '".');
+  function hashCode(value) {
+    var string;
+    if (typeof value === 'object') {
+      string = angular.toJson(value);
+    }
+    else {
+      string = value.toString();
+    }
+
+    var hash = 0;
+    var length = string.length;
+    for (var i = 0; i < length; i++) {
+      hash = string.charCodeAt(i) + (hash << 6) + (hash << 16) - hash;
+    }
+
+    return hash.toString(36);
+  }
+
+  function parseOptions(input) {
+
+    var match = input.match(OPTIONS_EXP);
+    if (!match) {
+      var expected = '"value" [as "label"] for "item" in "collection"';
+      throw new Error('Expected options in form of \'' + expected + '\' but got "' + input + '".');
+    }
+
+    var result = {
+      value: $parse(match[1]),
+      label: $parse(match[2] || match[1]),
+      item: match[3],
+      collection: $parse(match[4])
+    };
+
+    return result;
+  }
+
+  function getParent(element, selector) {
+    // with jQuery
+    if (angular.isFunction(element.parents)) {
+      var container = element.parents(selector);
+      if (container.length > 0) {
+        return container[0];
       }
 
-      var result = {
-        value: $parse(match[1]),
-        label: $parse(match[2] || match[1]),
-        item: match[3],
-        collection: $parse(match[4])
-      };
-
-      return result;
+      return;
     }
+
+    // without jQuery
+    var matchesSelector = 'MatchesSelector';
+    var matchFunctions = [
+      'matches',
+      'matchesSelector',
+      'moz' + matchesSelector,
+      'webkit' + matchesSelector,
+      'ms' + matchesSelector,
+      'o' + matchesSelector
+    ];
+
+    for (var index in matchFunctions) {
+      var matchFunction = matchFunctions[index];
+      if (angular.isFunction(element[0][matchFunction])) {
+        var parent1 = element[0].parentNode;
+        while (parent1 !== $document[0]) {
+          if (parent1[matchFunction](selector)) {
+            return parent1;
+          }
+          parent1 = parent1.parentNode;
+        }
+
+        return;
+      }
+    }
+
+    return;
+  }
+
+
+  return {
+    parseOptions: parseOptions,
+    hashCode: hashCode,
+    extendDeep: extendDeep,
+    getParent: getParent
   };
 }]);
 
 angular.module('w11k.select').directive('w11kSelect', [
-  'w11kSelectConfig', '$parse', '$document', 'optionParser', '$filter', '$timeout', '$window', '$q',
-  function (w11kSelectConfig, $parse, $document, optionParser, $filter, $timeout, $window, $q) {
+  'w11kSelectConfig', '$parse', '$document', 'w11kSelectHelper', '$filter', '$timeout', '$window', '$q',
+  function (w11kSelectConfig, $parse, $document, w11kSelectHelper, $filter, $timeout, $window, $q) {
 
     var jqWindow = angular.element($window);
 
@@ -143,11 +222,11 @@ angular.module('w11k.select').directive('w11kSelect', [
           },
           function (newConfig) {
             if (angular.isArray(newConfig)) {
-              extendDeep.apply(null, [scope.config].concat(newConfig));
+              w11kSelectHelper.extendDeep.apply(null, [scope.config].concat(newConfig));
               applyConfig();
             }
             else if (angular.isObject(newConfig)) {
-              extendDeep(scope.config, newConfig);
+              w11kSelectHelper.extendDeep(scope.config, newConfig);
               applyConfig();
             }
           },
@@ -197,45 +276,6 @@ angular.module('w11k.select').directive('w11kSelect', [
          * dropdown
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        function getParent(element, selector) {
-          // with jQuery
-          if (angular.isFunction(element.parents)) {
-            var container = element.parents(selector);
-            if (container.length > 0) {
-              return container[0];
-            }
-
-            return;
-          }
-
-          // without jQuery
-          var matchesSelector = 'MatchesSelector';
-          var matchFunctions = [
-            'matches',
-            'matchesSelector',
-            'moz' + matchesSelector,
-            'webkit' + matchesSelector,
-            'ms' + matchesSelector,
-            'o' + matchesSelector
-          ];
-
-          for (var index in matchFunctions) {
-            var matchFunction = matchFunctions[index];
-            if (angular.isFunction(element[0][matchFunction])) {
-              var parent1 = element[0].parentNode;
-              while (parent1 !== $document[0]) {
-                if (parent1[matchFunction](selector)) {
-                  return parent1;
-                }
-                parent1 = parent1.parentNode;
-              }
-
-              return;
-            }
-          }
-
-          return;
-        }
 
         function onEscPressed(event) {
           if (event.keyCode === 27) {
@@ -307,7 +347,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         var visibility = 'visibility';
         var jqDropDownMenu = angular.element(element[0].querySelector('.dropdown-menu'));
         var domDropDownContent = element[0].querySelector('.dropdown-menu .content');
-        var domHeightAdjustContainer = getParent(element, '.w11k-select-adjust-height-to');
+        var domHeightAdjustContainer = w11kSelectHelper.getParent(element, '.w11k-select-adjust-height-to');
         var jqHeaderText = angular.element(element[0].querySelector('.header-text'));
 
         scope.dropdown = {
@@ -457,20 +497,20 @@ angular.module('w11k.select').directive('w11kSelect', [
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         var optionsExp = attrs.w11kSelectOptions;
-        var optionsExpParsed = optionParser.parse(optionsExp);
+        var optionsExpParsed = w11kSelectHelper.parseOptions(optionsExp);
 
         function collection2options(collection, viewValue) {
           var viewValueHashes = {};
 
           var i = viewValue.length;
           while (i--) {
-            var hash = hashCode(viewValue[i]);
+            var hash = w11kSelectHelper.hashCode(viewValue[i]);
             viewValueHashes[hash] = true;
           }
 
           var options = collection.map(function (element) {
             var optionValue = modelElement2value(element);
-            var optionValueHash = hashCode(optionValue);
+            var optionValueHash = w11kSelectHelper.hashCode(optionValue);
             var optionLabel = modelElement2label(element);
 
             var selected;
@@ -605,7 +645,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
             var i = viewValue.length;
             while (i--) {
-              var hash = hashCode(viewValue[i]);
+              var hash = w11kSelectHelper.hashCode(viewValue[i]);
               var option = optionsMap[hash];
 
               if (option) {
@@ -617,7 +657,6 @@ angular.module('w11k.select').directive('w11kSelect', [
             updateHeader();
           });
         }
-
 
 
         function external2internal(modelValue) {
@@ -725,39 +764,6 @@ angular.module('w11k.select').directive('w11kSelect', [
 
           return optionsExpParsed.label(context);
         }
-
-        function extendDeep(dst) {
-          angular.forEach(arguments, function (obj) {
-            if (obj !== dst) {
-              angular.forEach(obj, function (value, key) {
-                if (dst[key] && dst[key].constructor && dst[key].constructor === Object) {
-                  extendDeep(dst[key], value);
-                } else {
-                  dst[key] = value;
-                }
-              });
-            }
-          });
-          return dst;
-        }
-
-        var hashCode = function (value) {
-          var string;
-          if (typeof value === 'object') {
-            string = angular.toJson(value);
-          }
-          else {
-            string = value.toString();
-          }
-
-          var hash = 0;
-          var length = string.length;
-          for (var i = 0; i < length; i++) {
-            hash = string.charCodeAt(i) + (hash << 6) + (hash << 16) - hash;
-          }
-
-          return hash.toString(36);
-        };
       }
     };
   }
