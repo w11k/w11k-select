@@ -197,7 +197,8 @@ angular.module('w11k.select').directive('w11kSelect', [
         var optionsExpParsed = w11kSelectHelper.parseOptions(tAttrs.w11kSelectOptions);
         var ngModelSetter = $parse(tAttrs.ngModel).assign;
 
-        return function (scope, element, attrs, controller) {
+        return function (scope, iElement, iAttrs, controller) {
+          var domElement = iElement[0];
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
          * internal model
@@ -245,22 +246,25 @@ angular.module('w11k.select').directive('w11kSelect', [
           });
 
           if (!configRead) {
+              updateStaticTexts();
+              configRead = true;
+            }
+          }
+
+          function updateStaticTexts() {
             if (scope.config.filter.select.active && scope.config.filter.select.text) {
-              var jqSelectFilteredButton = angular.element(element[0].querySelector('.select-filtered-text'));
-              jqSelectFilteredButton.text(scope.config.filter.select.text);
+              var selectFilteredButton = domElement.querySelector('.select-filtered-text');
+              selectFilteredButton.textContent = scope.config.filter.select.text;
             }
 
             if (scope.config.filter.deselect.active && scope.config.filter.deselect.text) {
-              var jqDeselectFilteredButton = angular.element(element[0].querySelector('.deselect-filtered-text'));
-              jqDeselectFilteredButton.text(scope.config.filter.deselect.text);
+              var deselectFilteredButton = domElement.querySelector('.deselect-filtered-text');
+              deselectFilteredButton.textContent = scope.config.filter.deselect.text;
             }
 
             if (scope.config.header.placeholder) {
-              var jqHeaderPlaceholder = angular.element(element[0].querySelector('.header-placeholder'));
-              jqHeaderPlaceholder.text(scope.config.header.placeholder);
-            }
-
-            configRead = true;
+              var headerPlaceholder = domElement.querySelector('.header-placeholder');
+              headerPlaceholder.textContent = scope.config.header.placeholder;
           }
         }
 
@@ -349,11 +353,10 @@ angular.module('w11k.select').directive('w11kSelect', [
           return maxHeight;
         }
 
-        var visibility = 'visibility';
-        var jqDropDownMenu = angular.element(element[0].querySelector('.dropdown-menu'));
-        var domDropDownContent = element[0].querySelector('.dropdown-menu .content');
-        var domHeightAdjustContainer = w11kSelectHelper.getParent(element, '.w11k-select-adjust-height-to');
-        var jqHeaderText = angular.element(element[0].querySelector('.header-text'));
+          var domDropDownMenu = domElement.querySelector('.dropdown-menu');
+          var domDropDownContent = domElement.querySelector('.dropdown-menu .content');
+          var domHeightAdjustContainer = w11kSelectHelper.getParent(iElement, '.w11k-select-adjust-height-to');
+          var domHeaderText = domElement.querySelector('.header-text');
 
         scope.dropdown = {
           onOpen: function ($event) {
@@ -369,16 +372,16 @@ angular.module('w11k.select').directive('w11kSelect', [
 
             $document.on('keyup', onEscPressed);
 
-            jqDropDownMenu.css(visibility, 'hidden');
+              domDropDownMenu.style.visibility = 'hidden';
             $timeout(function () {
               adjustHeight();
-              jqDropDownMenu.css(visibility, 'visible');
+                domDropDownMenu.style.visibility = 'visible';
 
               if (scope.config.filter.active) {
                 // use timeout to open dropdown first and then set the focus,
-                // otherwise focus won't be set because element is not visible
+                  // otherwise focus won't be set because iElement is not visible
                 $timeout(function () {
-                  element[0].querySelector('.dropdown-menu input').focus();
+                    iElement[0].querySelector('.dropdown-menu input').focus();
                 });
               }
             });
@@ -414,7 +417,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
         function updateHeader() {
           if (angular.isDefined(scope.config.header.text)) {
-            jqHeaderText.text(scope.$parent.$eval(scope.config.header.text));
+              domHeaderText.textContent = scope.$parent.$eval(scope.config.header.text);
           }
           else {
             var optionsSelected = options.filter(function (option) {
@@ -425,7 +428,7 @@ angular.module('w11k.select').directive('w11kSelect', [
               return option.label;
             });
 
-            jqHeaderText.text(selectedOptionsLabels.join(', '));
+              domHeaderText.textContent = selectedOptionsLabels.join(', ');
           }
         }
 
