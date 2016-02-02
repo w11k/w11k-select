@@ -653,7 +653,6 @@ angular.module('w11k.select').directive('w11kSelect', [
               }
             }
 
-            validateRequired(viewValue);
             updateHeader();
           });
         }
@@ -671,8 +670,6 @@ angular.module('w11k.select').directive('w11kSelect', [
           else {
             viewValue = [];
           }
-
-          validateRequired(viewValue);
 
           return viewValue;
         }
@@ -695,19 +692,16 @@ angular.module('w11k.select').directive('w11kSelect', [
         }
 
         function validateRequired(viewValue) {
-          var valid = false;
 
-          if (scope.config.required === true && viewValue.length > 0) {
-            valid =  true;
-          }
-          else if (scope.config.required === false) {
-            valid = true;
+          if (scope.config.multiple === true && scope.config.required === true && viewValue.length === 0) {
+            return false;
           }
 
-          controller.$setValidity('required', valid);
-          if (valid) {
-            return viewValue;
+          if (scope.config.multiple === false && scope.config.required === true && viewValue === undefined) {
+            return false;
           }
+
+          return true;
         }
 
         function isEmpty() {
@@ -722,7 +716,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         controller.$render = render;
         controller.$formatters.push(external2internal);
 
-        controller.$parsers.push(validateRequired);
+        controller.$validators.required = validateRequired;
         controller.$parsers.push(internal2external);
 
 
