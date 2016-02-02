@@ -397,6 +397,16 @@ angular.module('w11k.select').directive('w11kSelect', [
           jqWindow.off('resize', adjustHeight);
         });
 
+        scope.onKeyPressedOnDropDownToggle = function ($event) {
+          // enter or space
+          if ($event.keyCode === 13 || $event.keyCode === 32) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            scope.dropdown.toggle();
+          }
+        };
+
         function updateHeader() {
           if (angular.isDefined(scope.config.header.text)) {
             jqHeaderText.text(scope.$parent.$eval(scope.config.header.text));

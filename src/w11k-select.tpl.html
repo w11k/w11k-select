@@ -7,7 +7,7 @@
       <span class="header-placeholder text-muted" ng-show="isEmpty()">Filter</span>
       <span class="header-text" ng-hide="isEmpty()"></span>
     </div>
-    <div class="input-group-addon">
+    <div class="input-group-addon" tabindex="0" ng-keypress="onKeyPressedOnDropDownToggle($event)">
       <i class="fa" ng-class="{ 'fa-chevron-down': !dropdown.isOpen(), 'fa-chevron-up': dropdown.isOpen(), 'icon-dropdown-open': !dropdown.isOpen(), 'icon-dropdown-closed': dropdown.isOpen() }"></i>
     </div>
   </div>
