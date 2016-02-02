@@ -200,52 +200,52 @@ angular.module('w11k.select').directive('w11kSelect', [
         return function (scope, iElement, iAttrs, controller) {
           var domElement = iElement[0];
 
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-         * internal model
-         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+          /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+           * internal model
+           * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        var hasBeenOpened = false;
-        var options = [];
-        var optionsMap = {};
-        var optionsFiltered = [];
+          var hasBeenOpened = false;
+          var options = [];
+          var optionsMap = {};
+          var optionsFiltered = [];
 
-        scope.options = {
-          visible: []
-        };
+          scope.options = {
+            visible: []
+          };
 
-        scope.filter = {
-          values: {}
-        };
+          scope.filter = {
+            values: {}
+          };
 
-        scope.config = angular.copy(w11kSelectConfig.instance);
+          scope.config = angular.copy(w11kSelectConfig.instance);
 
-        // marker to read some parts of the config only once
-        var configRead = false;
+          // marker to read some parts of the config only once
+          var configRead = false;
 
-        scope.$watch(
-          function () {
+          scope.$watch(
+            function () {
               return configExpParsed(scope.$parent);
-          },
-          function (newConfig) {
-            if (angular.isArray(newConfig)) {
-              w11kSelectHelper.extendDeep.apply(null, [scope.config].concat(newConfig));
-              applyConfig();
-            }
-            else if (angular.isObject(newConfig)) {
-              w11kSelectHelper.extendDeep(scope.config, newConfig);
-              applyConfig();
-            }
-          },
-          true
-        );
+            },
+            function (newConfig) {
+              if (angular.isArray(newConfig)) {
+                w11kSelectHelper.extendDeep.apply(null, [scope.config].concat(newConfig));
+                applyConfig();
+              }
+              else if (angular.isObject(newConfig)) {
+                w11kSelectHelper.extendDeep(scope.config, newConfig);
+                applyConfig();
+              }
+            },
+            true
+          );
 
-        function applyConfig() {
-          optionsAlreadyRead.then(function () {
+          function applyConfig() {
+            optionsAlreadyRead.then(function () {
               checkSelection();
               updateNgModel();
-          });
+            });
 
-          if (!configRead) {
+            if (!configRead) {
               updateStaticTexts();
               configRead = true;
             }
@@ -265,512 +265,512 @@ angular.module('w11k.select').directive('w11kSelect', [
             if (scope.config.header.placeholder) {
               var headerPlaceholder = domElement.querySelector('.header-placeholder');
               headerPlaceholder.textContent = scope.config.header.placeholder;
-          }
-        }
-
-        function checkSelection() {
-          if (scope.config.multiple === false) {
-            var selectedOptions = options.filter(function (option) {
-              return  option.selected;
-            });
-
-            if (selectedOptions.length > 0) {
-              setSelected(selectedOptions, false);
-              selectedOptions[0].selected = true;
             }
           }
-        }
 
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-         * dropdown
-         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+          function checkSelection() {
+            if (scope.config.multiple === false) {
+              var selectedOptions = options.filter(function (option) {
+                return  option.selected;
+              });
 
-
-        function onEscPressed(event) {
-          if (event.keyCode === 27) {
-            scope.dropdown.close();
-          }
-        }
-
-        function adjustHeight() {
-          if (angular.isDefined(scope.config.style.maxHeight)) {
-            domDropDownContent.style.maxHeight = scope.style.maxHeight;
-          }
-          else {
-            var maxHeight = calculateDynamicMaxHeight();
-            domDropDownContent.style.maxHeight = maxHeight + 'px';
-
-          }
-        }
-
-        function resetHeight() {
-          domDropDownContent.style.maxHeight = '';
-        }
-
-        function calculateDynamicMaxHeight() {
-          var maxHeight;
-
-          var contentOffset = domDropDownContent.getBoundingClientRect().top;
-
-          var windowHeight = $window.innerHeight || $window.document.documentElement.clientHeight;
-
-          var containerHeight;
-          var containerOffset;
-
-          if (angular.isDefined(domHeightAdjustContainer)) {
-            containerHeight = domHeightAdjustContainer.innerHeight || domHeightAdjustContainer.clientHeight;
-            containerOffset = domHeightAdjustContainer.getBoundingClientRect().top;
-          }
-          else {
-            containerHeight = $window.innerHeight || $window.document.documentElement.clientHeight;
-            containerOffset = 0;
+              if (selectedOptions.length > 0) {
+                setSelected(selectedOptions, false);
+                selectedOptions[0].selected = true;
+              }
+            }
           }
 
-          if (scope.config.style.marginBottom.indexOf('px') < 0) {
-            throw new Error('Illegal Value for w11kSelectStyle.marginBottom');
-          }
-          var marginBottom = parseFloat(scope.config.style.marginBottom.slice(0, -2));
+          /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+           * dropdown
+           * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-          var referenceHeight;
-          var referenceOffset;
 
-          if (containerHeight + containerOffset > windowHeight) {
-            referenceHeight = windowHeight;
-            referenceOffset = 0;
-          }
-          else {
-            referenceHeight = containerHeight;
-            referenceOffset = containerOffset;
+          function onEscPressed(event) {
+            if (event.keyCode === 27) {
+              scope.dropdown.close();
+            }
           }
 
-          maxHeight = referenceHeight - (contentOffset - referenceOffset) - marginBottom;
+          function adjustHeight() {
+            if (angular.isDefined(scope.config.style.maxHeight)) {
+              domDropDownContent.style.maxHeight = scope.style.maxHeight;
+            }
+            else {
+              var maxHeight = calculateDynamicMaxHeight();
+              domDropDownContent.style.maxHeight = maxHeight + 'px';
 
-          var minHeightFor3Elements = 93;
-          if (maxHeight < minHeightFor3Elements) {
-            maxHeight = minHeightFor3Elements;
+            }
           }
 
-          return maxHeight;
-        }
+          function resetHeight() {
+            domDropDownContent.style.maxHeight = '';
+          }
+
+          function calculateDynamicMaxHeight() {
+            var maxHeight;
+
+            var contentOffset = domDropDownContent.getBoundingClientRect().top;
+
+            var windowHeight = $window.innerHeight || $window.document.documentElement.clientHeight;
+
+            var containerHeight;
+            var containerOffset;
+
+            if (angular.isDefined(domHeightAdjustContainer)) {
+              containerHeight = domHeightAdjustContainer.innerHeight || domHeightAdjustContainer.clientHeight;
+              containerOffset = domHeightAdjustContainer.getBoundingClientRect().top;
+            }
+            else {
+              containerHeight = $window.innerHeight || $window.document.documentElement.clientHeight;
+              containerOffset = 0;
+            }
+
+            if (scope.config.style.marginBottom.indexOf('px') < 0) {
+              throw new Error('Illegal Value for w11kSelectStyle.marginBottom');
+            }
+            var marginBottom = parseFloat(scope.config.style.marginBottom.slice(0, -2));
+
+            var referenceHeight;
+            var referenceOffset;
+
+            if (containerHeight + containerOffset > windowHeight) {
+              referenceHeight = windowHeight;
+              referenceOffset = 0;
+            }
+            else {
+              referenceHeight = containerHeight;
+              referenceOffset = containerOffset;
+            }
+
+            maxHeight = referenceHeight - (contentOffset - referenceOffset) - marginBottom;
+
+            var minHeightFor3Elements = 93;
+            if (maxHeight < minHeightFor3Elements) {
+              maxHeight = minHeightFor3Elements;
+            }
+
+            return maxHeight;
+          }
 
           var domDropDownMenu = domElement.querySelector('.dropdown-menu');
           var domDropDownContent = domElement.querySelector('.dropdown-menu .content');
           var domHeightAdjustContainer = w11kSelectHelper.getParent(iElement, '.w11k-select-adjust-height-to');
           var domHeaderText = domElement.querySelector('.header-text');
 
-        scope.dropdown = {
-          onOpen: function ($event) {
-            if (scope.config.disabled) {
-              $event.prevent();
-              return;
-            }
+          scope.dropdown = {
+            onOpen: function ($event) {
+              if (scope.config.disabled) {
+                $event.prevent();
+                return;
+              }
 
-            if (hasBeenOpened === false) {
-              hasBeenOpened = true;
-              filterOptions();
-            }
+              if (hasBeenOpened === false) {
+                hasBeenOpened = true;
+                filterOptions();
+              }
 
-            $document.on('keyup', onEscPressed);
+              $document.on('keyup', onEscPressed);
 
               domDropDownMenu.style.visibility = 'hidden';
-            $timeout(function () {
-              adjustHeight();
+              $timeout(function () {
+                adjustHeight();
                 domDropDownMenu.style.visibility = 'visible';
 
-              if (scope.config.filter.active) {
-                // use timeout to open dropdown first and then set the focus,
+                if (scope.config.filter.active) {
+                  // use timeout to open dropdown first and then set the focus,
                   // otherwise focus won't be set because iElement is not visible
-                $timeout(function () {
+                  $timeout(function () {
                     iElement[0].querySelector('.dropdown-menu input').focus();
-                });
-              }
-            });
-            jqWindow.on('resize', adjustHeight);
-          },
-          onClose: function () {
-            // important: set properties of filter.values to empty strings not to null,
-            // otherwise angular's filter won't work
-            scope.filter.values.label = '';
-
-            $timeout(function () {
-              resetHeight();
-            });
-            $document.off('keyup', onEscPressed);
-            jqWindow.off('resize', adjustHeight);
-          }
-        };
-
-        scope.$on('$destroy', function () {
-          $document.off('keyup', onEscPressed);
-          jqWindow.off('resize', adjustHeight);
-        });
-
-        scope.onKeyPressedOnDropDownToggle = function ($event) {
-          // enter or space
-          if ($event.keyCode === 13 || $event.keyCode === 32) {
-            $event.preventDefault();
-            $event.stopPropagation();
-
-            scope.dropdown.toggle();
-          }
-        };
-
-        function updateHeader() {
-          if (angular.isDefined(scope.config.header.text)) {
-              domHeaderText.textContent = scope.$parent.$eval(scope.config.header.text);
-          }
-          else {
-            var optionsSelected = options.filter(function (option) {
-              return option.selected;
-            });
-
-            var selectedOptionsLabels = optionsSelected.map(function (option) {
-              return option.label;
-            });
-
-              domHeaderText.textContent = selectedOptionsLabels.join(', ');
-          }
-        }
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-         * filter
-         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        var filter = $filter('filter');
-        var initialLimitTo = 80;
-        var increaseLimitTo = initialLimitTo * 0.5;
-
-        function filterOptions() {
-          if (hasBeenOpened) {
-            // false as third parameter: use contains to compare
-            optionsFiltered = filter(options, scope.filter.values, false);
-            scope.options.visible = optionsFiltered.slice(0, initialLimitTo);
-          }
-        }
-
-        scope.showMoreOptions = function () {
-          scope.options.visible = optionsFiltered.slice(0, scope.options.visible.length + increaseLimitTo);
-        };
-
-        scope.onFilterValueChanged = function () {
-          filterOptions();
-        };
-
-        scope.clearFilter = function () {
-          scope.filter.values = {};
-        };
-
-        scope.onKeyPressedInFilter = function ($event) {
-          // on enter
-          if ($event.keyCode === 13) {
-            $event.preventDefault();
-            $event.stopPropagation();
-
-            scope.selectFiltered();
-          }
-        };
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-         * buttons
-         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        scope.selectFiltered = function ($event) {
-          if (angular.isDefined($event)) {
-            $event.preventDefault();
-            $event.stopPropagation();
-          }
-
-          if (scope.config.multiple) {
-            setSelected(optionsFiltered, true);
-          }
-          else if (optionsFiltered.length === 1) {
-            scope.select(optionsFiltered[0]); //behaves like if the option was clicked using the mouse
-          }
-
-          setViewValue();
-        };
-
-        scope.deselectFiltered = function ($event) {
-          if (angular.isDefined($event)) {
-            $event.preventDefault();
-            $event.stopPropagation();
-          }
-
-          setSelected(optionsFiltered, false);
-          setViewValue();
-        };
-
-        scope.deselectAll = function ($event) {
-          if (angular.isDefined($event)) {
-            $event.preventDefault();
-            $event.stopPropagation();
-          }
-
-          setSelected(options, false);
-          setViewValue();
-        };
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-         * options
-         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        function collection2options(collection, viewValue) {
-          var viewValueHashes = {};
-
-          var i = viewValue.length;
-          while (i--) {
-            var hash = w11kSelectHelper.hashCode(viewValue[i]);
-            viewValueHashes[hash] = true;
-          }
-
-          var options = collection.map(function (element) {
-            var optionValue = modelElement2value(element);
-            var optionValueHash = w11kSelectHelper.hashCode(optionValue);
-            var optionLabel = modelElement2label(element);
-
-            var selected;
-            if (viewValueHashes[optionValueHash]) {
-              selected = true;
-            }
-            else {
-              selected = false;
-            }
-
-            return {
-              hash: optionValueHash,
-              label: optionLabel,
-              model: element,
-              selected: selected
-            };
-          });
-
-          return options;
-        }
-
-        var optionsAlreadyRead;
-
-        var updateOptions = (function () {
-          var deferred = $q.defer();
-          optionsAlreadyRead = deferred.promise;
-
-          return function updateOptions() {
-            var collection = optionsExpParsed.collection(scope.$parent);
-            var viewValue = controller.$viewValue;
-
-            if (angular.isArray(collection)) {
-              options = collection2options(collection, viewValue);
-
-              optionsMap = {};
-              var i = options.length;
-              while (i--) {
-                var option = options[i];
-                if (optionsMap[option.hash]) {
-                  throw new Error('Duplicate hash value for options ' + option.label + ' and ' + optionsMap[option.hash].label);
+                  });
                 }
-                optionsMap[option.hash] = option;
-              }
+              });
+              jqWindow.on('resize', adjustHeight);
+            },
+            onClose: function () {
+              // important: set properties of filter.values to empty strings not to null,
+              // otherwise angular's filter won't work
+              scope.filter.values.label = '';
 
-              filterOptions();
-
-              if (ngModelAlreadyRead) {
-                updateNgModel();
-              }
-              deferred.resolve();
+              $timeout(function () {
+                resetHeight();
+              });
+              $document.off('keyup', onEscPressed);
+              jqWindow.off('resize', adjustHeight);
             }
           };
-        })();
 
-        // watch for changes of options collection made outside
-        scope.$watchCollection(
-          function () {
-            return optionsExpParsed.collection(scope.$parent);
-          },
-          function (newVal) {
-            if (angular.isDefined(newVal)) {
-              updateOptions();
-            }
-          }
-        );
-
-        scope.select = function (option) {
-          if (option.selected === false && scope.config.multiple === false) {
-            setSelected(options, false);
-            option.selected = true;
-
-            scope.dropdown.close();
-            setViewValue();
-          }
-          else if (option.selected && scope.config.required === false && scope.config.multiple === false) {
-            option.selected = false;
-            scope.dropdown.close();
-            setViewValue();
-          }
-          else if (scope.config.multiple) {
-            option.selected = !option.selected;
-            setViewValue();
-          }
-        };
-
-        // called on click to a checkbox of an option
-        scope.onOptionStateClick = function ($event, option) {
-          // we have to stop propagation, otherwise selected state will be toggled twice
-          // because of click handler of list element
-          $event.stopPropagation();
-
-          if (option.selected && scope.config.required && scope.config.multiple === false) {
-            $event.preventDefault();
-          }
-
-          scope.select(option);
-        };
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-         * ngModel
-         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        function setViewValue() {
-          var selectedValues = options2model(options);
-
-          controller.$setViewValue(selectedValues);
-          updateHeader();
-        }
-
-        function updateNgModel() {
-          var value = options2model(options);
-
-          angular.forEach(controller.$parsers, function (parser) {
-            value = parser(value);
+          scope.$on('$destroy', function () {
+            $document.off('keyup', onEscPressed);
+            jqWindow.off('resize', adjustHeight);
           });
 
-          ngModelSetter(scope.$parent, value);
-        }
+          scope.onKeyPressedOnDropDownToggle = function ($event) {
+            // enter or space
+            if ($event.keyCode === 13 || $event.keyCode === 32) {
+              $event.preventDefault();
+              $event.stopPropagation();
 
+              scope.dropdown.toggle();
+            }
+          };
 
-        var ngModelAlreadyRead;
+          function updateHeader() {
+            if (angular.isDefined(scope.config.header.text)) {
+              domHeaderText.textContent = scope.$parent.$eval(scope.config.header.text);
+            }
+            else {
+              var optionsSelected = options.filter(function (option) {
+                return option.selected;
+              });
 
-        function render() {
-          optionsAlreadyRead.then(function () {
-            ngModelAlreadyRead = true;
+              var selectedOptionsLabels = optionsSelected.map(function (option) {
+                return option.label;
+              });
 
-            var viewValue = controller.$viewValue;
+              domHeaderText.textContent = selectedOptionsLabels.join(', ');
+            }
+          }
+
+          /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+           * filter
+           * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+          var filter = $filter('filter');
+          var initialLimitTo = 80;
+          var increaseLimitTo = initialLimitTo * 0.5;
+
+          function filterOptions() {
+            if (hasBeenOpened) {
+              // false as third parameter: use contains to compare
+              optionsFiltered = filter(options, scope.filter.values, false);
+              scope.options.visible = optionsFiltered.slice(0, initialLimitTo);
+            }
+          }
+
+          scope.showMoreOptions = function () {
+            scope.options.visible = optionsFiltered.slice(0, scope.options.visible.length + increaseLimitTo);
+          };
+
+          scope.onFilterValueChanged = function () {
+            filterOptions();
+          };
+
+          scope.clearFilter = function () {
+            scope.filter.values = {};
+          };
+
+          scope.onKeyPressedInFilter = function ($event) {
+            // on enter
+            if ($event.keyCode === 13) {
+              $event.preventDefault();
+              $event.stopPropagation();
+
+              scope.selectFiltered();
+            }
+          };
+
+          /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+           * buttons
+           * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+          scope.selectFiltered = function ($event) {
+            if (angular.isDefined($event)) {
+              $event.preventDefault();
+              $event.stopPropagation();
+            }
+
+            if (scope.config.multiple) {
+              setSelected(optionsFiltered, true);
+            }
+            else if (optionsFiltered.length === 1) {
+              scope.select(optionsFiltered[0]); //behaves like if the option was clicked using the mouse
+            }
+
+            setViewValue();
+          };
+
+          scope.deselectFiltered = function ($event) {
+            if (angular.isDefined($event)) {
+              $event.preventDefault();
+              $event.stopPropagation();
+            }
+
+            setSelected(optionsFiltered, false);
+            setViewValue();
+          };
+
+          scope.deselectAll = function ($event) {
+            if (angular.isDefined($event)) {
+              $event.preventDefault();
+              $event.stopPropagation();
+            }
 
             setSelected(options, false);
+            setViewValue();
+          };
+
+          /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+           * options
+           * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+          function collection2options(collection, viewValue) {
+            var viewValueHashes = {};
 
             var i = viewValue.length;
             while (i--) {
               var hash = w11kSelectHelper.hashCode(viewValue[i]);
-              var option = optionsMap[hash];
-
-              if (option) {
-                option.selected = true;
-              }
+              viewValueHashes[hash] = true;
             }
 
+            var options = collection.map(function (element) {
+              var optionValue = modelElement2value(element);
+              var optionValueHash = w11kSelectHelper.hashCode(optionValue);
+              var optionLabel = modelElement2label(element);
+
+              var selected;
+              if (viewValueHashes[optionValueHash]) {
+                selected = true;
+              }
+              else {
+                selected = false;
+              }
+
+              return {
+                hash: optionValueHash,
+                label: optionLabel,
+                model: element,
+                selected: selected
+              };
+            });
+
+            return options;
+          }
+
+          var optionsAlreadyRead;
+
+          var updateOptions = (function () {
+            var deferred = $q.defer();
+            optionsAlreadyRead = deferred.promise;
+
+            return function updateOptions() {
+              var collection = optionsExpParsed.collection(scope.$parent);
+              var viewValue = controller.$viewValue;
+
+              if (angular.isArray(collection)) {
+                options = collection2options(collection, viewValue);
+
+                optionsMap = {};
+                var i = options.length;
+                while (i--) {
+                  var option = options[i];
+                  if (optionsMap[option.hash]) {
+                    throw new Error('Duplicate hash value for options ' + option.label + ' and ' + optionsMap[option.hash].label);
+                  }
+                  optionsMap[option.hash] = option;
+                }
+
+                filterOptions();
+
+                if (ngModelAlreadyRead) {
+                  updateNgModel();
+                }
+                deferred.resolve();
+              }
+            };
+          })();
+
+          // watch for changes of options collection made outside
+          scope.$watchCollection(
+            function () {
+              return optionsExpParsed.collection(scope.$parent);
+            },
+            function (newVal) {
+              if (angular.isDefined(newVal)) {
+                updateOptions();
+              }
+            }
+          );
+
+          scope.select = function (option) {
+            if (option.selected === false && scope.config.multiple === false) {
+              setSelected(options, false);
+              option.selected = true;
+
+              scope.dropdown.close();
+              setViewValue();
+            }
+            else if (option.selected && scope.config.required === false && scope.config.multiple === false) {
+              option.selected = false;
+              scope.dropdown.close();
+              setViewValue();
+            }
+            else if (scope.config.multiple) {
+              option.selected = !option.selected;
+              setViewValue();
+            }
+          };
+
+          // called on click to a checkbox of an option
+          scope.onOptionStateClick = function ($event, option) {
+            // we have to stop propagation, otherwise selected state will be toggled twice
+          // because of click handler of list element
+            $event.stopPropagation();
+
+            if (option.selected && scope.config.required && scope.config.multiple === false) {
+              $event.preventDefault();
+            }
+
+            scope.select(option);
+          };
+
+          /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+           * ngModel
+           * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+          function setViewValue() {
+            var selectedValues = options2model(options);
+
+            controller.$setViewValue(selectedValues);
             updateHeader();
-          });
-        }
-
-
-        function external2internal(modelValue) {
-          var viewValue;
-
-          if (angular.isArray(modelValue)) {
-            viewValue = modelValue;
-          }
-          else if (angular.isDefined(modelValue)) {
-            viewValue = [modelValue];
-          }
-          else {
-            viewValue = [];
           }
 
-          return viewValue;
-        }
+          function updateNgModel() {
+            var value = options2model(options);
 
-        function internal2external(viewValue) {
-          if (angular.isUndefined(viewValue)) {
-            return;
+            angular.forEach(controller.$parsers, function (parser) {
+              value = parser(value);
+            });
+
+            ngModelSetter(scope.$parent, value);
           }
 
-          var modelValue;
 
-          if (scope.config.multiple) {
-            modelValue = viewValue;
+          var ngModelAlreadyRead;
+
+          function render() {
+            optionsAlreadyRead.then(function () {
+              ngModelAlreadyRead = true;
+
+              var viewValue = controller.$viewValue;
+
+              setSelected(options, false);
+
+              var i = viewValue.length;
+              while (i--) {
+                var hash = w11kSelectHelper.hashCode(viewValue[i]);
+                var option = optionsMap[hash];
+
+                if (option) {
+                  option.selected = true;
+                }
+              }
+
+              updateHeader();
+            });
           }
-          else {
-            modelValue = viewValue[0];
+
+
+          function external2internal(modelValue) {
+            var viewValue;
+
+            if (angular.isArray(modelValue)) {
+              viewValue = modelValue;
+            }
+            else if (angular.isDefined(modelValue)) {
+              viewValue = [modelValue];
+            }
+            else {
+              viewValue = [];
+            }
+
+            return viewValue;
           }
 
-          return modelValue;
-        }
+          function internal2external(viewValue) {
+            if (angular.isUndefined(viewValue)) {
+              return;
+            }
 
-        function validateRequired(viewValue) {
+            var modelValue;
 
-          if (scope.config.multiple === true && scope.config.required === true && viewValue.length === 0) {
-            return false;
+            if (scope.config.multiple) {
+              modelValue = viewValue;
+            }
+            else {
+              modelValue = viewValue[0];
+            }
+
+            return modelValue;
           }
 
-          if (scope.config.multiple === false && scope.config.required === true && viewValue === undefined) {
-            return false;
+          function validateRequired(viewValue) {
+
+            if (scope.config.multiple === true && scope.config.required === true && viewValue.length === 0) {
+              return false;
+            }
+
+            if (scope.config.multiple === false && scope.config.required === true && viewValue === undefined) {
+              return false;
+            }
+
+            return true;
           }
 
-          return true;
-        }
-
-        function isEmpty() {
-          var value = controller.$viewValue;
-          return !(angular.isArray(value) && value.length > 0);
-        }
-
-        scope.isEmpty = isEmpty;
-
-        controller.$isEmpty = isEmpty;
-
-        controller.$render = render;
-        controller.$formatters.push(external2internal);
-
-        controller.$validators.required = validateRequired;
-        controller.$parsers.push(internal2external);
-
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-         * helper functions
-         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        function setSelected(options, selected) {
-          var i = options.length;
-          while (i--) {
-            options[i].selected = selected;
+          function isEmpty() {
+            var value = controller.$viewValue;
+            return !(angular.isArray(value) && value.length > 0);
           }
-        }
 
-        function options2model(options) {
-          var selectedOptions = options.filter(function (option) {
-            return  option.selected;
-          });
+          scope.isEmpty = isEmpty;
 
-          var selectedValues = selectedOptions.map(option2value);
+          controller.$isEmpty = isEmpty;
 
-          return selectedValues;
-        }
+          controller.$render = render;
+          controller.$formatters.push(external2internal);
 
-        function option2value(option) {
-          return modelElement2value(option.model);
-        }
+          controller.$validators.required = validateRequired;
+          controller.$parsers.push(internal2external);
 
-        function modelElement2value(modelElement) {
-          var context = {};
-          context[optionsExpParsed.item] = modelElement;
 
-          return optionsExpParsed.value(context);
-        }
+          /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+           * helper functions
+           * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        function modelElement2label(modelElement) {
-          var context = {};
-          context[optionsExpParsed.item] = modelElement;
+          function setSelected(options, selected) {
+            var i = options.length;
+            while (i--) {
+              options[i].selected = selected;
+            }
+          }
 
-          return optionsExpParsed.label(context);
-        }
+          function options2model(options) {
+            var selectedOptions = options.filter(function (option) {
+              return  option.selected;
+            });
+
+            var selectedValues = selectedOptions.map(option2value);
+
+            return selectedValues;
+          }
+
+          function option2value(option) {
+            return modelElement2value(option.model);
+          }
+
+          function modelElement2value(modelElement) {
+            var context = {};
+            context[optionsExpParsed.item] = modelElement;
+
+            return optionsExpParsed.value(context);
+          }
+
+          function modelElement2label(modelElement) {
+            var context = {};
+            context[optionsExpParsed.item] = modelElement;
+
+            return optionsExpParsed.label(context);
+          }
         };
       }
     };
