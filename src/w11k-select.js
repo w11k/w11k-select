@@ -75,7 +75,7 @@ angular.module('w11k.select').constant('w11kSelectConfig', {
   }
 });
 
-angular.module('w11k.select').factory('w11kSelectHelper', ['$parse', function ($parse) {
+angular.module('w11k.select').factory('w11kSelectHelper', ['$parse', '$document', function ($parse, $document) {
 
   //                     value      as   label     for   item                    in   collection
   var OPTIONS_EXP = /^\s*(.*?)(?:\s+as\s+(.*?))?\s+for\s+(?:([\$\w][\$\w\d]*))\s+in\s+(.*)$/;
