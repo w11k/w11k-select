@@ -36,6 +36,10 @@ angular.module('w11k.select').constant('w11kSelectConfig', {
        */
       text: undefined
     },
+    dropdown: {
+      onOpen: undefined,
+      onClose: undefined
+    },
     /** all the configuration for the filter section within the dropdown */
     filter: {
       /** activate filter input to search for options */
@@ -386,6 +390,10 @@ angular.module('w11k.select').directive('w11kSelect', [
                 }
               });
               jqWindow.on('resize', adjustHeight);
+
+              if (angular.isFunction(scope.config.dropdown.onOpen)) {
+                scope.config.dropdown.onOpen();
+              }
             },
             onClose: function () {
               // important: set properties of filter.values to empty strings not to null,
@@ -397,6 +405,10 @@ angular.module('w11k.select').directive('w11kSelect', [
               });
               $document.off('keyup', onEscPressed);
               jqWindow.off('resize', adjustHeight);
+
+              if (angular.isFunction(scope.config.dropdown.onClose)) {
+                scope.config.dropdown.onClose();
+              }
             }
           };
 
