@@ -434,9 +434,9 @@ angular.module('w11k.select').directive('w11kSelect', [
           scope.options.visible = optionsFiltered.slice(0, scope.options.visible.length + increaseLimitTo);
         };
 
-        scope.$watch('filter.values.label', function () {
+        scope.onFilterValueChanged = function () {
           filterOptions();
-        });
+        };
 
         scope.clearFilter = function () {
           scope.filter.values = {};
