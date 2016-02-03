@@ -207,7 +207,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         var ngModelSetter = $parse(tAttrs.ngModel).assign;
         var assignValueFn = optionsExpParsed.value.assign;
 
-        if(optionsExpParsed.tracking !== undefined && assignValueFn === undefined) {
+        if (optionsExpParsed.tracking !== undefined && assignValueFn === undefined) {
           throw new Error('value part of w11kSelectOptions expression must be assignable if \'track by\' is used');
         }
 
