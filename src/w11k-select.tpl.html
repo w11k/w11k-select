@@ -44,7 +44,7 @@
     </div>
     <div class="content" w11k-select-infinite-scroll="showMoreOptions()" w11k-select-infinite-scroll-distance="0.5" ng-class="{'hidden-checkboxes': (config.hideCheckboxes && !config.multiple)}">
       <ul class="items list-unstyled">
-        <li bindonce="option" ng-repeat="option in options.visible track by option.hash" ng-click="select(option)" ng-class="{'selected': option.selected }">
+        <li bindonce="option" ng-repeat="option in options.visible track by option.trackingId" ng-click="select(option)" ng-class="{'selected': option.selected }">
           <div class="state">
             <input type="checkbox" ng-checked="option.selected" ng-click="onOptionStateClick($event, option)">
           </div>
