@@ -1,5 +1,32 @@
 # w11k-select Changelog
 
+<a name="0.7.0"></a>
+## 0.7.0 (2016-02-03)
+
+
+### Bug Fixes
+
+* **ngModel:** don't set the view value without user interaction, set the model value to not mark field as dirty ([405df989](https://github.com/w11k/w11k-select/commit/405df989f53722abc4f9fd9f108abe3fb2e285a5))
+* **dependency:** update w11kDropdownToggle to support newer angular versions via bower ([a13266cb](https://github.com/w11k/w11k-select/commit/a13266cbd6fed9f44bb585cb82ae6d7e012b3d1e))
+
+
+### Features
+
+* **checkboxes:** add config property 'hideCheckboxes' to hide checkboxes in single selection mode ([f84aa573](https://github.com/w11k/w11k-select/commit/f84aa5734b0eb709f357d12e7ceeb9813e538bf1), closes [#13](https://github.com/w11k/w11k-select/issues/13))
+* **dropdown:** provide hooks for dropdown open and dropdown close events ([54ab1500](https://github.com/w11k/w11k-select/commit/54ab15002462db8d586f9fe6666a4b8dbbe2fa53), closes [#24](https://github.com/w11k/w11k-select/issues/24))
+* **ngModel:** use validator pipeline for validation ([797aff02](https://github.com/w11k/w11k-select/commit/797aff0230c8c7ded0bb39514101e19826dac066))
+* **select:** added config option to show the clearbutton ([67f0bcb4](https://github.com/w11k/w11k-select/commit/67f0bcb4991e7dffae5b1fee2c79430489c5bcb3))
+* **service:**: extract hashCode, getParent and extendDeep to w11kSelectHelper service to make them testable and overridable ([973352d9](https://github.com/w11k/w11k-select/commit/973352d9b582c57efef439b9901492a05ba10134))
+* **tabIndex:** make w11k-select accessible via keyboard with the tab key ([a3196bc4](https://github.com/w11k/w11k-select/commit/a3196bc4c74d986b47d8c058fc6b6db3f36ac540), closes [#19](https://github.com/w11k/w11k-select/issues/19))
+* **trackBy:** add 'track by' part to w11kSelectOptions expression ([e7db96ea](https://github.com/w11k/w11k-select/commit/e7db96eac89b7067b54c9accaaf40e9fc07d918f), closes [#21](https://github.com/w11k/w11k-select/issues/21))
+
+
+### Breaking Changes
+
+* Using the 'new' validators pipeline requires AngularJS 1.3 or newer. bower.json was adjusted. With this release we drop support for AngularJS 1.2.
+ ([797aff02](https://github.com/w11k/w11k-select/commit/797aff0230c8c7ded0bb39514101e19826dac066))
+
+
 <a name="0.6.2"></a>
 ## 0.6.2 (2015-07-06)
 
