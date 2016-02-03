@@ -9,7 +9,7 @@
   "ignore": [],
   "dependencies": {
     "angular": ">= 1.3.0 < 1.6.0",
-    "w11k-dropdownToggle": "0.2.x",
+    "w11k-dropdownToggle": "1.0.x",
     "angular-bindonce": "0.3.x"
   },
   "devDependencies": {
