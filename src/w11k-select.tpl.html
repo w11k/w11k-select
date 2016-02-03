@@ -1,13 +1,13 @@
 <div class="dropdown w11k-select">
   <div class="input-group select-toggle" w11k-dropdown-toggle="dropdown" ng-class="{disabled: config.disabled}">
-    <div class="input-group-addon deselect-all" ng-if="!config.disabled && !config.required && !isEmpty()" ng-click="deselectAll($event)">
+    <div class="input-group-addon deselect-all" ng-if="!config.disabled && (!config.required || config.showClearAlways) && !isEmpty()" ng-click="deselectAll($event)">
       <i class="fa fa-times icon-deselect-all"></i>
     </div>
     <div class="form-control" ng-disabled="config.disabled">
       <span class="header-placeholder text-muted" ng-show="isEmpty()">Filter</span>
       <span class="header-text" ng-hide="isEmpty()"></span>
     </div>
-    <div class="input-group-addon">
+    <div class="input-group-addon" tabindex="0" ng-keypress="onKeyPressedOnDropDownToggle($event)">
       <i class="fa" ng-class="{ 'fa-chevron-down': !dropdown.isOpen(), 'fa-chevron-up': dropdown.isOpen(), 'icon-dropdown-open': !dropdown.isOpen(), 'icon-dropdown-closed': dropdown.isOpen() }"></i>
     </div>
   </div>
@@ -17,6 +17,7 @@
         <input class="form-control"
                type="text"
                ng-model="filter.values.label"
+               ng-change="onFilterValueChanged()"
                placeholder="{{config.filter.placeholder}}"
                ng-keypress="onKeyPressedInFilter($event)"
             />
@@ -41,9 +42,9 @@
         </div>
       </div>
     </div>
-    <div class="content" w11k-select-infinite-scroll="showMoreOptions()" w11k-select-infinite-scroll-distance="0.5">
+    <div class="content" w11k-select-infinite-scroll="showMoreOptions()" w11k-select-infinite-scroll-distance="0.5" ng-class="{'hidden-checkboxes': (config.hideCheckboxes && !config.multiple)}">
       <ul class="items list-unstyled">
-        <li bindonce="option" ng-repeat="option in options.visible track by option.hash" ng-click="select(option)" ng-class="{'selected': option.selected }">
+        <li bindonce="option" ng-repeat="option in options.visible track by option.trackingId" ng-click="select(option)" ng-class="{'selected': option.selected }">
           <div class="state">
             <input type="checkbox" ng-checked="option.selected" ng-click="onOptionStateClick($event, option)">
           </div>

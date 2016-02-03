@@ -2,7 +2,7 @@
 
 angular.module('demo', ['w11k.select']);
 
-angular.module('demo').controller('TestCtrl', function ($scope) {
+angular.module('demo').controller('TestCtrl', function ($scope, $log) {
 
   var amount = 1000;
 
@@ -31,6 +31,14 @@ angular.module('demo').controller('TestCtrl', function ($scope) {
     disabled: false,
     header: {
       placeholder: 'test'
+    },
+    dropdown: {
+      onOpen: function () {
+        $log.debug('dropdown onOpen callback called');
+      },
+      onClose: function () {
+        $log.debug('dropdown onClose callback called');
+      }
     }
   };
 
