@@ -1,5 +1,15 @@
 # w11k-select Changelog
 
+<a name="0.7.1"></a>
+## 0.7.1 (2016-02-29)
+
+
+### Bug Fixes
+
+* **filter:** clears filter and update list on x-button click. ([ed4ad6ea](https://github.com/w11k/w11k-select/commit/ed4ad6ea9576153d688bf6afd358ca7edb08f474))
+* **styling:** always shows the list of items. ([292ca4bf](https://github.com/w11k/w11k-select/commit/292ca4bf3c6351990970ff786016ec523ee6ff74))
+
+
 <a name="0.7.0"></a>
 ## 0.7.0 (2016-02-03)
 
