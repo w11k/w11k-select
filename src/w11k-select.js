@@ -480,6 +480,7 @@ angular.module('w11k.select').directive('w11kSelect', [
 
           scope.clearFilter = function () {
             scope.filter.values = {};
+            filterOptions();
           };
 
           scope.onKeyPressedInFilter = function ($event) {
