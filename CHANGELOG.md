@@ -1,5 +1,14 @@
 # w11k-select Changelog
 
+<a name="0.7.2"></a>
+## 0.7.2 (2016-08-09)
+
+
+### Bug Fixes
+
+* **options:** fix regular expression for parsing options ([645e331b](https://github.com/w11k/w11k-select/commit/645e331b3f8b03a52725f1a703c483ccc73cf096))
+
+
 <a name="0.7.1"></a>
 ## 0.7.1 (2016-02-29)
 
