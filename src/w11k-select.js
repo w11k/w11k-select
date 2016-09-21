@@ -772,7 +772,14 @@ angular.module('w11k.select').directive('w11kSelect', [
           controller.$render = render;
           controller.$formatters.push(external2internal);
 
-          controller.$validators.required = validateRequired;
+          if (angular.version.major === 1 && angular.version.minor < 3) {
+            controller.$parsers.push(function (viewValue) {
+              controller.$setValidity('required', validateRequired(viewValue));
+            });
+          } else {
+            controller.$validators.required = validateRequired;
+          }
+
           controller.$parsers.push(internal2external);
 
 
