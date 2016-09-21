@@ -1,5 +1,15 @@
 # w11k-select Changelog
 
+<a name="0.7.3"></a>
+### 0.7.3 (2016-09-21)
+
+With this version we add support for AngularJS 1.2 again.
+
+#### Bug Fixes
+
+* **ngModel:** use setValidity for Angular < 1.3 and $validators for >= 1.3 ([89b441fd](https://github.com/w11k/w11k-select/commit/89b441fd5ea6cd97138147ccd79a574ce5ea277e))
+
+
 <a name="0.7.2"></a>
 ## 0.7.2 (2016-08-09)
 

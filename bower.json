@@ -1,6 +1,6 @@
 {
   "name": "w11k-select",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "main": [
     "dist/w11k-select.js",
     "dist/w11k-select.tpl.js",
