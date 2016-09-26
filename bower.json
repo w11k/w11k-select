@@ -1,6 +1,6 @@
 {
   "name": "w11k-select",
-  "version": "0.7.3",
+  "version": "0.8.0",
   "main": [
     "dist/w11k-select.js",
     "dist/w11k-select.tpl.js",
@@ -8,7 +8,7 @@
   ],
   "ignore": [],
   "dependencies": {
-    "angular": ">= 1.3.0 < 1.6.0",
+    "angular": ">= 1.2.0 < 1.6.0",
     "w11k-dropdownToggle": "1.0.x",
     "angular-bindonce": "0.3.x"
   },
