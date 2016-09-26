@@ -1,5 +1,19 @@
 # w11k-select Changelog
 
+<a name="0.8.0"></a>
+## 0.8.0 (2016-09-27)
+
+
+#### Bug Fixes
+
+* **dependencies:** mark as compatible with ng 1.2 ([1957209f](https://github.com/w11k/w11k-select/commit/1957209f8b1d41aa19468b3770a73a6370e03ee9))
+
+
+#### Features
+
+* **npm:** prepare for publishing via npm ([f95f9f84](https://github.com/w11k/w11k-select/commit/f95f9f8495d80ee915e85fbcf7b9f7625536f491))
+
+
 <a name="0.7.3"></a>
 ### 0.7.3 (2016-09-21)
 
