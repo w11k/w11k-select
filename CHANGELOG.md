@@ -1,15 +1,31 @@
 # w11k-select Changelog
 
+<a name="0.9.0"></a>
+## 0.9.0 (2016-12-12)
+
+
+### Bug Fixes
+
+* **dependencies:** mark as compatible with ng 1.6 ([18b76ec](https://github.com/w11k/w11k-select/commit/18b76ec2e46a0d6f75395540c7cec03dc13a9249))
+* **hide-checkboxes:** fix css selector to hide check boxes via config ([8acd0fe](https://github.com/w11k/w11k-select/commit/8acd0fe97a652b1eefb21b077a151ddc46221f40))
+* **filter:** show unfiltered options on re-open ([d94d084](https://github.com/w11k/w11k-select/commit/d94d084e06ee1eb199390c33113d991f54d5bf26))
+
+
+### Features
+
+* **api:** expose controller with open, close and toggle function via w11k-select attribute value to parent scope ([eee7dee](https://github.com/w11k/w11k-select/commit/eee7deed21ec0613c69b9a09d9af3c54264b2527))
+
+
 <a name="0.8.0"></a>
 ## 0.8.0 (2016-09-27)
 
 
-#### Bug Fixes
+### Bug Fixes
 
 * **dependencies:** mark as compatible with ng 1.2 ([1957209f](https://github.com/w11k/w11k-select/commit/1957209f8b1d41aa19468b3770a73a6370e03ee9))
 
 
-#### Features
+### Features
 
 * **npm:** prepare for publishing via npm ([f95f9f84](https://github.com/w11k/w11k-select/commit/f95f9f8495d80ee915e85fbcf7b9f7625536f491))
 
