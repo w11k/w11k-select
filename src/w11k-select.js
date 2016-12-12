@@ -381,8 +381,8 @@ angular.module('w11k.select').directive('w11kSelect', [
 
               if (hasBeenOpened === false) {
                 hasBeenOpened = true;
-                filterOptions();
               }
+              filterOptions();
 
               $document.on('keyup', onEscPressed);
 
