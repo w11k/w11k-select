@@ -81,8 +81,8 @@ angular.module('w11k.select').constant('w11kSelectConfig', {
 
 angular.module('w11k.select').factory('w11kSelectHelper', ['$parse', '$document', function ($parse, $document) {
 
-  //                   value                 as    label                for       item              in    collection                |  filter                        track by     tracking
-  var OPTIONS_EXP = /^([a-zA-Z][\w\.]*)(?:\s+as\s+([a-zA-Z][\w\.]*))?\s+for\s+(?:([a-zA-Z][\w]*))\s+in\s+([a-zA-Z][\w\.\(\)]*(?:\s+\|\s[a-zA-Z][\w\:_\{\}']*)*)(?:\s+track\sby\s+([a-zA-Z][\w\.]*))?$/;
+  //                   value                 as    label                for       item              in        collection                |  filter                        track by     tracking
+  var OPTIONS_EXP = /^([a-zA-Z][\w\.]*)(?:\s+as\s+([a-zA-Z][\w\.]*))?\s+for\s+(?:([a-zA-Z][\w]*))\s+in\s+([$_a-zA-Z][\w\.\(\)]*(?:\s+\|\s[a-zA-Z][\w\:_\{\}']*)*)(?:\s+track\sby\s+([a-zA-Z][\w\.]*))?$/;
 
   function extendDeep(dst) {
     angular.forEach(arguments, function (obj) {
