@@ -200,7 +200,7 @@ angular.module('w11k.select').directive('w11kSelect', [
       templateUrl: w11kSelectConfig.common.templateUrl,
       scope: {},
       require: 'ngModel',
-      controller: function ($scope, $attrs, $parse) {
+      controller: ['$scope', '$attrs', '$parse', function ($scope, $attrs, $parse) {
         if ($attrs.w11kSelect && $attrs.w11kSelect.length > 0) {
           var exposeExpression = $parse($attrs.w11kSelect);
 
@@ -220,7 +220,7 @@ angular.module('w11k.select').directive('w11kSelect', [
         this.toggle = function () {
           $scope.dropdown.toggle();
         };
-      },
+      }],
       compile: function (tElement, tAttrs) {
         var configExpParsed = $parse(tAttrs.w11kSelectConfig);
         var optionsExpParsed = w11kSelectHelper.parseOptions(tAttrs.w11kSelectOptions);
