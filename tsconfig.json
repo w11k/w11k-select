@@ -1,0 +1,36 @@
+{
+  "extends": "./config/tsconfig.flexible",
+  "compilerOptions": {
+    "rootDir": "src",
+    "declaration": true,
+    "importHelpers": false,
+    "inlineSourceMap": false,
+    "listFiles": false,
+    "traceResolution": false,
+    "pretty": false,
+    "strictNullChecks": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "es5",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "outDir": "lib",
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/index.ts"
+  ],
+  "exclude": [
+    "node_modules/**"
+  ],
+  "compileOnSave": false
+}
