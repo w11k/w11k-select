@@ -1,12 +1,60 @@
 {
   "name": "w11k-select",
   "version": "0.9.0",
-
   "description": "single- and multi-select directive for angularjs",
-  "keywords": [ "angular", "angularjs", "directive", "select", "multi-select", "bootstrap" ],
+  "keywords": [
+    "angular",
+    "angularjs",
+    "directive",
+    "select",
+    "multi-select",
+    "bootstrap"
+  ],
   "homepage": "https://github.com/w11k/w11k-select",
   "bugs": "https://github.com/w11k/w11k-select/issues",
-
+  "scripts": {
+    "info": "npm-scripts-info",
+    "sass:compile": "node-sass src/w11k-select.scss dist/w11k-select.css",
+    "copy:sass": "cd src  && cp --parents -R **/*.scss ./../dist/  && cp -R *.scss ./../dist/ ",
+    "copy:less": "cd src  && cp --parents -R **/*.less ./../dist/  && cp -R *.less ./../dist/ ",
+    "copy:html": "cd src  && cp --parents -R **/*.html ./../dist/  && cp -R *.html ./../dist/ ",
+    "lint": "tslint src/**/*.ts",
+    "unit": "yarn build && nyc ava",
+    "check-coverage": "nyc check-coverage --lines 100 --functions 100 --branches 100",
+    "test": "yarn lint && yarn unit && yarn check-coverage",
+    "watch:build": "tsc -p tsconfig.json -w",
+    "watch:unit": "tsc -p tsconfig.json && ava --watch --verbose",
+    "cov": "yarn unit && yarn html-coverage && opn coverage/index.html",
+    "html-coverage": "nyc report --reporter=html",
+    "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
+    "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out dist/docs && opn dist/docs/index.html",
+    "docs:json": "typedoc --mode file --json dist/docs/typedoc.json src/index.ts",
+    "release": "standard-version",
+    "ng:annotate": "find dist/ -iname '*.js' -exec sh -c 'ng-annotate  -a {}  -o ./{}' \\;",
+    "clean": "shx rm -rf lib lib-esm build dist *.log",
+    "build": "npm run scss && tsc && tsc -m es6 --outDir lib-esm && npm run fixdts",
+    "fixdts": "dts-downlevel 'lib/**/*.d.ts' 'lib-esm/**/*.d.ts'",
+    "package": "npm run clean && npm run build && npm run bundle && npm run ng:annotate",
+    "bundle": "rollup -c  && rollup -c --environment MINIFY",
+    "prepare": "npm run package",
+    "scss": "node-sass --include-path scss src/w11k-select.scss src/w11k-select.css"
+  },
+  "scripts-info": {
+    "info": "Display information about the scripts [Warning]: Some where updated, info might be old",
+    "build": "(Trash and re)build the library",
+    "lint": "Lint all typescript source files",
+    "unit": "Run unit tests",
+    "test": "Lint and test the library",
+    "watch": "Watch source files, rebuild library on changes, rerun relevant tests",
+    "watch:build": "Watch source files, rebuild library on changes",
+    "watch:unit": "Watch the build, rerun relevant tests on changes",
+    "cov": "Run tests, generate the HTML coverage report, and open it in a browser",
+    "html-coverage": "Output HTML test coverage report",
+    "send-coverage": "Output lcov test coverage report and send it to codecov",
+    "docs": "Generate API documentation and open it in a browser",
+    "docs:json": "Generate API documentation in typedoc JSON format",
+    "release": "Bump package.json version, update CHANGELOG.md, tag a release"
+  },
   "author": {
     "name": "w11k GmbH",
     "url": "http://www.w11k.de"
@@ -14,39 +62,53 @@
   "contributors": [
     "Philipp Burgmer"
   ],
-
   "repository": {
     "type": "git",
     "url": "https://github.com/w11k/w11k-select.git"
   },
-
-  "licenses": [{
+  "licenses": [
+    {
       "type": "MIT"
-  }],
-
-  "main": "src/w11k-select.js",
-  "files": [
-    "src/**"
+    }
   ],
-
+  "engines": {
+    "node": ">=4"
+  },
+  "main": "lib/index.js",
+  "jsnext:main": "lib-esm/index.js",
+  "typings": "lib/index.d.ts",
   "dependencies": {
     "angular": ">= 1.2.0 < 1.7.0",
-    "w11k-dropdownToggle": "1.0.x",
-    "angular-bindonce": "0.3.x"
+    "angular-bindonce": "0.3.x",
+    "tslib": "^1.5.0",
+    "w11k-dropdownToggle": "1.0.x"
   },
-
   "devDependencies": {
-    "grunt": "0.4.5",
-    "grunt-contrib-clean": "0.5.0",
-    "grunt-contrib-jshint": "0.8.0",
-    "grunt-contrib-sass": "0.7.2",
-    "grunt-contrib-less": "0.12.0",
-    "grunt-contrib-copy": "0.5.0",
-    "grunt-contrib-uglify": "0.4.0",
-    "grunt-contrib-concat": "0.4.0",
-    "grunt-html2js": "0.2.4",
-
-    "grunt-bump": "0.0.13",
-    "grunt-conventional-changelog": "1.1.0"
+    "@types/angular": "^1.6.6",
+    "@types/node": "^7.0.5",
+    "ava": "^0.18.1",
+    "codecov": "^1.0.1",
+    "dts-downlevel": "^0.3.0",
+    "multiview": "^2.3.1",
+    "ng-annotate": "^1.2.1",
+    "node-sass": "^4.5.0",
+    "npm-scripts-info": "^0.3.6",
+    "nyc": "^10.0.0",
+    "opn-cli": "^3.1.0",
+    "rollup": "^0.38.0",
+    "rollup-plugin-copy": "^0.2.3",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-progress": "^0.1.0",
+    "rollup-plugin-sass": "^0.5.1",
+    "rollup-plugin-sourcemaps": "^0.4.1",
+    "rollup-plugin-uglify": "^1.0.1",
+    "rollup-plugin-visualizer": "^0.1.5",
+    "shx": "^0.2.2",
+    "standard-version": "^4.0.0",
+    "trash-cli": "^1.4.0",
+    "tslint": "^4.0.2",
+    "tslint-config-standard": "^4.0.0",
+    "typedoc": "^0.5.5",
+    "typescript": "^2.2.0"
   }
 }

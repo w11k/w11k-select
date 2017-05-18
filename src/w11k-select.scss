@@ -1,3 +1,6 @@
+@import "w11k-select-option/w11k-select-options";
+@import "w11k-select-checkbox/w11k-checkbox.directive";
+
 .w11k-select {
   a:hover {
     text-decoration: none;
@@ -65,48 +68,16 @@
       overflow-x: hidden;
       max-height: 500px;
       width: 100%;
+      padding-top: 4px;
 
       ul.items {
-        padding: 6px 0;
         margin: 0;
-        display: table;
         width: 100%;
 
         > li {
           margin: 0;
           padding: 0;
-          display: table-row;
-
-          > div {
-            display: table-cell;
-            padding: 4px;
-          }
-
-          > div.state {
-            padding-left: 12px;
-
-            input {
-              position: relative;
-              top: -1px;
-              cursor: pointer;
-            }
-          }
-
-          > div.name {
-            padding-right: 24px;
-            width: 100%;
-          }
         }
-
-        > li.selected {
-          background-color: gray;
-        }
-
-        > li:hover {
-          background-color: gray;
-          cursor: pointer;
-        }
-
       }
 
       &.hidden-checkboxes ul li input[type="checkbox"] {

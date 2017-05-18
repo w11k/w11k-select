@@ -1,56 +1,54 @@
 <div class="dropdown w11k-select">
-  <div class="input-group select-toggle" w11k-dropdown-toggle="dropdown" ng-class="{disabled: config.disabled}">
-    <div class="input-group-addon deselect-all" ng-if="!config.disabled && (!config.required || config.showClearAlways) && !isEmpty()" ng-click="deselectAll($event)">
-      <i class="fa fa-times icon-deselect-all"></i>
-    </div>
-    <div class="form-control" ng-disabled="config.disabled">
-      <span class="header-placeholder text-muted" ng-show="isEmpty()">Filter</span>
-      <span class="header-text" ng-hide="isEmpty()"></span>
-    </div>
-    <div class="input-group-addon" tabindex="0" ng-keypress="onKeyPressedOnDropDownToggle($event)">
-      <i class="fa" ng-class="{ 'fa-chevron-down': !dropdown.isOpen(), 'fa-chevron-up': dropdown.isOpen(), 'icon-dropdown-open': !dropdown.isOpen(), 'icon-dropdown-closed': dropdown.isOpen() }"></i>
-    </div>
-  </div>
-  <div class="dropdown-menu">
-    <div class="header">
-      <div class="filter input-group" ng-if="config.filter.active">
-        <input class="form-control"
-               type="text"
-               ng-model="filter.values.label"
-               ng-change="onFilterValueChanged()"
-               placeholder="{{config.filter.placeholder}}"
-               ng-keypress="onKeyPressedInFilter($event)"
-            />
-        <a class="input-group-addon clear" ng-click="clearFilter()">
-          <i class="fa fa-times icon-clear-filter"></i>
-        </a>
-      </div>
-      <div class="controls" ng-show="config.multiple">
-        <div class="row">
-          <div class="col-xs-6" ng-if="config.filter.select.active">
-            <button type="button" class="btn btn-default btn-sm" ng-click="selectFiltered()">
-              <i class="fa fa-check-square-o icon-select-filtered"></i>
-              <span class="select-filtered-text">all</span>
-            </button>
-          </div>
-          <div class="col-xs-6" ng-if="config.filter.deselect.active">
-            <button type="button" class="btn btn-default btn-sm" ng-click="deselectFiltered()">
-              <i class="fa fa-square-o icon-deselect-filtered"></i>
-              <span class="deselect-filtered-text">none</span>
-            </button>
-          </div>
+    <div class="input-group select-toggle" w11k-dropdown-toggle="dropdown" ng-class="{disabled: config.disabled}">
+        <div class="input-group-addon deselect-all"
+             ng-if="!config.disabled && (!config.required || config.showClearAlways) && !isEmpty()"
+             ng-click="deselectAll($event)">
+            <i class="fa fa-times icon-deselect-all"></i>
         </div>
-      </div>
+        <div class="form-control" ng-disabled="config.disabled">
+            <span class="header-placeholder text-muted" ng-show="isEmpty()">Filter</span>
+            <span class="header-text" ng-hide="isEmpty()"></span>
+        </div>
+        <div class="input-group-addon" tabindex="0" ng-keypress="onKeyPressedOnDropDownToggle($event)">
+            <i class="fa"
+               ng-class="{ 'fa-chevron-down': !dropdown.isOpen(), 'fa-chevron-up': dropdown.isOpen(), 'icon-dropdown-open': !dropdown.isOpen(), 'icon-dropdown-closed': dropdown.isOpen() }"></i>
+        </div>
     </div>
-    <div class="content" w11k-select-infinite-scroll="showMoreOptions()" w11k-select-infinite-scroll-distance="0.5" ng-class="{'hidden-checkboxes': (config.hideCheckboxes && !config.multiple)}">
-      <ul class="items list-unstyled">
-        <li bindonce="option" ng-repeat="option in options.visible track by option.trackingId" ng-click="select(option)" ng-class="{'selected': option.selected }">
-          <div class="state">
-            <input type="checkbox" ng-checked="option.selected" ng-click="onOptionStateClick($event, option)">
-          </div>
-          <div class="name" bo-text="option.label"></div>
-        </li>
-      </ul>
+    <div class="dropdown-menu">
+        <div class="header">
+            <div class="filter input-group" ng-if="config.filter.active">
+                <input class="form-control"
+                       type="text"
+                       ng-model="filter.values.label"
+                       ng-change="onFilterValueChanged()"
+                       placeholder="{{config.filter.placeholder}}"
+                       ng-keypress="onKeyPressedInFilter($event)"
+                />
+                <a class="input-group-addon clear" ng-click="clearFilter()">
+                    <i class="fa fa-times icon-clear-filter"></i>
+                </a>
+            </div>
+            <div class="controls" ng-show="config.multiple">
+                <div class="row">
+                    <div class="col-xs-6" ng-if="config.filter.select.active">
+                        <button type="button" class="btn btn-default btn-sm" ng-click="selectFiltered()">
+                            <i class="fa fa-check-square-o icon-select-filtered"></i>
+                            <span class="select-filtered-text">all</span>
+                        </button>
+                    </div>
+                    <div class="col-xs-6" ng-if="config.filter.deselect.active">
+                        <button type="button" class="btn btn-default btn-sm" ng-click="deselectFiltered()">
+                            <i class="fa fa-square-o icon-deselect-filtered"></i>
+                            <span class="deselect-filtered-text">none</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content" w11k-select-infinite-scroll="showMoreOptions()" w11k-select-infinite-scroll-distance="0.5"
+             ng-class="{'hidden-checkboxes': (config.hideCheckboxes && !config.multiple)}">
+            <ul w11k-select-option options="options.visible" select="select(option)" class="items list-unstyled">
+            </ul>
+        </div>
     </div>
-  </div>
 </div>

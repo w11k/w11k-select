@@ -1,0 +1,11 @@
+<li ng-repeat="option in options track by option.trackingId">
+    <div class="table-row" ng-click="onOptionStateClick($event, option)" key-listener="onOptionStateClick($event, option)" ng-class="{'selected': option.state === 1 }" tabindex="0">
+        <w11k-select-checkbox state="option.state"></w11k-select-checkbox>
+        <span>{{::option.label}}</span>
+    </div>
+
+    <ul w11k-select-option options="::option.children" parent="::option" select="select({option:option})"
+        class="items list-unstyled">
+    </ul>
+</li>
+
