@@ -1,4 +1,5 @@
 .idea
+build
 dist
 w11k-select.iml
 node_modules
@@ -7,3 +8,11 @@ node_modules
 .sass-cache
 bower_components
 temp
+coverage
+.nyc_output
+*.log
+
+/lib/
+/lib-esm/
+/src/w11k-select.css
+stats.html

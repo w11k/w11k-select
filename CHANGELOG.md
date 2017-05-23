@@ -1,19 +1,37 @@
 # w11k-select Changelog
 
+<a name="0.10.0"></a>
+## 0.10.0 (2017-05-19)
+
+
+### Features
+
+* **project:** migrated project to TypeScript ([e164fc3](https://github.com/w11k/w11k-select/commit/e164fc39bd3a1e7452ef1ad1acb076ea84f6babb))
+
+
+<a name="0.9.1"></a>
+## 0.9.1 (2017-05-02)
+
+### Bug Fixes
+
+* **ngInject:** added missing array notation to controller  ([d1df4dc](https://github.com/w11k/w11k-select/commit/d1df4dcfada97b7dc3a3f47896ed7ab650cfe894))
+* **api:** enable collection source to start with $  ([11fd01f](https://github.com/w11k/w11k-select/commit/11fd01fa0e7a31b9104543a2ebd54ce0b52fe85e))
+
+
 <a name="0.9.0"></a>
 ## 0.9.0 (2016-12-12)
 
 
 ### Bug Fixes
 
-* **dependencies:** mark as compatible with ng 1.6 ([18b76ec](https://github.com/w11k/w11k-select/commit/18b76ec2e46a0d6f75395540c7cec03dc13a9249))
-* **hide-checkboxes:** fix css selector to hide check boxes via config ([8acd0fe](https://github.com/w11k/w11k-select/commit/8acd0fe97a652b1eefb21b077a151ddc46221f40))
-* **filter:** show unfiltered options on re-open ([d94d084](https://github.com/w11k/w11k-select/commit/d94d084e06ee1eb199390c33113d991f54d5bf26))
+* **dependencies:** mark as compatible with ng 1.6 ([5e9f39d](https://github.com/w11k/w11k-select/commit/5e9f39d96eaa0e68f0640b92664617abc43d72da))
+* **hide-checkboxes:** fix css selector to hide check boxes via config ([20d7929](https://github.com/w11k/w11k-select/commit/20d79293ba0bea3ba85d948bfacb11c06c4fb287))
+* **filter:** show unfiltered options on re-open ([802047e](https://github.com/w11k/w11k-select/commit/802047e2862eb47c507fa6a75612f6cca51f7c44))
 
 
 ### Features
 
-* **api:** expose controller with open, close and toggle function via w11k-select attribute value to parent scope ([eee7dee](https://github.com/w11k/w11k-select/commit/eee7deed21ec0613c69b9a09d9af3c54264b2527))
+* **api:** expose controller with open, close and toggle function via w11k-select attribute value to parent scope ([2b71876](https://github.com/w11k/w11k-select/commit/2b718765c24c19225d06d8cb91654cd49b9b6107))
 
 
 <a name="0.8.0"></a>

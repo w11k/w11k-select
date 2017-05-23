@@ -1,0 +1,79 @@
+*[w11k-select-option] {
+  .table-row {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    cursor: pointer;
+
+    > * {
+      display: table-cell;
+    }
+    &:hover {
+      background-color: gray;
+    }
+  }
+
+  .table-row.selected {
+    background-color: gray;
+  }
+
+}
+
+/* sorry about this - couldn't get it to work otherwise
+  especially IE with hover background and indent */
+
+@padding: 19px;
+ul > li {
+  > div {
+    padding-left: 0;
+  }
+  ul > li {
+    > div {
+      padding-left: @padding * 1;
+    }
+    ul > li {
+      > div {
+        padding-left: @padding * 2;
+      }
+      ul > li {
+        > div {
+          padding-left: @padding * 3;
+        }
+        ul > li {
+          > div {
+            padding-left: @padding * 4;
+          }
+          ul > li {
+            > div {
+              padding-left: @padding * 5;
+            }
+            ul > li {
+              > div {
+                padding-left: @padding * 6;
+              }
+              ul > li {
+                > div {
+                  padding-left: @padding * 7;
+                }
+                ul > li {
+                  > div {
+                    padding-left: @padding * 8;
+                  }
+                  ul > li {
+                    > div {
+                      padding-left: @padding * 9;
+                    }
+                    ul > li {
+                      > div {
+                        padding-left: @padding * 10;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
