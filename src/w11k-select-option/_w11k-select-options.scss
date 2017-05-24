@@ -9,11 +9,13 @@
     }
     &:hover {
       background-color: gray;
+      color:#000;
     }
   }
 
   .table-row.selected {
     background-color: gray;
+    color:#000;
   }
 
 }

@@ -1,5 +1,15 @@
 # w11k-select Changelog
 
+
+<a name="0.10.1"></a>
+## 0.10.1 (2017-05-25)
+
+
+### Bug Fixes
+
+* **css:** fixed import path in less
+* **css:** set hover and active font color 
+
 <a name="0.10.0"></a>
 ## 0.10.0 (2017-05-19)
 
@@ -8,6 +18,10 @@
 
 * **project:** migrated project to TypeScript ([e164fc3](https://github.com/w11k/w11k-select/commit/e164fc39bd3a1e7452ef1ad1acb076ea84f6babb))
 
+### Breaking Changes
+
+* Assets (HTML, CSS, LESS, SCSS) assets moved to `/dist`
+* Added w11k-select-option.tpl.html
 
 <a name="0.9.1"></a>
 ## 0.9.1 (2017-05-02)
