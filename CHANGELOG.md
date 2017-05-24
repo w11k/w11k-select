@@ -1,6 +1,15 @@
 # w11k-select Changelog
 
 
+<a name="0.10.2"></a>
+## 0.10.2 (2017-05-25)
+
+
+### Bug Fixes
+
+* **project:** fix angular dependency (>1.3.0)
+
+
 <a name="0.10.1"></a>
 ## 0.10.1 (2017-05-25)
 
