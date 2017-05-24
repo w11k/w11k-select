@@ -8,8 +8,8 @@ export class W11KSelectHelper {
   OPTIONS_EXP = /^([a-zA-Z][\w\.]*)(?:\s+as\s+([a-zA-Z][\w\.]*))?\s+for\s+(?:([a-zA-Z][\w]*))\s+in\s+([$_a-zA-Z][\w\.\(\)]*(?:\s+\|\s[a-zA-Z][\w\:_\{\}']*)*)(?:\s+track\sby\s+([a-zA-Z][\w\.]*))?$/;
 
 
-  constructor(public readonly $parse: IParseService,
-              public readonly $document: IDocumentService) {
+  constructor(public $parse: IParseService,
+              public $document: IDocumentService) {
     'ngInject';
 
   }
