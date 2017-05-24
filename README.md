@@ -22,10 +22,10 @@ See Project Website at http://w11k.github.com/w11k-select
 * Install via Bower (w11k-select) or download manually from our release repository (https://github.com/w11k/w11k-select-bower)
 * Include scripts into your application (w11k-select and dependencies):
   * AngularJS
-  * bind-once
   * w11k-dropdownToggle
   * w11k-select
   * font-awesome (optional)
+* Inject `dist/w11k-select-option.tpl.html` and `dist/w11k-select.tpl.html` into your $templateCache
 * Add dependency to w11k-select to your angular module
 
 
