@@ -38,7 +38,9 @@ See Project Website at http://w11k.github.com/w11k-select
      ng-model="selected.data"
      >
 </div>
-```    
+```
+w11k-select-options is **required** and defines the html ```options``` elements that will be rendered within the html ```select``` element. This is similiar to the behavior of angular's ng-option directive. It follow the pattern of ```select as label for value in array```.
+
 w11k-select-config is optional and takes a config object or an array with config objects. The value is evaluated against the surrounding scope. If an array is given, all contained config object will be merged into one config object internally. Later config objects override values of previous config objects (like jQuery.extend or _.merge).
 
 You can use different formats to specify the configuration. Some examples:
