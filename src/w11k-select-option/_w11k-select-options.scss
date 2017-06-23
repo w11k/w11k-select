@@ -22,51 +22,52 @@
 
 /* sorry about this - couldn't get it to work otherwise
   especially IE with hover background and indent */
-
-$paddig: 19px;
-ul > li {
-  > div {
-    padding-left: 0;
-  }
+.w11k-select {
+  $paddig: 19px;
   ul > li {
     > div {
-      padding-left: $paddig * 1;
+      padding-left: 0;
     }
     ul > li {
       > div {
-        padding-left: $paddig * 2;
+        padding-left: $paddig * 1;
       }
       ul > li {
         > div {
-          padding-left: $paddig * 3;
+          padding-left: $paddig * 2;
         }
         ul > li {
           > div {
-            padding-left: $paddig * 4;
+            padding-left: $paddig * 3;
           }
           ul > li {
             > div {
-              padding-left: $paddig * 5;
+              padding-left: $paddig * 4;
             }
             ul > li {
               > div {
-                padding-left: $paddig * 6;
+                padding-left: $paddig * 5;
               }
               ul > li {
                 > div {
-                  padding-left: $paddig * 7;
+                  padding-left: $paddig * 6;
                 }
                 ul > li {
                   > div {
-                    padding-left: $paddig * 8;
+                    padding-left: $paddig * 7;
                   }
                   ul > li {
                     > div {
-                      padding-left: $paddig * 9;
+                      padding-left: $paddig * 8;
                     }
                     ul > li {
                       > div {
-                        padding-left: $paddig * 10;
+                        padding-left: $paddig * 9;
+                      }
+                      ul > li {
+                        > div {
+                          padding-left: $paddig * 10;
+                        }
                       }
                     }
                   }
@@ -79,3 +80,4 @@ ul > li {
     }
   }
 }
+

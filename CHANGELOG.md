@@ -1,5 +1,13 @@
 # w11k-select Changelog
 
+<a name="0.10.3"></a>
+## 0.10.3 (2017-06-23)
+
+
+### Bug Fixes
+
+* **css:** prefix classes ([7ea2499](https://github.com/w11k/w11k-select/commit/7ea24994e16a37c3ecc7aa2ae457491c2b3b973c))
+
 
 <a name="0.10.2"></a>
 ## 0.10.2 (2017-05-25)
