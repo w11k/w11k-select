@@ -3,3 +3,8 @@ node_modules
 .sass-cache
 bower_components
 dist
+demo
+lib
+lib-esm
+src
+.idea
