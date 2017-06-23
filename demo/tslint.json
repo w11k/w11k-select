@@ -1,0 +1,130 @@
+{
+  "rulesDirectory": [
+    "node_modules/codelyzer"
+  ],
+  "rules": {
+    "directive-selector": [
+      true,
+      "attribute",
+      "np",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "np",
+      "kebab-case"
+    ],
+    "use-input-property-decorator": true,
+    "use-output-property-decorator": true,
+    "use-host-property-decorator": true,
+    "no-attribute-parameter-decorator": true,
+    "no-output-rename": true,
+    "use-life-cycle-interface": true,
+    "use-pipe-transform-interface": true,
+    "pipe-naming": [
+      true,
+      "camelCase",
+      "np"
+    ],
+    "component-class-suffix": true,
+    "directive-class-suffix": true,
+    "templates-use-public": true,
+    "no-access-missing-member": true,
+    "invoke-injectable": true,
+    "class-name": false,
+    "radix": true,
+    "eofline": true,
+    "comment-format": [
+      true,
+      "check-space"
+    ],
+    "indent": [
+      true,
+      "spaces"
+    ],
+    "no-arg": true,
+    "no-bitwise": false,
+    "no-construct": true,
+    "no-console": [
+      false,
+      "log",
+      "error",
+      "info"
+    ],
+    "no-use-before-declare": false,
+    "no-unused-expression": true,
+    "no-debugger": true,
+    "no-conditional-assignment": true,
+    "no-duplicate-variable": true,
+    "no-eval": true,
+    "no-internal-module": true,
+    "no-trailing-whitespace": true,
+    "no-var-keyword": true,
+    "one-line": [
+      true,
+      "check-catch",
+      "check-open-brace",
+      "check-whitespace"
+    ],
+    "quotemark": [
+      false,
+      "single"
+    ],
+    "triple-equals": [
+      true,
+      "allow-null-check"
+    ],
+    "typedef-whitespace": [
+      true,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      },
+      {
+        "call-signature": "onespace",
+        "index-signature": "onespace",
+        "parameter": "onespace",
+        "property-declaration": "onespace",
+        "variable-declaration": "onespace"
+      }
+    ],
+    "variable-name": [
+      false,
+      "allow-leading-underscore"
+    ],
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-type",
+      "check-typecast"
+    ],
+    "max-line-length": [
+      true,
+      300
+    ],
+    "no-default-export": true,
+    "member-ordering": [
+      true,
+      "variables-before-functions"
+    ],
+    "one-variable-per-declaration": [
+      true
+    ],
+    "no-namespace": [
+      true,
+      "allow-declarations"
+    ],
+    "no-invalid-this": [
+      false,
+      "check-function-in-method"
+    ]
+  }
+}
