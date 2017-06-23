@@ -1,0 +1,16 @@
+@import "~w11k-select/dist/w11k-select.scss";
+//@import "~/w11k-select/build/w11k-se";
+
+body {
+  padding-bottom: 10px;
+}
+
+section {
+  padding: 50px 0 55px;
+  border-bottom: 2px solid #efefef;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 80px;
+  }
+}

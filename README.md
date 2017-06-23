@@ -90,7 +90,10 @@ This is a sass example to reproduce the default icons. Notice: You don't need th
     1. update changelog
     1. merge release into develop and master branch
     1. `git push --tags`
-    1. update [demo page](http://w11k.github.io/w11k-select/)
+1. update [demo page](http://w11k.github.io/w11k-select/)
+    1. `cd demo`
+    1. `npm run build`
+    1. copy files to 'gh-pages' branch
 1. npm package
     1. npm publish
 1. bower package

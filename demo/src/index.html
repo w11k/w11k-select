@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="<%= webpackConfig.metadata.lang %>">
+<head>
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description"
+          content="w11k-select is an AngularJS directive created to replace the default HTML select element!">
+    <title><%= webpackConfig.metadata.title %></title>
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- base url -->
+    <base href="<%= webpackConfig.metadata.baseUrl %>">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+
+<body ng-controller="AppCtrl as $ctrl">
+<div class="jumbotron">
+    <div class="container"><h1>w11k-select</h1>
+        <p>w11k-select is an AngularJS directive created to replace the default HTML select element which has a poor
+            usability for most use cases particularly in desktop browsers.</p>Features:
+        <ul>
+            <li>Single- and multi-select</li>
+            <li>High performance and usability even with hundreds of options</li>
+            <li>Filter options to find the right one quickly</li>
+            <li>Uses Twitter Bootstrap markup / styling, comes with default css but easy to adjust / override</li>
+            <li>Disabled state and required-validation</li>
+            <li>Customisable texts (placeholders and selected representation)</li>
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+    <button class="btn btn-default pull-right" ng-click="$ctrl.debug = !$ctrl.debug">
+        {{$ctrl.debug ? 'Hide Debug Information':'Show Debug Information'}}
+    </button>
+
+    <section>
+        <h2>Demo List</h2>
+
+        <form name="$ctrl.demoForm">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div w11k-select w11k-select-config="[$ctrl.staticConfigFlat, $ctrl.dynamicConfigFlat]"
+                         w11k-select-options="option.value as option.label for option in $ctrl.optionsFlat.data"
+                         ng-model="$ctrl.selected.dataFlat" name="demoField"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div ng-show="$ctrl.demoForm.$dirty">Form is dirty</div>
+                    <div ng-show="$ctrl.demoForm.$pristine">Form is pristine</div>
+                    <div ng-show="$ctrl.demoForm.$valid">Form is valid</div>
+                    <div ng-show="$ctrl.demoForm.$invalid">Form is invalid</div>
+                    <div ng-show="$ctrl.demoForm.demoField.$dirty">Field is dirty</div>
+                    <div ng-show="$ctrl.demoForm.demoField.$pristine">Field is pristine</div>
+                    <div ng-show="$ctrl.demoForm.demoField.$valid">Field is valid</div>
+                    <div ng-show="$ctrl.demoForm.demoField.$invalid">Field is invalid</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>
+                        <button class="btn btn-default" ng-click="$ctrl.selectRandom()">Select Random</button>
+                        <button class="btn btn-default" ng-click="$ctrl.createNewOptions()">Reduce Options</button>
+                    </p>
+                    <p>
+                        <button class="btn btn-default"
+                                ng-click="$ctrl.staticConfigFlat.disabled = !$ctrl.staticConfigFlat.disabled">
+                            Toggle Disabled
+                        </button>
+                        <button class="btn btn-default"
+                                ng-click="$ctrl.dynamicConfigFlat.required = !$ctrl.dynamicConfigFlat.required">
+                            Toggle Required
+                        </button>
+                        <button class="btn btn-default"
+                                ng-click="$ctrl.dynamicConfigFlat.multiple = !$ctrl.dynamicConfigFlat.multiple">
+                            Toggle Multiple
+                        </button>
+                    </p>
+                </div>
+            </div>
+            <div class="row" ng-if="$ctrl.debug">
+                <div class="col-sm-6">
+                    <h4>Configuration</h4>
+                    <pre>{{$ctrl.mergeConfig([$ctrl.staticConfigFlat, $ctrl.dynamicConfigFlat]) | json}}</pre>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Output</h4>
+                    <pre>{{$ctrl.selected.dataFlat | json}}</pre>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section>
+        <h2>Demo Hierarchically </h2>
+        <form name="$ctrl.demoFormHierarchically">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div w11k-select w11k-select-config="[$ctrl.staticConfigDeep, $ctrl.dynamicConfigDeep]"
+                         w11k-select-options="option.value as option.label for option in $ctrl.options.data"
+                         ng-model="$ctrl.selected.dataDeep" name="demoField"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div ng-show="$ctrl.demoFormHierarchically.$dirty">Form is dirty</div>
+                    <div ng-show="$ctrl.demoFormHierarchically.$pristine">Form is pristine</div>
+                    <div ng-show="$ctrl.demoFormHierarchically.$valid">Form is valid</div>
+                    <div ng-show="$ctrl.demoFormHierarchically.$invalid">Form is invalid</div>
+                    <div ng-show="$ctrl.demoFormHierarchically.demoField.$dirty">Field is dirty</div>
+                    <div ng-show="$ctrl.demoFormHierarchically.demoField.$pristine">Field is pristine</div>
+                    <div ng-show="$ctrl.demoFormHierarchically.demoField.$valid">Field is valid</div>
+                    <div ng-show="$ctrl.demoFormHierarchically.demoField.$invalid">Field is invalid</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>
+                        <button class="btn btn-default"
+                                ng-click="$ctrl.staticConfigDeep.disabled = !$ctrl.staticConfigDeep.disabled">
+                            Toggle Disabled
+                        </button>
+                        <button class="btn btn-default"
+                                ng-click="$ctrl.dynamicConfigDeep.required = !$ctrl.dynamicConfigDeep.required">
+                            Toggle Required
+                        </button>
+                        <button class="btn btn-default" disabled
+                                ng-click="$ctrl.dynamicConfigDeep.multiple = !$ctrl.dynamicConfigDeep.multiple">
+                            Toggle Multiple
+                        </button>
+                    </p>
+                </div>
+            </div>
+            <div class="row" ng-if="$ctrl.debug">
+                <div class="col-sm-6">
+                    <h4>Configuration</h4>
+                    <pre>{{$ctrl.mergeConfig([$ctrl.staticConfigDeep, $ctrl.dynamicConfigDeep]) | json}}</pre>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Output</h4>
+                    <pre>{{$ctrl.selected.dataDeep | json}}</pre>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section>
+        <h2>Installation & Usage</h2>
+        <div>See Project's README at <a href="https://github.com/w11k/w11k-select" target="_blank">https://github.com/w11k/w11k-select</a>
+        </div>
+    </section>
+</div>
+</body>
+</html>
