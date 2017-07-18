@@ -8,6 +8,7 @@ import {InternalOption} from './model/internal-option.model';
 import {OptionState} from './model/option-state.enum';
 import {ConfigInstance} from './model/config.model';
 import {collectActiveLabels} from './lib/collect-active-labels';
+import {buildInternalOptionsMap} from './lib/build-internal-options-map';
 
 
 export interface Scope extends ng.IScope {
@@ -420,15 +421,7 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
             if (angular.isArray(externalOptions)) {
               internalOptions = externalOptions2internalOptions(externalOptions, viewValue, w11kSelectHelper, optionsExpParsed, scope.config);
               internalOptionsMap = {};
-              let i = internalOptions.length;
-              while (i--) {
-                let option: any = internalOptions[i];
-                if (internalOptionsMap[option.trackingId]) {
-                  throw new Error('Duplicate hash value for options ' + option.label + ' and ' + internalOptionsMap[option.trackingId].label);
-                }
-                internalOptionsMap[option.trackingId] = option;
-              }
-
+              buildInternalOptionsMap(internalOptions,internalOptionsMap);
               filterOptions();
 
               if (ngModelAlreadyRead) {
