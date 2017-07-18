@@ -1,5 +1,12 @@
 # w11k-select Changelog
 
+<a name="0.10.4"></a>
+## 0.10.4 (2017-07-18)
+
+### Bug Fixes
+
+* **select:** enable hierarchical pre-select ([d7866c3](https://github.com/w11k/w11k-select/commit/d7866c3fcc7cbc371d8917440c6b242645499df4))
+
 <a name="0.10.3"></a>
 ## 0.10.3 (2017-06-23)
 
