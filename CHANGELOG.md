@@ -1,5 +1,11 @@
 # w11k-select Changelog
 
+<a name="0.10.5"></a>
+## 0.10.5 (2017-07-20)
+
+### Bug Fixes
+* **binding:** removes onetime-binding in order to enable external change of input data ([77b1c26](https://github.com/w11k/w11k-select/commit/77b1c263fa769f0d3ec305ff6d58286c1f5bc9e0))
+
 <a name="0.10.4"></a>
 ## 0.10.4 (2017-07-18)
 
