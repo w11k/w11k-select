@@ -184,7 +184,7 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
 
         function adjustHeight() {
           if (angular.isDefined(scope.config.style.maxHeight)) {
-            domDropDownContent.style.maxHeight = scope.style.maxHeight;
+            domDropDownContent.style.maxHeight = scope.config.style.maxHeight;
           }
           else {
             let maxHeight = calculateDynamicMaxHeight();
