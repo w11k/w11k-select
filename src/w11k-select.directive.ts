@@ -140,17 +140,17 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
         }
 
         function updateStaticTexts() {
-          if (scope.config.filter.select.active && scope.config.filter.select.text) {
+          if (scope.config.filter.select.active && scope.config.filter.select.text !== null && typeof(scope.config.filter.select.text) !== 'undefined') {
             let selectFilteredButton = domElement.querySelector('.select-filtered-text');
             selectFilteredButton.textContent = scope.config.filter.select.text;
           }
 
-          if (scope.config.filter.deselect.active && scope.config.filter.deselect.text) {
+          if (scope.config.filter.deselect.active && scope.config.filter.deselect.text !== null && typeof(scope.config.filter.deselect.text) !== 'undefined') {
             let deselectFilteredButton = domElement.querySelector('.deselect-filtered-text');
             deselectFilteredButton.textContent = scope.config.filter.deselect.text;
           }
 
-          if (scope.config.header.placeholder) {
+          if (scope.config.header.placeholder !== null && typeof(scope.config.header.placeholder) !== 'undefined') {
             let headerPlaceholder = domElement.querySelector('.header-placeholder');
             headerPlaceholder.textContent = scope.config.header.placeholder;
           }
