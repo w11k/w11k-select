@@ -1,5 +1,7 @@
 import {OptionState} from '../model/option-state.enum';
 import {InternalOption} from '../model/internal-option.model';
+import {Config} from '../model/config.model';
+import {IDirective} from 'angular';
 
 class Result {
   selected: number = 0;
@@ -7,12 +9,12 @@ class Result {
   childsSelected: number = 0;
   length: number;
 
-  constructor(length: number) {
+  constructor (length: number) {
     this.length = length;
   }
 }
 
-export function w11kSelectOptionDirektive(w11kSelectConfig) {
+export function w11kSelectOptionDirective (w11kSelectConfig: Config): IDirective {
   'ngInject';
 
   return {
@@ -22,15 +24,14 @@ export function w11kSelectOptionDirektive(w11kSelectConfig) {
     scope: {
       'options': '=',
       'parent': '=',
-      'select': '&',
+      'select': '&'
     },
     require: 'ngModel',
-    controller: function ($scope, $attrs, $parse) {
+    controller: function ($scope) {
       if ($scope.$parent.childsMap) {
-        $scope.$parent.addChild($scope, $scope.parent)
+        $scope.$parent.addChild($scope, $scope.parent);
       }
       $scope.childsMap = {};
-
 
       $scope.upwardsClick = function (clickedOption: InternalOption, res: Result) {
         let fatherOption: InternalOption = $scope.options.find(option => option.trackingId === clickedOption.parent);
@@ -47,8 +48,6 @@ export function w11kSelectOptionDirektive(w11kSelectConfig) {
           let res = calcRes($scope.options);
           $scope.$parent.upwardsClick(fatherOption, res);
         }
-
-
       };
 
       $scope.addChild = function (childScope, father) {
@@ -79,24 +78,22 @@ export function w11kSelectOptionDirektive(w11kSelectConfig) {
 
       $scope.downWardstoggleAll = function (toSetState: OptionState) {
         $scope.options = toggleDownWards($scope.options, toSetState, $scope);
-      }
-    },
+      };
+    }
   };
 }
 
-
-function toggleDownWards(options: InternalOption[], toSetState: OptionState, $scope): InternalOption[] {
+function toggleDownWards (options: InternalOption[], toSetState: OptionState, $scope): InternalOption[] {
   return options.map(
       option => {
         option.children = toggleDownWards(option.children, toSetState, $scope);
         setSelected(option, toSetState, $scope);
         return option;
       }
-  )
+  );
 }
 
-
-function calcRes(options: InternalOption[]): Result {
+function calcRes (options: InternalOption[]): Result {
   return options.reduce(
       (prev: Result, next: InternalOption) => {
         if (next.state === OptionState.selected) {
@@ -109,14 +106,13 @@ function calcRes(options: InternalOption[]): Result {
           prev.childsSelected++;
         }
 
-        return prev
+        return prev;
 
       },
-      new Result(options.length))
+      new Result(options.length));
 }
 
-
-function setSelected(option: InternalOption, optionState: OptionState, $scope) {
+function setSelected (option: InternalOption, optionState: OptionState, $scope) {
   option.state = optionState;
   $scope.select({option: option});
 }

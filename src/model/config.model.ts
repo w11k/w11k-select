@@ -13,11 +13,11 @@ export interface FilterConfig {
   select: {
     active: boolean;
     text: undefined | string;
-  }
+  };
   deselect: {
     active: true,
     text: undefined | string;
-  }
+  };
 }
 
 export class ConfigInstance {
@@ -93,8 +93,7 @@ export class Config {
   common: ConfigCommon;
   instance: ConfigInstance;
 
-
-  constructor(common?: ConfigCommon, instance?: ConfigInstance) {
+  constructor (common?: ConfigCommon, instance?: ConfigInstance) {
     this.common = common || new ConfigCommon();
     this.instance = instance || new ConfigInstance();
   }
