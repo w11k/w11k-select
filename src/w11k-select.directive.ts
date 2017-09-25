@@ -125,7 +125,7 @@ export function w11kSelect (w11kSelectConfig: Config,
             },
             function (newConfig) {
               if (angular.isArray(newConfig)) {
-                w11kSelectHelper.extendDeep.apply(null, [scope.config].concat(newConfig));
+                w11kSelectHelper.extendDeep.apply(w11kSelectHelper, [scope.config].concat(newConfig));
                 applyConfig();
               } else if (angular.isObject(newConfig)) {
                 w11kSelectHelper.extendDeep(scope.config, newConfig);
