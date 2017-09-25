@@ -522,7 +522,7 @@ export function w11kSelect (w11kSelectConfig: Config,
 
           let modelValue;
 
-          if (scope.config.multiple) {
+          if (scope.config.multiple || scope.config.forceArrayOutput) {
             modelValue = viewValue;
           } else {
             modelValue = viewValue[0];
@@ -531,12 +531,18 @@ export function w11kSelect (w11kSelectConfig: Config,
           return modelValue;
         }
 
-        function validateRequired(viewValue) {
-          if (scope.config.multiple === true && scope.config.required === true && viewValue.length === 0) {
-            return false;
-          }
-          if (scope.config.multiple === false && scope.config.required === true && viewValue === undefined) {
-            return false;
+        function validateRequired (value): boolean {
+          if (scope.config.required) {
+            if (scope.config.multiple === true && value.length === 0) {
+              return false;
+            }
+            if (scope.config.multiple === false && scope.config.forceArrayOutput === true && value.length === 0) {
+              return false;
+            }
+            if (scope.config.multiple === false && value === undefined) {
+              return false;
+            }
+
           }
 
           return true;

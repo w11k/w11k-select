@@ -27,6 +27,8 @@ export class ConfigInstance {
   hideCheckboxes: boolean = false;
   /** single or multiple select */
   multiple: boolean = true;
+  /** force ngModel to be an array for single select too */
+  forceArrayOutput = false;
   /** disable user interaction */
   disabled: boolean = false;
   /** all the configuration for the header (visible if dropdown closed) */
