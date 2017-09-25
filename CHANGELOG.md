@@ -1,5 +1,21 @@
 # w11k-select Changelog
 
+<a name="0.11.0"></a>
+# 0.11.0 (2017-09-25)
+
+
+### Bug Fixes
+
+* **bower:** fix main file in bower.json ([ecb6af8](https://github.com/w11k/w11k-select/commit/ecb6af8))
+* **config:** accept empty strings as static texts ([3b6c2b0](https://github.com/w11k/w11k-select/commit/3b6c2b0))
+* **config:** fix usage of maxHeight ([efb86bc](https://github.com/w11k/w11k-select/commit/efb86bc))
+
+
+### Features
+
+* **single-select:** add option to force array output for single-select mode ([95975af](https://github.com/w11k/w11k-select/commit/95975af))
+
+
 <a name="0.10.5"></a>
 ## 0.10.5 (2017-07-20)
 
