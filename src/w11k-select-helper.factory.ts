@@ -7,14 +7,13 @@ export class W11KSelectHelper {
   //               value                 as    label                for       item              in    collection                    |  filter                        track by     tracking
   OPTIONS_EXP = /^([a-zA-Z][\w\.]*)(?:\s+as\s+([a-zA-Z][\w\.]*))?\s+for\s+(?:([a-zA-Z][\w]*))\s+in\s+([$_a-zA-Z][\w\.\(\)]*(?:\s+\|\s[a-zA-Z][\w\:_\{\}']*)*)(?:\s+track\sby\s+([a-zA-Z][\w\.]*))?$/;
 
-
-  constructor(public $parse: IParseService,
-              public $document: IDocumentService) {
+  constructor (public $parse: IParseService,
+               public $document: IDocumentService) {
     'ngInject';
 
   }
 
-  extendDeep = (dst, ...otherArgs) => {
+  extendDeep (dst, ...otherArgs) {
     angular.forEach(otherArgs, (obj) => {
       if (obj !== dst) {
         angular.forEach(obj, (value, key) => {
@@ -27,27 +26,26 @@ export class W11KSelectHelper {
       }
     });
     return dst;
-  };
+  }
 
-  hashCode(value) {
-    let string;
+  hashCode (value) {
+    let valueAsString: string;
     if (typeof value === 'object') {
-      string = angular.toJson(value);
-    }
-    else {
-      string = value.toString();
+      valueAsString = angular.toJson(value);
+    } else {
+      valueAsString = value.toString();
     }
 
     let hash = 0;
-    let length = string.length;
+    let length = valueAsString.length;
     for (let i = 0; i < length; i++) {
-      hash = string.charCodeAt(i) + (hash << 6) + (hash << 16) - hash;
+      hash = valueAsString.charCodeAt(i) + (hash << 6) + (hash << 16) - hash;
     }
 
     return hash.toString(36);
   }
 
-  parseOptions(input) {
+  parseOptions (input) {
 
     let match = input.match(this.OPTIONS_EXP);
     if (!match) {
@@ -69,7 +67,7 @@ export class W11KSelectHelper {
     return result;
   }
 
-  getParent(element, selector) {
+  getParent (element, selector) {
     // with jQuery
     if (angular.isFunction(element.parents)) {
       let container = element.parents(selector);

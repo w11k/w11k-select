@@ -11,7 +11,11 @@
     "stripInternal": true,
     "strictNullChecks": true,
     "noEmitHelpers": true,
-    "outDir": "ts-out"
+    "outDir": "ts-out",
+    "lib": [
+      "es5",
+      "dom"
+    ]
   },
   "exclude": [
     "node_modules"

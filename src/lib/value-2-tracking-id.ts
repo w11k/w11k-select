@@ -1,4 +1,4 @@
-export function value2trackingId(value, w11kSelectHelper, optionsExpParsed) {
+export function value2trackingId (value, w11kSelectHelper, optionsExpParsed) {
   if (optionsExpParsed.tracking !== undefined) {
     let context = {};
     let assignValueFn = optionsExpParsed.value.assign;
@@ -11,8 +11,7 @@ export function value2trackingId(value, w11kSelectHelper, optionsExpParsed) {
     }
 
     return trackingValue.toString();
-  }
-  else {
+  } else {
     return w11kSelectHelper.hashCode(value);
   }
 

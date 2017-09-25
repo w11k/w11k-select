@@ -1,17 +1,18 @@
 /** @internal */
 import * as angular from 'angular';
+import {IPromise, IScope, IFilterService, IWindowService, IQService, IDocumentService, IParseService, ITimeoutService} from 'angular';
 import {setSelected} from './lib/set-selected';
 import {internalOptions2externalModel} from './lib/internal-options-2-external-model';
 import {value2trackingId} from './lib/value-2-tracking-id';
 import {externalOptions2internalOptions} from './lib/external-options-2-internal-options';
 import {InternalOption} from './model/internal-option.model';
 import {OptionState} from './model/option-state.enum';
-import {ConfigInstance} from './model/config.model';
+import {Config, ConfigInstance} from './model/config.model';
 import {collectActiveLabels} from './lib/collect-active-labels';
 import {buildInternalOptionsMap} from './lib/build-internal-options-map';
+import {W11KSelectHelper} from './w11k-select-helper.factory';
 
-
-export interface Scope extends ng.IScope {
+export interface Scope extends IScope {
   config: ConfigInstance;
   style: any;  // only required once?
   onKeyPressedOnDropDownToggle: (event: any) => void;
@@ -19,9 +20,9 @@ export interface Scope extends ng.IScope {
   onFilterValueChanged: () => void;
   clearFilter: () => void;
   onKeyPressedInFilter: ($event: any) => void;
-  selectFiltered: ($event?: any) => void
-  deselectFiltered: ($event: any) => void
-  deselectAll: ($event: any) => void
+  selectFiltered: ($event?: any) => void;
+  deselectFiltered: ($event: any) => void;
+  deselectAll: ($event: any) => void;
   select: ($event: any) => void;
   isEmpty: () => boolean;
 
@@ -37,11 +38,17 @@ export interface Scope extends ng.IScope {
     onClose?: () => void | undefined;
     close?: () => void;
     toggle?: any
-  }
-
+  };
 }
 
-export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper, $filter, $timeout, $window, $q) {
+export function w11kSelect (w11kSelectConfig: Config,
+                            $parse: IParseService,
+                            $document: IDocumentService,
+                            w11kSelectHelper: W11KSelectHelper,
+                            $filter: IFilterService,
+                            $timeout: ITimeoutService,
+                            $window: IWindowService,
+                            $q: IQService) {
   'ngInject';
 
   let jqWindow = angular.element($window);
@@ -91,10 +98,13 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
          * internal model
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+        let optionsAlreadyRead: IPromise<void>;
+        let ngModelAlreadyRead: boolean = false;
+
         let hasBeenOpened = false;
         let internalOptions: InternalOption[] = [];
         let internalOptionsMap = {};
-        let optionsFiltered = [];
+        let optionsFiltered: InternalOption[] = [];
 
         scope.options = {
           visible: []
@@ -117,8 +127,7 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
               if (angular.isArray(newConfig)) {
                 w11kSelectHelper.extendDeep.apply(null, [scope.config].concat(newConfig));
                 applyConfig();
-              }
-              else if (angular.isObject(newConfig)) {
+              } else if (angular.isObject(newConfig)) {
                 w11kSelectHelper.extendDeep(scope.config, newConfig);
                 applyConfig();
               }
@@ -126,7 +135,7 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
             true
         );
 
-        function applyConfig() {
+        function applyConfig () {
           optionsAlreadyRead.then(function () {
             checkSelection();
             updateNgModel();
@@ -139,24 +148,24 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
           }
         }
 
-        function updateStaticTexts() {
-          if (scope.config.filter.select.active && scope.config.filter.select.text) {
+        function updateStaticTexts () {
+          if (scope.config.filter.select.active && scope.config.filter.select.text !== null && typeof(scope.config.filter.select.text) !== 'undefined') {
             let selectFilteredButton = domElement.querySelector('.select-filtered-text');
             selectFilteredButton.textContent = scope.config.filter.select.text;
           }
 
-          if (scope.config.filter.deselect.active && scope.config.filter.deselect.text) {
+          if (scope.config.filter.deselect.active && scope.config.filter.deselect.text !== null && typeof(scope.config.filter.deselect.text) !== 'undefined') {
             let deselectFilteredButton = domElement.querySelector('.deselect-filtered-text');
             deselectFilteredButton.textContent = scope.config.filter.deselect.text;
           }
 
-          if (scope.config.header.placeholder) {
+          if (scope.config.header.placeholder !== null && typeof(scope.config.header.placeholder) !== 'undefined') {
             let headerPlaceholder = domElement.querySelector('.header-placeholder');
             headerPlaceholder.textContent = scope.config.header.placeholder;
           }
         }
 
-        function checkSelection() {
+        function checkSelection () {
           if (scope.config.multiple === false) {
             let selectedOptions: InternalOption[] = internalOptions.filter(
                 (option) => option.state === OptionState.selected
@@ -173,8 +182,12 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
          * dropdown
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+        let domDropDownMenu = domElement.querySelector('.dropdown-menu');
+        let domDropDownContent = domElement.querySelector('.dropdown-menu .content');
+        let domHeightAdjustContainer = w11kSelectHelper.getParent(iElement, '.w11k-select-adjust-height-to');
+        let domHeaderText = domElement.querySelector('.header-text');
 
-        function onEscPressed(event) {
+        function onEscPressed (event) {
           if (event.keyCode === 27) {
             if (scope.dropdown.close) { // check is for ts only
               scope.dropdown.close();
@@ -182,22 +195,21 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
           }
         }
 
-        function adjustHeight() {
+        function adjustHeight () {
           if (angular.isDefined(scope.config.style.maxHeight)) {
-            domDropDownContent.style.maxHeight = scope.style.maxHeight;
-          }
-          else {
+            domDropDownContent.style.maxHeight = scope.config.style.maxHeight;
+          } else {
             let maxHeight = calculateDynamicMaxHeight();
             domDropDownContent.style.maxHeight = maxHeight + 'px';
 
           }
         }
 
-        function resetHeight() {
+        function resetHeight () {
           domDropDownContent.style.maxHeight = '';
         }
 
-        function calculateDynamicMaxHeight() {
+        function calculateDynamicMaxHeight () {
           let maxHeight;
 
           let contentOffset = domDropDownContent.getBoundingClientRect().top;
@@ -210,8 +222,7 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
           if (angular.isDefined(domHeightAdjustContainer)) {
             containerHeight = domHeightAdjustContainer.innerHeight || domHeightAdjustContainer.clientHeight;
             containerOffset = domHeightAdjustContainer.getBoundingClientRect().top;
-          }
-          else {
+          } else {
             containerHeight = $window.innerHeight || $window.document.documentElement.clientHeight;
             containerOffset = 0;
           }
@@ -227,8 +238,7 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
           if (containerHeight + containerOffset > windowHeight) {
             referenceHeight = windowHeight;
             referenceOffset = 0;
-          }
-          else {
+          } else {
             referenceHeight = containerHeight;
             referenceOffset = containerOffset;
           }
@@ -242,11 +252,6 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
 
           return maxHeight;
         }
-
-        let domDropDownMenu = domElement.querySelector('.dropdown-menu');
-        let domDropDownContent = domElement.querySelector('.dropdown-menu .content');
-        let domHeightAdjustContainer = w11kSelectHelper.getParent(iElement, '.w11k-select-adjust-height-to');
-        let domHeaderText = domElement.querySelector('.header-text');
 
         scope.dropdown = {
           onOpen: function ($event) {
@@ -313,11 +318,10 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
           }
         };
 
-        function updateHeader() {
+        function updateHeader () {
           if (angular.isDefined(scope.config.header.text)) {
             domHeaderText.textContent = scope.$parent.$eval(scope.config.header.text as any);
-          }
-          else {
+          } else {
             let arr = [];
             internalOptions.forEach(option => collectActiveLabels(option, arr));
             domHeaderText.textContent = arr.join(', ');
@@ -328,11 +332,11 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
          * filter
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        let filter = $filter('filter');
+        let filter: angular.IFilterFilter = $filter('filter');
         let initialLimitTo = 80;
         let increaseLimitTo = initialLimitTo * 0.5;
 
-        function filterOptions() {
+        function filterOptions () {
           if (hasBeenOpened) {
             // false as third parameter: use contains to compare
             optionsFiltered = filter(internalOptions, scope.filter.values, false);
@@ -375,8 +379,7 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
 
           if (scope.config.multiple) {
             setSelected(optionsFiltered, true);
-          }
-          else if (optionsFiltered.length === 1) {
+          } else if (optionsFiltered.length === 1) {
             scope.select(optionsFiltered[0]); // behaves like if the option was clicked using the mouse
           }
 
@@ -407,14 +410,11 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
          * options
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
-        let optionsAlreadyRead;
-
         let updateOptions = (function () {
-          let deferred = $q.defer();
+          let deferred = $q.defer<void>();
           optionsAlreadyRead = deferred.promise;
 
-          return function updateOptions() {
+          return function updateOptions () {
             let externalOptions = optionsExpParsed.collection(scope.$parent);
             let viewValue = controller.$viewValue;
 
@@ -434,22 +434,22 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
 
         // watch for changes of options collection made outside
         scope.$watchCollection(
-            function externalOptionsWatch() {
+            function externalOptionsWatch () {
               return optionsExpParsed.collection(scope.$parent);
             },
-            function externalOptionsWatchAction(newVal) {
+            function externalOptionsWatchAction (newVal) {
               if (angular.isDefined(newVal)) {
                 updateOptions();
               }
             }
         );
 
-        scope.select = function select(option: InternalOption) {
+        scope.select = function select (option: InternalOption) {
           // runs only if hierarchy is flat and multiple false
 
           if (scope.config.multiple) {
             setViewValue();
-            return
+            return;
           }
 
           // disable all others:
@@ -459,19 +459,18 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
           (scope.dropdown.close as any)();
         };
 
-
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
          * ngModel
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        function setViewValue() {
+        function setViewValue () {
           let selectedValues = internalOptions2externalModel(internalOptions, optionsExpParsed, w11kSelectConfig);
 
           controller.$setViewValue(selectedValues);
           updateHeader();
         }
 
-        function updateNgModel() {
+        function updateNgModel () {
           let value = internalOptions2externalModel(internalOptions, optionsExpParsed, w11kSelectConfig);
           angular.forEach(controller.$parsers, function (parser) {
             value = parser(value);
@@ -480,10 +479,7 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
           ngModelSetter(scope.$parent, value);
         }
 
-
-        let ngModelAlreadyRead;
-
-        function render() {
+        function render () {
           optionsAlreadyRead.then(function () {
             ngModelAlreadyRead = true;
 
@@ -505,52 +501,54 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
           });
         }
 
-
-        function external2internal(modelValue) {
+        function external2internal (modelValue) {
           let viewValue;
 
           if (angular.isArray(modelValue)) {
             viewValue = modelValue;
-          }
-          else if (angular.isDefined(modelValue)) {
+          } else if (angular.isDefined(modelValue)) {
             viewValue = [modelValue];
-          }
-          else {
+          } else {
             viewValue = [];
           }
 
           return viewValue;
         }
 
-        function internal2external(viewValue) {
+        function internal2external (viewValue) {
           if (angular.isUndefined(viewValue)) {
             return;
           }
 
           let modelValue;
 
-          if (scope.config.multiple) {
+          if (scope.config.multiple || scope.config.forceArrayOutput) {
             modelValue = viewValue;
-          }
-          else {
+          } else {
             modelValue = viewValue[0];
           }
 
           return modelValue;
         }
 
-        function validateRequired(viewValue) {
-          if (scope.config.multiple === true && scope.config.required === true && viewValue.length === 0) {
-            return false;
-          }
-          if (scope.config.multiple === false && scope.config.required === true && viewValue === undefined) {
-            return false;
+        function validateRequired (value): boolean {
+          if (scope.config.required) {
+            if (scope.config.multiple === true && value.length === 0) {
+              return false;
+            }
+            if (scope.config.multiple === false && scope.config.forceArrayOutput === true && value.length === 0) {
+              return false;
+            }
+            if (scope.config.multiple === false && value === undefined) {
+              return false;
+            }
+
           }
 
           return true;
         }
 
-        function isEmpty() {
+        function isEmpty () {
           let value = controller.$viewValue;
           return !(angular.isArray(value) && value.length > 0);
         }
@@ -569,14 +567,13 @@ export function w11kSelect(w11kSelectConfig, $parse, $document, w11kSelectHelper
   };
 }
 
-
-let checkConfig = (config: ConfigInstance, setViewValue) => {
+function checkConfig (config: ConfigInstance, setViewValue) {
   /**
    *  Currently there is a bug if multiple = false and required = true.
    *  Then the validator runs only once, before the config is present
    *  and returns a wrong validation state.
    *  might be fixed by calling updateNgModel() here
-   * */
+   */
   // throw error if multiple is false and childrenKey is present
   if (config.children && !config.multiple) {
     throw new Error('Multiple must be enabled when displaying hierarchically structure');
@@ -584,4 +581,4 @@ let checkConfig = (config: ConfigInstance, setViewValue) => {
   if (config.children) {
     setViewValue();
   }
-};
+}

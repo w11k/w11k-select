@@ -5,7 +5,7 @@ import {OptionState} from '../model/option-state.enum';
 import {ConfigInstance} from '../model/config.model';
 import {InternalOption} from '../model/internal-option.model';
 
-export function externalOptions2internalOptions(externalOptions, viewValue, w11kSelectHelper, optionsExpParsed, config: ConfigInstance): InternalOption[] {
+export function externalOptions2internalOptions (externalOptions, viewValue, w11kSelectHelper, optionsExpParsed, config: ConfigInstance): InternalOption[] {
   let viewValueIDs = {};
 
   let i = viewValue.length;
@@ -15,7 +15,7 @@ export function externalOptions2internalOptions(externalOptions, viewValue, w11k
     viewValueIDs[trackingId] = true;
   }
 
-  function prepareOptions(externalOption, parent?: string) {
+  function prepareOptions (externalOption, parent?: string) {
     let value = externalOption2value(externalOption, optionsExpParsed);
     let trackingId = value2trackingId(value, w11kSelectHelper, optionsExpParsed);
     let label = externalOption2label(externalOption, optionsExpParsed);
@@ -31,7 +31,7 @@ export function externalOptions2internalOptions(externalOptions, viewValue, w11k
     );
 
     if (externalOption[config.children]) {
-      internalOption.children = externalOption[config.children].map(child => prepareOptions(child, trackingId))
+      internalOption.children = externalOption[config.children].map(child => prepareOptions(child, trackingId));
     }
     return internalOption;
   }

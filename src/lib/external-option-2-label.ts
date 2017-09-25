@@ -1,4 +1,4 @@
-export function externalOption2label(option, optionsExpParsed) {
+export function externalOption2label (option, optionsExpParsed) {
   let context = {};
   context[optionsExpParsed.item] = option;
 
