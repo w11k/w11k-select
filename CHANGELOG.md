@@ -1,7 +1,16 @@
 # w11k-select Changelog
 
+<a name="0.11.1"></a>
+## 0.11.1 (2017-09-25)
+
+
+### Bug Fixes
+
+* **directive:** fix call of method without this-binding ([c29bee9](https://github.com/w11k/w11k-select/commit/c29bee9))
+
+
 <a name="0.11.0"></a>
-# 0.11.0 (2017-09-25)
+## 0.11.0 (2017-09-25)
 
 
 ### Bug Fixes
