@@ -3,6 +3,7 @@ import {DATA_FLAT} from './mock/data.flat.mock';
 import {DATA_DEEP} from './mock/data.deep.mock';
 import {randomText} from './mock/randomText';
 import * as angular from 'angular';
+import {Config} from '../../../src/model/config.model';
 
 export class AppCtrl {
   config;
@@ -54,8 +55,10 @@ export class AppCtrl {
   }
 
 
-  mergeConfig(configurations: any[]) {
-    return Object.assign({}, ...configurations)
+  mergeConfig(configurations: Config[]): Config {
+    return configurations.reduce((previousValue, currentValue) => {
+        return { ...previousValue, ...currentValue };
+      }, {} as Config);
   }
 
 
