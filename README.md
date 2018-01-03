@@ -88,7 +88,7 @@ This is a sass example to reproduce the default icons. Notice: You don't need th
     1. create release branch
     1. `npm run package`
     1. bump bower version
-    1. bump npm version
+    1. bump npm version (package.json & package-lock.json)
     1. update changelog
     1. merge release into develop and master branch
     1. `git push --tags`

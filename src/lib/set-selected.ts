@@ -10,3 +10,12 @@ export function setSelected (options: InternalOption[], selected: boolean) {
     setSelected(options[i].children || [], selected);
   }
 }
+
+// Sets all options to selected (deep) where isSearchResultOrParent is true
+export function setFilteredSelected (options: InternalOption[]) {
+  options.forEach(option => {
+    option.selected = option.isSearchResultOrParent;
+    option.state = option.selected ? OptionState.selected : OptionState.unselected;
+    setFilteredSelected(option.children || []);
+  });
+}

@@ -1,7 +1,7 @@
 /** @internal */
 import * as angular from 'angular';
 import {IPromise, IScope, IFilterService, IWindowService, IQService, IDocumentService, IParseService, ITimeoutService} from 'angular';
-import {setSelected} from './lib/set-selected';
+import {setFilteredSelected, setSelected} from './lib/set-selected';
 import {internalOptions2externalModel} from './lib/internal-options-2-external-model';
 import {value2trackingId} from './lib/value-2-tracking-id';
 import {externalOptions2internalOptions} from './lib/external-options-2-internal-options';
@@ -11,6 +11,7 @@ import {Config, ConfigInstance} from './model/config.model';
 import {collectActiveLabels} from './lib/collect-active-labels';
 import {buildInternalOptionsMap} from './lib/build-internal-options-map';
 import {W11KSelectHelper} from './w11k-select-helper.factory';
+import {filterInternals} from './lib/filter-internal-options';
 
 export interface Scope extends IScope {
   config: ConfigInstance;
@@ -332,14 +333,13 @@ export function w11kSelect (w11kSelectConfig: Config,
          * filter
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        let filter: angular.IFilterFilter = $filter('filter');
         let initialLimitTo = 80;
         let increaseLimitTo = initialLimitTo * 0.5;
 
         function filterOptions () {
           if (hasBeenOpened) {
             // false as third parameter: use contains to compare
-            optionsFiltered = filter(internalOptions, scope.filter.values, false);
+            optionsFiltered = filterInternals(internalOptions, scope.filter.values.label ? scope.filter.values.label.toLowerCase() : '');
             scope.options.visible = optionsFiltered.slice(0, initialLimitTo);
           }
         }
@@ -376,8 +376,9 @@ export function w11kSelect (w11kSelectConfig: Config,
             $event.preventDefault();
             $event.stopPropagation();
           }
-
-          if (scope.config.multiple) {
+          if (scope.config.children) {
+            setFilteredSelected(internalOptions);
+          } else if (scope.config.multiple) {
             setSelected(optionsFiltered, true);
           } else if (optionsFiltered.length === 1) {
             scope.select(optionsFiltered[0]); // behaves like if the option was clicked using the mouse
