@@ -1,5 +1,14 @@
 # w11k-select Changelog
 
+<a name="0.11.2"></a>
+## 0.11.2 (2018-01-03)
+
+
+### Bug Fixes
+
+* **filter:** fix filter in hierarchy mode ([8bf3929](https://github.com/w11k/w11k-select/commit/8bf3929)), closes [#44](https://github.com/w11k/w11k-select/issues/44))
+* **demo:** resolves a dependency issue ([61a03b7](https://github.com/w11k/w11k-select/commit/61a03b7))
+
 <a name="0.11.1"></a>
 ## 0.11.1 (2017-09-25)
 
