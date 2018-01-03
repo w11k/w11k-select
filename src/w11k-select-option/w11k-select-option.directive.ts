@@ -79,6 +79,10 @@ export function w11kSelectOptionDirective (w11kSelectConfig: Config): IDirective
       $scope.downWardstoggleAll = function (toSetState: OptionState) {
         $scope.options = toggleDownWards($scope.options, toSetState, $scope);
       };
+
+      $scope.filterSearchResultsInView = function (item) {
+        return item.isSearchResultOrParent;
+      };
     }
   };
 }
