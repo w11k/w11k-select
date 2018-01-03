@@ -516,7 +516,7 @@ export function w11kSelect (w11kSelectConfig: Config,
 
           if (angular.isArray(modelValue)) {
             viewValue = modelValue;
-          } else if (angular.isDefined(modelValue)) {
+          } else if (angular.isDefined(modelValue) && !(scope.config.useNullableModel && modelValue === null)) {
             viewValue = [modelValue];
           } else {
             viewValue = [];
