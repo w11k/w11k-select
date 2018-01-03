@@ -87,6 +87,8 @@ export class ConfigInstance {
   };
   /** when set to true, the clear-button is always visible. */
   showClearAlways: boolean = false;
+  /** when set to true, we force the view value and external value to be null rather than undefined when 0 options are selected */
+  useNullableModel: boolean = false;
   children: string;
 
 }

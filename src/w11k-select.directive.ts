@@ -466,15 +466,25 @@ export function w11kSelect (w11kSelectConfig: Config,
         function setViewValue () {
           let selectedValues = internalOptions2externalModel(internalOptions, optionsExpParsed, w11kSelectConfig);
 
-          controller.$setViewValue(selectedValues);
+          let newViewValue: null|any[] = selectedValues;
+
+          if (scope.config.useNullableModel && selectedValues.length === 0) {
+            newViewValue = null;
+          }
+
+          controller.$setViewValue(newViewValue);
           updateHeader();
         }
 
         function updateNgModel () {
-          let value = internalOptions2externalModel(internalOptions, optionsExpParsed, w11kSelectConfig);
+          let value: null|any[] = internalOptions2externalModel(internalOptions, optionsExpParsed, w11kSelectConfig);
           angular.forEach(controller.$parsers, function (parser) {
             value = parser(value);
           });
+
+          if (scope.config.useNullableModel && (typeof value === 'undefined' || value.length === 0)) {
+            value = null;
+          }
 
           ngModelSetter(scope.$parent, value);
         }
@@ -518,6 +528,8 @@ export function w11kSelect (w11kSelectConfig: Config,
         function internal2external (viewValue) {
           if (angular.isUndefined(viewValue)) {
             return;
+          } else if (scope.config.useNullableModel && viewValue === null) {
+            return null;
           }
 
           let modelValue;
@@ -550,7 +562,7 @@ export function w11kSelect (w11kSelectConfig: Config,
 
         function isEmpty () {
           let value = controller.$viewValue;
-          return !(angular.isArray(value) && value.length > 0);
+          return !(angular.isArray(value) && value.length > 0) || (scope.config.useNullableModel && value === null);
         }
 
         scope.isEmpty = isEmpty;
