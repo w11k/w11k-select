@@ -1,5 +1,14 @@
 # w11k-select Changelog
 
+
+<a name="0.11.3"></a>
+## 0.11.3 (2018-01-08)
+
+
+### Features
+
+* **ngModel:** Provide new config option 'useNullableModel' ([dfdb007](https://github.com/w11k/w11k-select/commit/dfdb007)), closes [#45](https://github.com/w11k/w11k-select/issues/45))
+
 <a name="0.11.2"></a>
 ## 0.11.2 (2018-01-03)
 
