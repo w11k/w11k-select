@@ -483,7 +483,7 @@ export function w11kSelect (w11kSelectConfig: Config,
             value = parser(value);
           });
 
-          if (scope.config.useNullableModel && (typeof value === 'undefined' || value.length === 0)) {
+          if (scope.config.useNullableModel && (typeof value === 'undefined' || (angular.isArray(value) && value.length === 0))) {
             value = null;
           }
 
@@ -546,10 +546,10 @@ export function w11kSelect (w11kSelectConfig: Config,
 
         function validateRequired (value): boolean {
           if (scope.config.required) {
-            if (scope.config.multiple === true && value.length === 0) {
+            if (scope.config.multiple === true && (angular.isArray(value) && value.length === 0)) {
               return false;
             }
-            if (scope.config.multiple === false && scope.config.forceArrayOutput === true && value.length === 0) {
+            if (scope.config.multiple === false && scope.config.forceArrayOutput === true && (angular.isArray(value) && value.length === 0)) {
               return false;
             }
             if (scope.config.multiple === false && value === undefined) {
