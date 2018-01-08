@@ -467,15 +467,25 @@ export function w11kSelect (w11kSelectConfig: Config,
         function setViewValue () {
           let selectedValues = internalOptions2externalModel(internalOptions, optionsExpParsed, w11kSelectConfig);
 
-          controller.$setViewValue(selectedValues);
+          let newViewValue: null|any[] = selectedValues;
+
+          if (scope.config.useNullableModel && selectedValues.length === 0) {
+            newViewValue = null;
+          }
+
+          controller.$setViewValue(newViewValue);
           updateHeader();
         }
 
         function updateNgModel () {
-          let value = internalOptions2externalModel(internalOptions, optionsExpParsed, w11kSelectConfig);
+          let value: null|any[] = internalOptions2externalModel(internalOptions, optionsExpParsed, w11kSelectConfig);
           angular.forEach(controller.$parsers, function (parser) {
             value = parser(value);
           });
+
+          if (scope.config.useNullableModel && (typeof value === 'undefined' || (angular.isArray(value) && value.length === 0))) {
+            value = null;
+          }
 
           ngModelSetter(scope.$parent, value);
         }
@@ -507,7 +517,7 @@ export function w11kSelect (w11kSelectConfig: Config,
 
           if (angular.isArray(modelValue)) {
             viewValue = modelValue;
-          } else if (angular.isDefined(modelValue)) {
+          } else if (angular.isDefined(modelValue) && !(scope.config.useNullableModel && modelValue === null)) {
             viewValue = [modelValue];
           } else {
             viewValue = [];
@@ -519,6 +529,8 @@ export function w11kSelect (w11kSelectConfig: Config,
         function internal2external (viewValue) {
           if (angular.isUndefined(viewValue)) {
             return;
+          } else if (scope.config.useNullableModel && viewValue === null) {
+            return null;
           }
 
           let modelValue;
@@ -534,10 +546,10 @@ export function w11kSelect (w11kSelectConfig: Config,
 
         function validateRequired (value): boolean {
           if (scope.config.required) {
-            if (scope.config.multiple === true && value.length === 0) {
+            if (scope.config.multiple === true && (angular.isArray(value) && value.length === 0)) {
               return false;
             }
-            if (scope.config.multiple === false && scope.config.forceArrayOutput === true && value.length === 0) {
+            if (scope.config.multiple === false && scope.config.forceArrayOutput === true && (angular.isArray(value) && value.length === 0)) {
               return false;
             }
             if (scope.config.multiple === false && value === undefined) {
@@ -551,7 +563,7 @@ export function w11kSelect (w11kSelectConfig: Config,
 
         function isEmpty () {
           let value = controller.$viewValue;
-          return !(angular.isArray(value) && value.length > 0);
+          return !(angular.isArray(value) && value.length > 0) || (scope.config.useNullableModel && value === null);
         }
 
         scope.isEmpty = isEmpty;
