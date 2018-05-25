@@ -19,14 +19,23 @@ See Project Website at http://w11k.github.com/w11k-select
 
 ## Installation
 
-* Install via Bower (w11k-select) or download manually from our release repository (https://github.com/w11k/w11k-select-bower)
+* Install via NPM (w11k-select), Bower (w11k-select) or download manually from our release repository (https://github.com/w11k/w11k-select-bower)
 * Include scripts into your application (w11k-select and dependencies):
   * AngularJS
   * w11k-dropdownToggle
   * w11k-select
   * font-awesome (optional)
-* Inject `dist/w11k-select-option.tpl.html` and `dist/w11k-select.tpl.html` into your $templateCache
-* Add dependency to w11k-select to your angular module
+* Define a new AngularJS module with the name`w11k.select.template` and
+  inject `w11k-select-option.tpl.html` and `w11k-select.tpl.html` into your $templateCache.
+  Depending on the way you installed w11k-select and the module loader you are using this may look like this:
+  ```
+  const templateModule = angular.module('w11k.select.template', []);
+  templateModule.run(function($templateCache) {
+    $templateCache.put('w11k-select.tpl.html', require('w11k-select/dist/w11k-select.tpl.html'));
+    $templateCache.put('w11k-select-option.tpl.html', require('w11k-select/dist/w11k-select-option.tpl.html'));
+  });
+  ```
+* Add dependency to `w11k-select` to your AngularJS module
 
 
 ## Usage
