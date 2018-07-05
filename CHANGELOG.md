@@ -1,4 +1,534 @@
-# w11k-select Changelog
+# Change Log
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="0.11.4"></a>
+## 0.11.4 (2018-07-05)
+
+
+### Bug Fixes
+
+* **angular:** mark as compatible with AngularJS < 2.0.0 ([f2bdf71](https://github.com/w11k/w11k-select/commit/f2bdf71))
+
+
+
+<a name="0.11.3"></a>
+## 0.11.3 (2018-01-08)
+
+
+### Features
+
+* **ngModel:** adds useNullableModel ([dfdb007](https://github.com/w11k/w11k-select/commit/dfdb007))
+
+
+
+<a name="0.11.2"></a>
+## 0.11.2 (2018-01-03)
+
+
+### Bug Fixes
+
+* **demo:** resolves a dependency issue ([61a03b7](https://github.com/w11k/w11k-select/commit/61a03b7))
+
+
+### Features
+
+* **filter:** enable filter in hierarchy mode ([8bf3929](https://github.com/w11k/w11k-select/commit/8bf3929))
+
+
+
+<a name="0.11.1"></a>
+## 0.11.1 (2017-09-25)
+
+
+### Bug Fixes
+
+* **directive:** fix call of method without this-binding ([c29bee9](https://github.com/w11k/w11k-select/commit/c29bee9))
+
+
+
+<a name="0.11.0"></a>
+# 0.11.0 (2017-09-25)
+
+
+### Bug Fixes
+
+* **bower:** fix main file in bower.json ([ecb6af8](https://github.com/w11k/w11k-select/commit/ecb6af8))
+* **config:** accept empty strings as static texts (Thanks [@talikan](https://github.com/talikan)) ([3b6c2b0](https://github.com/w11k/w11k-select/commit/3b6c2b0))
+* **config:** fix usage of maxHeight ([efb86bc](https://github.com/w11k/w11k-select/commit/efb86bc))
+
+
+### Features
+
+* **single-select:** add option to force array output for single-select mode ([95975af](https://github.com/w11k/w11k-select/commit/95975af))
+
+
+
+<a name="0.10.5"></a>
+## 0.10.5 (2017-07-20)
+
+
+### Bug Fixes
+
+* **binding:** removes onetime-binding in order to enable external change of input data ([77b1c26](https://github.com/w11k/w11k-select/commit/77b1c26))
+
+
+
+<a name="0.10.4"></a>
+## 0.10.4 (2017-07-18)
+
+
+### Bug Fixes
+
+* **select:** enable hierarchical pre-select ([d7866c3](https://github.com/w11k/w11k-select/commit/d7866c3))
+
+
+
+<a name="0.10.3"></a>
+## 0.10.3 (2017-06-23)
+
+
+### Bug Fixes
+
+* **css:** prefix classes ([7ea2499](https://github.com/w11k/w11k-select/commit/7ea2499))
+
+
+
+<a name="0.10.2"></a>
+## 0.10.2 (2017-05-24)
+
+
+
+<a name="0.10.1"></a>
+## 0.10.1 (2017-05-24)
+
+
+
+<a name="0.10.0"></a>
+# 0.10.0 (2017-05-23)
+
+
+### Features
+
+* **typescript:** migrated project to typescript ([e164fc3](https://github.com/w11k/w11k-select/commit/e164fc3))
+
+
+
+<a name="0.9.1"></a>
+## 0.9.1 (2017-05-18)
+
+
+### Bug Fixes
+
+* **api:** added missing array notation to controller ([d1df4dc](https://github.com/w11k/w11k-select/commit/d1df4dc))
+* **regex:** enable collection source to start with $ ([11fd01f](https://github.com/w11k/w11k-select/commit/11fd01f))
+
+
+
+<a name="0.9.0"></a>
+# 0.9.0 (2017-05-18)
+
+
+### Bug Fixes
+
+* **dependencies:** mark as compatible with AngularJS 1.6 ([5e9f39d](https://github.com/w11k/w11k-select/commit/5e9f39d))
+* **filter:** show unfiltered options on re-open ([802047e](https://github.com/w11k/w11k-select/commit/802047e))
+* **hide-checkboxes:** fix css selector to hide check boxes via config ([20d7929](https://github.com/w11k/w11k-select/commit/20d7929))
+
+
+### Features
+
+* **api:** expose controller with open, close and toggle function via w11k-select attribute value to parent scope ([2b71876](https://github.com/w11k/w11k-select/commit/2b71876))
+
+
+
+<a name="0.8.0"></a>
+# 0.8.0 (2016-09-26)
+
+
+### Bug Fixes
+
+* **dependencies:** mark as compatible with ng 1.2 ([1957209](https://github.com/w11k/w11k-select/commit/1957209))
+
+
+### Features
+
+* **npm:** add dependencies to package.json ([f95f9f8](https://github.com/w11k/w11k-select/commit/f95f9f8))
+
+
+
+<a name="0.7.3"></a>
+## 0.7.3 (2016-09-21)
+
+
+### Bug Fixes
+
+* **ngModel:** use setValidity for Angular < 1.3 and $validators for >= 1.3 ([89b441f](https://github.com/w11k/w11k-select/commit/89b441f))
+
+
+
+<a name="0.7.2"></a>
+## 0.7.2 (2016-08-09)
+
+
+### Bug Fixes
+
+* **options:** fix regular expression for parsing options ([645e331](https://github.com/w11k/w11k-select/commit/645e331))
+
+
+
+<a name="0.7.1"></a>
+## 0.7.1 (2016-02-29)
+
+
+### Bug Fixes
+
+* **filter:** clears filter and update list on x-button click. ([ed4ad6e](https://github.com/w11k/w11k-select/commit/ed4ad6e)), closes [#25](https://github.com/w11k/w11k-select/issues/25)
+* **ngModel:** don't set the view value without user interaction, set the model value to not mark the field as dirty ([405df98](https://github.com/w11k/w11k-select/commit/405df98)), closes [#24](https://github.com/w11k/w11k-select/issues/24)
+* **styling:** always shows the list of items. ([292ca4b](https://github.com/w11k/w11k-select/commit/292ca4b)), closes [#26](https://github.com/w11k/w11k-select/issues/26)
+
+
+### Features
+
+* **dependency:** update w11kDropdownToggle to support newer angular versions via bower ([a13266c](https://github.com/w11k/w11k-select/commit/a13266c))
+* **dropdown:** provide hooks for dropdown open and dropdown close events ([54ab150](https://github.com/w11k/w11k-select/commit/54ab150)), closes [#24](https://github.com/w11k/w11k-select/issues/24)
+* **ngModel:** use validator pipeline for validation ([797aff0](https://github.com/w11k/w11k-select/commit/797aff0))
+* **service:** extract hashCode, getParent and extendDeep to w11kSelectHelper service to make them testable and overridable ([09101f5](https://github.com/w11k/w11k-select/commit/09101f5))
+* **service:** extract hashCode, getParent and extendDeep to w11kSelectHelper service to make them testable and overridable ([973352d](https://github.com/w11k/w11k-select/commit/973352d))
+* **tabIndex:** make w11k-select accessible via keyboard with the tab key ([a3196bc](https://github.com/w11k/w11k-select/commit/a3196bc)), closes [#19](https://github.com/w11k/w11k-select/issues/19)
+* **trackBy:** add 'track by' part to w11kSelectOptions expression to allow tracking of specific property instead of hole object ([e7db96e](https://github.com/w11k/w11k-select/commit/e7db96e)), closes [#21](https://github.com/w11k/w11k-select/issues/21)
+
+
+### Performance Improvements
+
+* **filter:** remove 1 watch expression and use ngChange for filtering options inside the dropdown ([5dfaff3](https://github.com/w11k/w11k-select/commit/5dfaff3))
+* **select:** reduce usage of jQuery API, use plain DOM instead ([5a3932c](https://github.com/w11k/w11k-select/commit/5a3932c))
+* **select:** use compile phase to parse attribute expressions ([d85a559](https://github.com/w11k/w11k-select/commit/d85a559))
+
+
+### BREAKING CHANGES
+
+* **ngModel:** Using the 'new' validators pipeline requires AngularJS 1.3 or newer. bower.json was adjusted. With the next release we drop support for AngularJS 1.2.
+
+
+
+<a name="0.6.2"></a>
+## 0.6.2 (2015-07-06)
+
+
+### Bug Fixes
+
+* **infinite-scroll:** rename directive to w11k-select-infinite-scroll to avoid name-conflicts ([4044bef](https://github.com/w11k/w11k-select/commit/4044bef)), closes [#20](https://github.com/w11k/w11k-select/issues/20)
+
+
+
+<a name="0.6.1"></a>
+## 0.6.1 (2015-01-26)
+
+
+### Bug Fixes
+
+* **track-by:** improve hash function used to calculate ng-repeat track-by value ([03cd453](https://github.com/w11k/w11k-select/commit/03cd453)), closes [#17](https://github.com/w11k/w11k-select/issues/17)
+
+
+### Features
+
+* **checkboxes:** add config property 'hideCheckboxes' to hide checkboxes in single selection mode ([f84aa57](https://github.com/w11k/w11k-select/commit/f84aa57)), closes [#13](https://github.com/w11k/w11k-select/issues/13)
+* **clear button:** add config property 'showClearAlways' to show clear button always, even if field is required ([97a2d98](https://github.com/w11k/w11k-select/commit/97a2d98)), closes [#16](https://github.com/w11k/w11k-select/issues/16)
+* **select:** added config option to show the clearbutton. ([67f0bcb](https://github.com/w11k/w11k-select/commit/67f0bcb)), closes [#16](https://github.com/w11k/w11k-select/issues/16)
+
+
+
+<a name="0.6.0"></a>
+# 0.6.0 (2014-11-11)
+
+
+### Bug Fixes
+
+* **bower:** update dependency to w11k-dropdownToggle ([ef1aeb4](https://github.com/w11k/w11k-select/commit/ef1aeb4)), closes [#14](https://github.com/w11k/w11k-select/issues/14)
+* **filter:** select only one item in single selection mode ([8c928b9](https://github.com/w11k/w11k-select/commit/8c928b9)), closes [#15](https://github.com/w11k/w11k-select/issues/15)
+
+
+### Features
+
+* **styling:** add LESS support ([4523b51](https://github.com/w11k/w11k-select/commit/4523b51))
+
+
+
+<a name="0.5.0"></a>
+# 0.5.0 (2014-09-29)
+
+
+### Features
+
+* **bower:** add support for 'main' files ([e70f4f1](https://github.com/w11k/w11k-select/commit/e70f4f1))
+* **bower:** add support for ignoring files via 'ignore' ([200933b](https://github.com/w11k/w11k-select/commit/200933b))
+
+
+
+<a name="0.4.7"></a>
+## 0.4.7 (2014-07-21)
+
+
+### Bug Fixes
+
+* **select:** do not override ng-model with empty selection during initialisation ([585f8a4](https://github.com/w11k/w11k-select/commit/585f8a4)), closes [#9](https://github.com/w11k/w11k-select/issues/9)
+
+
+
+<a name="0.4.6"></a>
+## 0.4.6 (2014-07-21)
+
+
+### Bug Fixes
+
+* **select:** do not override ng-model with empty selection on config change ([43d1b5a](https://github.com/w11k/w11k-select/commit/43d1b5a)), closes [#9](https://github.com/w11k/w11k-select/issues/9)
+
+
+### Performance Improvements
+
+* **ng-model:** extract parsing ng-model expression from update function to do it once ([c5ef7df](https://github.com/w11k/w11k-select/commit/c5ef7df))
+* **options:** use object as map instead of array and indexOf to lookup hashes ([c8309d4](https://github.com/w11k/w11k-select/commit/c8309d4))
+* **options:** use object as map instead of array and indexOf to lookup options ([2acfe5c](https://github.com/w11k/w11k-select/commit/2acfe5c))
+* **options:** use while loop instead of forEach to iterate over options ([bd6c441](https://github.com/w11k/w11k-select/commit/bd6c441))
+
+
+
+<a name="0.4.5"></a>
+## 0.4.5 (2014-07-07)
+
+
+### Bug Fixes
+
+* **select:** make checkbox click same like label click ([566f2b1](https://github.com/w11k/w11k-select/commit/566f2b1))
+
+
+
+<a name="0.4.4"></a>
+## 0.4.4 (2014-06-10)
+
+
+### Bug Fixes
+
+* **options:** mark options as selected on change of options even if options are objects ([609c0b4](https://github.com/w11k/w11k-select/commit/609c0b4)), closes [#7](https://github.com/w11k/w11k-select/issues/7)
+* **options:** use watchCollection instead of simple watch to watch options collection ([02c2b97](https://github.com/w11k/w11k-select/commit/02c2b97)), closes [#6](https://github.com/w11k/w11k-select/issues/6)
+
+
+
+<a name="0.4.3"></a>
+## 0.4.3 (2014-06-04)
+
+
+### Features
+
+* **select:** improve styling of 'select all' and 'select none' buttons ([6c2a714](https://github.com/w11k/w11k-select/commit/6c2a714))
+* **template:** include dependency to template module ([356cd81](https://github.com/w11k/w11k-select/commit/356cd81))
+
+
+
+<a name="0.4.2"></a>
+## 0.4.2 (2014-06-02)
+
+
+### Bug Fixes
+
+* **select:** fix updating header text with custom text ([c85102d](https://github.com/w11k/w11k-select/commit/c85102d))
+
+
+
+<a name="0.4.1"></a>
+## 0.4.1 (2014-06-02)
+
+
+### Bug Fixes
+
+* **adjust-height:** fix getting parent without 'w11k-select-adjust-height-to' container ([994c81e](https://github.com/w11k/w11k-select/commit/994c81e))
+
+
+
+<a name="0.4.0"></a>
+# 0.4.0 (2014-06-02)
+
+
+### Bug Fixes
+
+* **adjust-height:** do not extend height greater than window ([fa1536b](https://github.com/w11k/w11k-select/commit/fa1536b))
+* **adjust-height:** fix calculated height ([d48c1b4](https://github.com/w11k/w11k-select/commit/d48c1b4))
+* **adjust-height:** hide dropdown menu until adjust-height finished to avoid flicker ([fcd7382](https://github.com/w11k/w11k-select/commit/fcd7382))
+* **filter:** fix getting focus after opening drop-down ([a5c8967](https://github.com/w11k/w11k-select/commit/a5c8967))
+
+
+### Features
+
+* **adjust-height:** improve adjust-height to support custom margin bottom and specifying container ([ef1bedc](https://github.com/w11k/w11k-select/commit/ef1bedc))
+* **config:** make everything configurable via constant w11kSelectConfig and w11k-select-config attribute ([9f1dd67](https://github.com/w11k/w11k-select/commit/9f1dd67))
+
+
+
+<a name="0.3.5"></a>
+## 0.3.5 (2014-05-27)
+
+
+### Bug Fixes
+
+* **select:** prefix attributes with 'w11k-select' to make IE happy again ([cdb21df](https://github.com/w11k/w11k-select/commit/cdb21df))
+
+
+### BREAKING CHANGES
+
+* **select:** All attributes used by 'w11k-select' directive has to be prefixed with 'w11k-select-' now.
+
+Use
+```
+<div w11k-select
+     w11k-select-multiple="true"
+     w11k-select-disabled="disabled"
+     w11k-select-options="option.value as option.label for option in options.data"
+     w11k-select-placeholder="'All'"
+     w11k-select-filter-placeholder="'Filter'"
+     w11k-select-required="false"
+     ng-model="selected.data"
+     name="demoField"
+     >
+</div>
+```
+
+instead of
+```
+<div w11k-select
+     multiple="true"
+     disabled="disabled"
+     options="option.value as option.label for option in options.data"
+     placeholder="'All'"
+     filter-placeholder="'Filter'"
+     required="false"
+     ng-model="selected.data"
+     name="demoField"
+     >
+</div>
+```
+
+
+
+<a name="0.3.4"></a>
+## 0.3.4 (2014-04-09)
+
+
+### Bug Fixes
+
+* **options:** do not identify options by index, otherwise changing options won't work ([0cb34de](https://github.com/w11k/w11k-select/commit/0cb34de))
+
+
+### Features
+
+* **performance:** improve performance by not watching options deeply ([45428c6](https://github.com/w11k/w11k-select/commit/45428c6))
+
+
+
+<a name="0.3.3"></a>
+## 0.3.3 (2014-04-08)
+
+
+### Bug Fixes
+
+* **IE8:** fix adjust height in IE8 ([60f9aed](https://github.com/w11k/w11k-select/commit/60f9aed))
+* **options:** set model value on change of options without making the form field dirty ([b247196](https://github.com/w11k/w11k-select/commit/b247196))
+
+
+
+<a name="0.3.2"></a>
+## 0.3.2 (2014-03-30)
+
+
+### Performance Improvements
+
+* **options:** optimise amount of options added due to infinite scrolling, for smoother scrolling ([dbdcaaa](https://github.com/w11k/w11k-select/commit/dbdcaaa))
+
+
+
+<a name="0.3.1"></a>
+## 0.3.1 (2014-03-30)
+
+
+### Bug Fixes
+
+* **filter:** call selectFiltered instead of selectAll on enter in filter input ([e48fc29](https://github.com/w11k/w11k-select/commit/e48fc29))
+
+
+
+<a name="0.3.0"></a>
+# 0.3.0 (2014-03-30)
+
+
+### Bug Fixes
+
+* **directive:** fix memory leak on scope destroy ([ccb0aff](https://github.com/w11k/w11k-select/commit/ccb0aff))
+
+
+### Features
+
+* **select:** close select box with 'esc' key ([e579af2](https://github.com/w11k/w11k-select/commit/e579af2))
+* **styling:** make font-awesome optional via own css classes and make button texts customisable ([772f480](https://github.com/w11k/w11k-select/commit/772f480))
+
+
+### Performance Improvements
+
+* **options:** use infinite scrolling for more than 100 options ([fbb7f34](https://github.com/w11k/w11k-select/commit/fbb7f34))
+
+
+
+<a name="0.2.0"></a>
+# 0.2.0 (2014-03-28)
+
+
+### Bug Fixes
+
+* **buttons:** fix clear button, separate code for deselectAll and deselectFiltered ([46cd098](https://github.com/w11k/w11k-select/commit/46cd098))
+* **styling:** change css base class from ww-select to w11k-select ([f95d746](https://github.com/w11k/w11k-select/commit/f95d746))
+
+
+### Features
+
+* **dependencies:** eliminate dependency to jQuery ([759ce97](https://github.com/w11k/w11k-select/commit/759ce97))
+
+
+### Performance Improvements
+
+* **rendering:** render option list lazy (on first open of dropdown) ([6283848](https://github.com/w11k/w11k-select/commit/6283848))
+* **rendering:** use 'track by $index' to improve rendering speed of option list ([af2d343](https://github.com/w11k/w11k-select/commit/af2d343))
+
+
+
+<a name="0.1.1"></a>
+## 0.1.1 (2014-03-05)
+
+
+### Features
+
+* **build:** include sass styling in dist ([292e604](https://github.com/w11k/w11k-select/commit/292e604))
+
+
+
+<a name="0.1.0"></a>
+# 0.1.0 (2014-03-05)
+
+
+### Bug Fixes
+
+* **bower:** add missing dependencies to jQuery and w11k-dropdownToggle ([284109c](https://github.com/w11k/w11k-select/commit/284109c))
+* **di:** use array notation for di values to survive minification ([13616bf](https://github.com/w11k/w11k-select/commit/13616bf))
+* **directive:** usage of dropdownToggle - w11k prefix instead of ww ([1448749](https://github.com/w11k/w11k-select/commit/1448749))
+
+
+### Features
+
+* **template:** make template url configurable via config constant ([4cd5e1c](https://github.com/w11k/w11k-select/commit/4cd5e1c))
+
+
+
+<a name="0.0.1"></a>
+## 0.0.1 (2014-03-03)
+
 
 
 <a name="0.11.3"></a>
