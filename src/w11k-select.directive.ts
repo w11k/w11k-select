@@ -141,6 +141,7 @@ export function w11kSelect (w11kSelectConfig: Config,
             checkSelection();
             updateNgModel();
             checkConfig(scope.config, setViewValue);
+            controller.$validate();
           });
 
           if (!configRead) {
