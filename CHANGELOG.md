@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-<a name="0.11.5"></a>
+<a name="0.11.7"></a>
+## [0.11.7](https://github.com/w11k/w11k-select/compare/v0.11.6...v0.11.7) (2019-04-23)
+
+
+<a name="0.11.6"></a>
 ## [0.11.6](https://github.com/w11k/w11k-select/compare/v0.11.5...v0.11.6) (2019-04-23)
 
 
