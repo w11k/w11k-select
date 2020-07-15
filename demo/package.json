@@ -64,7 +64,7 @@
     "karma-phantomjs-launcher": "1.0.2",
     "karma-sourcemap-loader": "0.3.7",
     "karma-webpack": "1.8.1",
-    "lodash": "4.17.3",
+    "lodash": "4.17.19",
     "ng-annotate-webpack-plugin": "^0.2.1-pre",
     "node-sass": "4.1.1",
     "raw-loader": "0.5.1",
