@@ -86,7 +86,7 @@
     "@types/angular": "^1.6.6",
     "@types/node": "^7.0.5",
     "ava": "^0.18.1",
-    "codecov": "^1.0.1",
+    "codecov": "^3.7.1",
     "dts-downlevel": "^0.3.0",
     "multiview": "^2.3.1",
     "ng-annotate": "^1.2.1",
